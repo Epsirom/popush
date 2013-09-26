@@ -1,4 +1,7 @@
-
+/**
+* author: Chaofan Yang
+* update: Lei Yang, Huarong Chen
+*/
 ////////////////////////// vars ///////////////////////////////
 var currentUser;
 var currentDir;
@@ -959,10 +962,28 @@ function backto(n) {
 	});
 }
 
+function changeuilanguage(){
+	//因为只有两种语言
+	currentLang = (currentLang === "zh-cn") ? "en-us" : "zh-cn";
+	if (changeLang[currentLang]) {
+		changeLang[currentLang]();
+		if (localStorage) {
+			localStorage["lang"] = currentLang;
+		}
+	}
+	$('[localization]').html(function(index, old) {
+		var lz = $(this).attr("localization");
+		if(strings[lz])
+			return strings[lz];
+		return old;
+	});
+}
+
+
 /////////////////////// initialize ///////////////////////////
 
 $(document).ready(function() {
-	setTimeout('loadfailed()', 10000);
+    setTimeout('loadfailed()', 10000);
 
     CodeMirror.on(window, "resize", function() {
 		var showing = document.getElementsByClassName("CodeMirror-fullscreen")[0];
@@ -1022,16 +1043,30 @@ $(document).ready(function() {
 	$('#share').on('shown', function() {
 		$('#share-inputName').focus();
 	});
-	
-	$('[localization]').html(function(index, old) {
-		if(strings[old])
-			return strings[old];
-		return old;
-	});
+
+	//读取用户当前语言设置(若无，则读取系统语言)
+	if (localStorage && localStorage["lang"]) {
+		if (localStorage["lang"] == "en-us") {
+			currentLang = "zh-cn";
+		}
+	} else {
+		if (navigator.language) {
+			var userbrowserlang = navigator.language;
+		}
+		else {
+			var userbrowserlang = navigator.browserLanguage;
+		}
+		if (userbrowserlang == "en-US") {
+			currentLang = "zh-cn";
+		}
+	}
+	//为少改代码，临时做法
+	$('[localization]').attr("localization",function(){return $(this).html();});
+	changeuilanguage();
 	
 	$('[title]').attr('title', function(index, old) {
-		if(strings[old])
-			return strings[old];
+		if(strings)
+			return strings;
 		return old;
 	});
 	
