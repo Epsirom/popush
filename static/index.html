@@ -174,13 +174,13 @@
 					<div id="editormain-inner">
 						<div id="over-editor" class="btn-toolbar" style="margin:0 0 5px 0;">
 							<div class="btn-group pull-right">
-								<button class="btn" type="button" onclick="setFullScreen(editor, true)" title="maximum-title"><i class="icon-fullscreen"></i></button>
-								<button class="btn" type="button" onclick="togglechat(this)" title="hide-title"><i class="icon-forward"></i></button>
+								<button class="btn" type="button" onclick="setFullScreen(editor, true)" title="maximum-title" titlelang="maximum-title"><i class="icon-fullscreen"></i></button>
+								<button class="btn" type="button" onclick="togglechat(this)" title="hide-title" titlelang="hide-title"><i class="icon-forward"></i></button>
 							</div>
 							<div class="btn-group pull-right" style="margin:0 15px 5px 0;">
-								<button class="btn" type="button" id="editor-run" onclick="run()" title="run-title"><i class="icon-play"></i></button>
-								<button class="btn" type="button" id="editor-debug" onclick="debug()" title="debug-title"><i class="icon-eye-open"></i></button>
-								<button class="btn" type="button" id="editor-console" onclick="toggleconsole()" title="console"><i class="icon-share"></i></button>
+								<button class="btn" type="button" id="editor-run" onclick="run()" title="run-title" titlelang="run-title"><i class="icon-play"></i></button>
+								<button class="btn" type="button" id="editor-debug" onclick="debug()" title="debug-title" titlelang="debug-title"><i class="icon-eye-open"></i></button>
+								<button class="btn" type="button" id="editor-console" onclick="toggleconsole()" title="console" titlelang="console"><i class="icon-share"></i></button>
 							</div>
 							<div class="btn-group pull-left" style="margin-left:0">
 								<button class="btn" type="button" id="editor-back" onclick="closeeditor()"><i class="icon-home"></i></button>
@@ -237,8 +237,8 @@
 				</div>
 				<div class="input-append" style="margin-bottom:0">
 					<input type="text" id="chat-input" onkeydown="pressenter(arguments[0],chat)">
-					<button class="btn" type="button" onclick="chat()" title="send"><i class="icon-comment"></i></button>
-					<button class="btn active" type="button" id="voice-on" onclick="voice()" title="voice"><i class="icon-volume-up"></i></button>
+					<button class="btn" type="button" onclick="chat()" title="send" titlelang="send"><i class="icon-comment"></i></button>
+					<button class="btn active" type="button" id="voice-on" onclick="voice()" title="voice" titlelang="voice"><i class="icon-volume-up"></i></button>
 				</div>
 			</div>
 		</div>

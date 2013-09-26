@@ -1065,8 +1065,9 @@ $(document).ready(function() {
 	changeuilanguage();
 	
 	$('[title]').attr('title', function(index, old) {
-		if(strings)
-			return strings;
+		var lz = $(this).attr("titlelang");
+		if(strings[lz])
+			return strings[lz];
 		return old;
 	});
 	
