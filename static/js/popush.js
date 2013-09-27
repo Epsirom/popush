@@ -763,12 +763,14 @@ function togglechat(o) {
 		$('#chatbox').show();
 		$(o).html('<i class="icon-forward"></i>');
 		$(o).attr('title', strings['hide-title']);
+		$(o).attr('titlelang', 'hide-title');
 	} else {
 		$('#chatbox').hide();
 		$('#editormain').parent().removeClass('span9');
 		$('#editormain').parent().addClass('span12');
 		$(o).html('<i class="icon-backward"></i>');
 		$(o).attr('title', strings['show-title']);
+		$(o).attr('titlelang', 'show-title');
 	}
 	var o = $('#chat-show').get(0);
 	o.scrollTop = o.scrollHeight;
@@ -971,6 +973,12 @@ function changeuilanguage(){
 			localStorage["lang"] = currentLang;
 		}
 	}
+	changelocallang();
+	changetitlelang();
+	changpopoverlang();
+}
+
+function changelocallang(){
 	$('[localization]').html(function(index, old) {
 		var lz = $(this).attr("localization");
 		if(strings[lz])
@@ -979,6 +987,34 @@ function changeuilanguage(){
 	});
 }
 
+function changetitlelang(){
+	$('[title]').attr('title', function(index, old) {
+		var lz = $(this).attr("titlelang");
+		if(strings[lz])
+			return strings[lz];
+		return old;
+	});
+}
+
+function changpopoverlang(){
+	$('#voice-on').attr('data-original-title',"");
+	if(novoice)
+		$('#voice-on').popover('destroy');	
+	if((!Browser.chrome || parseInt(Browser.chrome) < 18) &&
+		(!Browser.opera || parseInt(Browser.opera) < 12)) {
+		novoice = true;
+		$('#voice-on').addClass('disabled');
+		$('#voice-on').removeAttr('title');
+		$('#voice-on').popover({
+			html: true,
+			placement: 'left',
+			title:'',
+			content:strings['novoice'],
+			trigger: 'hover',
+			container: 'body'
+		});
+	}
+}
 
 /////////////////////// initialize ///////////////////////////
 
@@ -1064,12 +1100,6 @@ $(document).ready(function() {
 	$('[localization]').attr("localization",function(){return $(this).html();});
 	changeuilanguage();
 	
-	$('[title]').attr('title', function(index, old) {
-		if(strings)
-			return strings;
-		return old;
-	});
-	
 	if(!ENABLE_RUN) {
 		$('#editor-run').remove();
 		if(!ENABLE_DEBUG) {
@@ -1083,20 +1113,6 @@ $(document).ready(function() {
 	
 	$('body').show();
 	$('#login-inputName').focus();
-	
-	if((!Browser.chrome || parseInt(Browser.chrome) < 18) &&
-		(!Browser.opera || parseInt(Browser.opera) < 12)) {
-		novoice = true;
-		$('#voice-on').addClass('disabled');
-		$('#voice-on').removeAttr('title');
-		$('#voice-on').popover({
-			html: true,
-			content: strings['novoice'],
-			placement: 'left',
-			trigger: 'hover',
-			container: 'body'
-		});
-	}
 
 	resize();
 	$(window).resize(resize);

@@ -34,8 +34,8 @@ function fileList(table) {
 	var obj = $(table);
 
 	var header = '<tr class="head"><th class="col1">&nbsp;</th>' +
-		'<th class="col2">' + strings['filename'] + '</th><th class="col3">' + strings['state'] + '</th>' +
-		'<th class="col4">' + strings['timestamp'] + '</th><th class="col5">&nbsp;</th></tr>';
+		'<th class="col2" localization="filename">' + strings['filename'] + '</th><th class="col3" localization="state">' + strings['state'] + '</th>' +
+		'<th class="col4" localization="timestamp">' + strings['timestamp'] + '</th><th class="col5">&nbsp;</th></tr>';
 	
 	var elements = [];
 	
@@ -75,7 +75,7 @@ function fileList(table) {
 		elements: elements,
 
 		clear: function() {
-			obj.html(header + '<tr class="no-file"><td></td><td>' + strings['nofile'] + '</td><td></td><td></td><td></td></tr>');
+			obj.html(header + '<tr class="no-file"><td>&nbsp;</td><td localization="nofile">' + strings['nofile'] + '</td><td></td><td></td><td></td></tr>');
 			elements = [];
 			this.elements = elements;
 		},
@@ -88,12 +88,12 @@ function fileList(table) {
 			mode = newmode;
 			if(mode & 2)
 				header = '<tr class="head"><th class="col1">&nbsp;</th>' +
-		'<th class="col2">' + strings['filename'] + '</th><th class="col3">' + strings['state'] + '</th>' +
-		'<th class="col4">' + strings['timestamp'] + '</th><th class="col5">&nbsp;</th></tr>';
+		'<th class="col2" localization="filename">' + strings['filename'] + '</th><th class="col3" localization="state">' + strings['state'] + '</th>' +
+		'<th class="col4" localization="timestamp">' + strings['timestamp'] + '</th><th class="col5">&nbsp;</th></tr>';
 			else
 				header = '<tr class="head"><th class="col1">&nbsp;</th>' +
-		'<th class="col2">' + strings['filename'] + '</th><th class="col3 owner">' + strings['owner'] + '</th>' +
-		'<th class="col4">' + strings['timestamp'] + '</th><th class="col5">&nbsp;</th></tr>';
+		'<th class="col2" localization="filename">' + strings['filename'] + '</th><th class="col3 owner" localization="owner">' + strings['owner'] + '</th>' +
+		'<th class="col4" localization="timestamp">' + strings['timestamp'] + '</th><th class="col5">&nbsp;</th></tr>';
 		},
 	
 		add: function(o) {
