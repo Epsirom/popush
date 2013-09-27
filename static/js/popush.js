@@ -762,15 +762,15 @@ function togglechat(o) {
 		$('#editormain').parent().addClass('span9');
 		$('#chatbox').show();
 		$(o).html('<i class="icon-forward"></i>');
-		$(o).attr('title', strings['show-title']);
-		$(o).attr('titlelang', 'show-title');
+		$(o).attr('title', strings['hide-title']);
+		$(o).attr('titlelang', 'hide-title');
 	} else {
 		$('#chatbox').hide();
 		$('#editormain').parent().removeClass('span9');
 		$('#editormain').parent().addClass('span12');
 		$(o).html('<i class="icon-backward"></i>');
-		$(o).attr('title', strings['hide-title']);
-		$(o).attr('titlelang', 'hide-title');
+		$(o).attr('title', strings['show-title']);
+		$(o).attr('titlelang', 'show-title');
 	}
 	var o = $('#chat-show').get(0);
 	o.scrollTop = o.scrollHeight;
