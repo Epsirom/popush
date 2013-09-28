@@ -702,6 +702,19 @@ function changeavataropen() {
 	$('#changeavatar-img').attr('src', currentUser.avatar);
 }
 
+var currentskin_url;
+function changeskinopen(){
+	currentskin_url = $('body').css("background");
+	$('#changeskin-message').hide();
+	showmasklayer();
+}
+function showmasklayer(){
+	$('#screenblock').css("display","block");
+}
+function hidemasklayer(){
+	$('#screenblock').css("display","none");
+}
+
 function changepassword() {
 	var old = $('#changepassword-old').val();
 	var pass = $('#changepassword-new').val();
@@ -878,6 +891,16 @@ function changeavatar(o) {
 	}
 
 	reader.readAsDataURL(file);
+}
+
+
+function chooseskin(o){
+	var url =  'url(/images/' + o.id + '.png)'; 
+	$('body').css("background", url);
+}
+function canclechangeskin(){
+	$('body').css("background", currentskin_url);
+	$('#screenblock').css("display", "none");
 }
 
 function initfilelistevent(fl) {

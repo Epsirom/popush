@@ -118,5 +118,8 @@ changeLang['zh-cn'] = function() {
 		'username-form'			:'用户名只能由字母或数字组成,长度须在6-20之间',
 		'password-form'			:'密码的长度不能大于32',
 		'renterpassword'		:'请再次输入密码'
+		'switchlang'			:'切换至英文',
+		'changeskin'					:'更换背景',
+		'clicktochoose'					:'选择喜爱的纹理，点击设置为背景'
 	};
 };

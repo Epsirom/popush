@@ -119,5 +119,7 @@ changeLang['en-us'] = function() {
 		'username-form'			:'The username can only consists of number and letter. The length of username should be between 6 and 20.',
 		'password-form'			:'The length of password must be less than 32.',
 		'renterpassword'		:'Please enter your password again.'
+		'changeskin'					:'Change skin/background',
+		'clicktochoose'					:'Click image to change the background'
 	};
 };
