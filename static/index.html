@@ -24,6 +24,8 @@
 	<script type="text/javascript" src="js/expressionlist.js"></script>
 	<script type="text/javascript" src="js/popush.js"></script>
 	<script type="text/javascript" src="js/room.js"></script>
+	<!---->
+	<script type="text/javascript" scr="js/New.js"></script>
 </head>
 <body style="display:none;">
 	<div class="hero-unit" id="big-one">
@@ -48,6 +50,7 @@
 						<ul class="dropdown-menu">
 							<li><a href="#changepassword" data-toggle="modal" onclick="changepasswordopen()" localization>changepassword</a></li>
 							<li><a href="#changeavatar" data-toggle="modal" onclick="changeavataropen()" localization>changeavatar</a></li>
+							<li><a href="#changeskin" data-toggle="modal" data-backdrop="false" onclick="changeskinopen()" localization>changeskin</a></li>
 							<li class="divider"></li>
 							<li><a href="javascript:;" onclick="logout()" localization>logout</a></li>
 						</ul>
@@ -329,8 +332,36 @@
 			</div>
 			<div class="modal-footer">
 				<div id="changepassword-buttons">
-					<button class="btn" onclick="changepassword()" localization>ok</button>
+					<button class="btn" data-dismiss="modal" aria-hidden="true" localization>ok</button>
 					<button class="btn" data-dismiss="modal" aria-hidden="true" localization>cancel</button>
+				</div>
+			</div>
+		</div>
+		
+		<!--popover-->
+		<div id="changeskin" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="changeskinLabel" aria-hidden="true" data-backdrop="static">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3 id="changeskinLabel" localization>changeskin</h3>
+			</div>
+			<div class="modal-body">
+				<div class="alert hide" id="changeskin-message">
+					<button type="button" class="close" onclick="$('#changeskin-message').slideUp()">&times;</button>
+					<span>Nothing here</span>
+				</div>
+				<p localization>clicktochoose</p>
+				<p align="center">
+					<img id="skin-grey" src="/images/skin-grey.png" class="skinimg" onclick="chooseskin(this)" style="cursor:pointer;"/>
+					<img id="skin-dark" src="/images/skin-dark.png" class="skinimg" onclick="chooseskin(this)" style="cursor:pointer;"/>
+					<img id="skin-geometry" src="/images/skin-geometry.png" class="skinimg" onclick="chooseskin(this)" style="cursor:pointer;"/>
+					<img id="skin-wood" src="/images/skin-wood.png" class="skinimg" onclick="chooseskin(this)" style="cursor:pointer;"/>
+				</p>				
+			</div>
+			
+			<div class="modal-footer">
+				<div id="changeskin-buttons">
+					<button class="btn" onclick="hidemasklayer()" data-dismiss="modal" aria-hidden="true" localization>ok</button>
+					<button class="btn" onclick="canclechangeskin()" data-dismiss="modal" aria-hidden="true" localization>cancel</button>
 				</div>
 			</div>
 		</div>
@@ -418,7 +449,8 @@
 				<button class="btn" data-dismiss="modal" aria-hidden="true" localization>ok</button>
 			</div>
 		</div>
-
 	</div>
+	<!--screen block-->
+	<div id="screenblock"></div>
 </body>
 </html>

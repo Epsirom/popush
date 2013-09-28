@@ -116,5 +116,7 @@ changeLang['en-us'] = function() {
 		'removeexpression'              :'Remove watch',
 		'novoice'                       :'The browser can not support the voice. <br />Please choose Chrome 18+ or Opera 12+',
 		'switchlang'			:'Switch language to Chinese',
+		'changeskin'					:'Change skin/background',
+		'clicktochoose'					:'Click image to change the background'
 	};
 };
