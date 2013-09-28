@@ -53,6 +53,7 @@ var s;
 (s = ua.match(/version\/([\d.]+).*safari/)) ? Browser.safari = s[1] : 0;
 
 var novoice = false;
+var inputformcheck = false;
 
 //////////////////////// function //////////////////////////////
 
@@ -1019,6 +1020,56 @@ function changpopoverlang(){
 			container: 'body'
 		});
 	}
+	if(inputformcheck)
+	{
+		$('#login-inputName').popover('destroy');
+		$('#login-inputPassword').popover('destroy');
+		$('#register-inputName').popover('destroy');
+		$('#register-inputPassword').popover('destroy');
+		$('#register-confirmPassword').popover('destroy');
+	}	
+	inputformcheck = true;
+	$('#login-inputName').popover({
+		html: true,
+		placement: 'right',
+		title:'',
+		content:strings['username-form'],
+		trigger: 'focus',
+		container: 'body'
+	});
+	$('#login-inputPassword').popover({
+		html: true,
+		placement: 'right',
+		title:'',
+		content:strings['password-form'],
+		trigger: 'focus',
+		container: 'body'
+	});
+	$('#register-inputName').popover({
+		html: true,
+		placement: 'right',
+		title:'',
+		content:strings['username-form'],
+		trigger: 'focus',
+		container: 'body'
+	});
+	$('#register-inputPassword').popover({
+		html: true,
+		placement: 'right',
+		title:'',
+		content:strings['password-form'],
+		trigger: 'focus',
+		container: 'body'
+	});
+	$('#register-confirmPassword').popover({
+		html: true,
+		placement: 'right',
+		title:'',
+		content:strings['renterpassword'],
+		trigger: 'focus',
+		container: 'body'
+	});
+
 }
 
 /////////////////////// initialize ///////////////////////////
@@ -1101,6 +1152,9 @@ $(document).ready(function() {
 			currentLang = "zh-cn";
 		}
 	}
+
+	
+
 	//为少改代码，临时做法
 	$('[localization]').attr("localization",function(){return $(this).html();});
 	changeuilanguage();

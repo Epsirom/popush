@@ -116,5 +116,8 @@ changeLang['en-us'] = function() {
 		'removeexpression'              :'Remove watch',
 		'novoice'                       :'The browser can not support the voice. <br />Please choose Chrome 18+ or Opera 12+',
 		'switchlang'			:'Switch language to Chinese',
+		'username-form'			:'The username can only consists of number and letter. The length of username should be between 6 and 20.',
+		'password-form'			:'The length of password must be less than 32.',
+		'renterpassword'		:'Please enter your password again.'
 	};
 };
