@@ -86,6 +86,7 @@ function showmessage(id, stringid, type) {
 	o.removeClass('alert-info');
 	if(type && type != '' && type != 'warning')
 		o.addClass('alert-' + type);
+	$('#' + id + ' span').attr('localization', stringid);
 	if(strings[stringid])
 		$('#' + id + ' span').html(strings[stringid]);
 	else
@@ -96,12 +97,14 @@ function showmessage(id, stringid, type) {
 function showmessageindialog(id, stringid, index) {
 	if(index === undefined) {
 		$('#' + id + ' .control-group').addClass('error');
+		$('#' + id + ' .help-inline').attr('localization', stringid);
 		if(strings[stringid])
 			$('#' + id + ' .help-inline').text(strings[stringid]);
 		else
 			$('#' + id + ' .help-inline').text(stringid);
 	} else {
 		$('#' + id + ' .control-group:eq('+index+')').addClass('error');
+		$('#' + id + ' .help-inline:eq('+index+')').attr('localization', stringid);
 		if(strings[stringid])
 			$('#' + id + ' .help-inline:eq('+index+')').text(strings[stringid]);
 		else
@@ -110,10 +113,12 @@ function showmessageindialog(id, stringid, index) {
 }
 
 function showmessagebox(title, content, timeout) {
+	$('#messagedialogLabel').attr('localization', title);
 	if(strings[title])
 		$('#messagedialogLabel').html(strings[title]);
 	else
 		$('#messagedialogLabel').html(title);
+	$('#messagedialogContent').attr('localization', content);
 	if(strings[content])
 		$('#messagedialogContent').html(strings[content]);
 	else
@@ -1019,7 +1024,7 @@ function changpopoverlang(){
 /////////////////////// initialize ///////////////////////////
 
 $(document).ready(function() {
-    setTimeout('loadfailed()', 10000);
+    setTimeout('loadfailed()', 20000);
 
     CodeMirror.on(window, "resize", function() {
 		var showing = document.getElementsByClassName("CodeMirror-fullscreen")[0];
