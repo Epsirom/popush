@@ -903,12 +903,9 @@ function chooseskin(o){
 	} else {
 		var new_skin = $(o).attr("skin");
 	}
-	for (var i in popush_skins) {
-		if (popush_skins[i].name == new_skin) {
-			popush_skins[i].use();
-			selected_popush_skin = new_skin;
-			return;
-		}
+	if (popush_skins[new_skin]) {
+		popush_skins[new_skin].use();
+		selected_popush_skin = new_skin;
 	}
 	//var url =  'url(/images/' + o.id + '.png)'; 
 	//$('body').css("background", url);
