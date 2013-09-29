@@ -24,8 +24,8 @@
 	<script type="text/javascript" src="js/expressionlist.js"></script>
 	<script type="text/javascript" src="js/popush.js"></script>
 	<script type="text/javascript" src="js/room.js"></script>
-	<!---->
-	<script type="text/javascript" scr="js/New.js"></script>
+	<!--
+	<script type="text/javascript" scr="js/New.js"></script>-->
 </head>
 <body style="display:none;">
 	<div class="hero-unit" id="big-one">
@@ -341,7 +341,7 @@
 		<!--popover-->
 		<div id="changeskin" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="changeskinLabel" aria-hidden="true" data-backdrop="static">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="cancelchangeskin()">&times;</button>
 				<h3 id="changeskinLabel" localization>changeskin</h3>
 			</div>
 			<div class="modal-body">
@@ -361,7 +361,7 @@
 			<div class="modal-footer">
 				<div id="changeskin-buttons">
 					<button class="btn" onclick="hidemasklayer()" data-dismiss="modal" aria-hidden="true" localization>ok</button>
-					<button class="btn" onclick="canclechangeskin()" data-dismiss="modal" aria-hidden="true" localization>cancel</button>
+					<button class="btn" onclick="cancelchangeskin()" data-dismiss="modal" aria-hidden="true" localization>cancel</button>
 				</div>
 			</div>
 		</div>

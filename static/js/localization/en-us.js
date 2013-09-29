@@ -77,7 +77,7 @@ changeLang['en-us'] = function() {
 		'register'                      :'Register',
 		'logout'                        :'Logout',
 		'confirm'                       :'Confirm the password',
-		'owningfiles'                   :'Owning files',
+		'owningfiles'                   :'Owned files',
 		'sharedfiles'                   :'Shared files',
 		'currentdir:'                   :'Current directory: ',
 		'shareduser'                    :'Shared with',

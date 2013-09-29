@@ -901,7 +901,7 @@ function chooseskin(o){
 	var url =  'url(/images/' + o.id + '.png)'; 
 	$('body').css("background", url);
 }
-function canclechangeskin(){
+function cancelchangeskin(){
 	$('body').css("background", currentskin_url);
 	$('#screenblock').css("display", "none");
 }
