@@ -378,6 +378,7 @@ socket.on('login', function(data){
 		operationLock = false;
 		$('#login-inputName').val('');
 		$('#login-inputPassword').val('');
+		$('#login-inputName').blur();
 		$('#login-message').hide();
 		$('#ownedfile').show();
 		$('#ownedfileex').hide();
@@ -608,6 +609,8 @@ function login() {
 		name:$('#login-inputName').val(),
 		password:$('#login-inputPassword').val()
 	});
+	$('#login-inputName').blur();	
+	$('#login-inputPassword').blur();
 }
 
 function logout() {

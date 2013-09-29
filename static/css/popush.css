@@ -29,7 +29,7 @@ a{color:rgb(0, 171, 255);}
 
 #file-list-table .col2, #file-list-table .col3, #file-list-table .col4, #file-list-table .col5 {vertical-align:middle;}
 #file-list-table .col1 {width:40px;text-align:right;}
-#file-list-table .col3 {width:40px;text-align:center;}
+#file-list-table .col3 {width:45px;text-align:center;}
 #file-list-table .col3.owner {width:140px;text-align:center;}
 #file-list-table .col3.owner img {max-width:32px;max-height:32px;margin-right:7px;}
 #file-list-table .col4 {width:155px;text-align:center;}
