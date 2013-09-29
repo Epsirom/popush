@@ -114,11 +114,11 @@ changeLang['zh-cn'] = function() {
 		'voice'                         :'语音',
 		'removeexpression'              :'删除监视',
 		'novoice'                       :'该浏览器不支持语音，请使用<br />Chrome 18+或Opera 12+',
-		'switchlang'			:'切换至英文',
-		'username-form'			:'用户名只能由字母或数字组成,长度须在6-20之间',
-		'password-form'			:'密码的长度不能大于32',
-		'renterpassword'		:'请再次输入密码'
-		'switchlang'			:'切换至英文',
+		'switchlang'					:'切换至英文',
+		'username-form'					:'用户名只能由字母或数字组成,长度须在6-20之间',
+		'password-form'					:'密码的长度不能大于32',
+		'renterpassword'				:'请再次输入密码',
+		'switchlang'					:'切换至英文',
 		'changeskin'					:'更换背景',
 		'clicktochoose'					:'选择喜爱的纹理，点击设置为背景'
 	};
