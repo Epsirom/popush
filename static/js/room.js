@@ -70,6 +70,7 @@ var savetimeout = 500;
 
 function setsaving(){
 	$('#current-doc-state').addClass('red');
+	$('#current-doc-state').attr("localization", "saving...");
 	$('#current-doc-state').text(strings['saving...']);
 	$('#editor-back').attr('title', '');
 	$('#editor-back').popover({
@@ -93,6 +94,7 @@ function setsaved(){
 function setsavedthen(timestamp){
 	if(savetimestamp == timestamp) {
 		$('#current-doc-state').removeClass('red');
+		$('#current-doc-state').attr("localization", "saved");
 		$('#current-doc-state').text(strings['saved']);
 		$('#editor-back').popover('destroy');
 		$('#editor-back').attr('title', strings['back']);

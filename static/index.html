@@ -22,6 +22,7 @@
 	<script type="text/javascript" src="js/filelist.js"></script>
 	<script type="text/javascript" src="js/userlist.js"></script>
 	<script type="text/javascript" src="js/expressionlist.js"></script>
+	<script type="text/javascript" src="js/skins.js"></script>
 	<script type="text/javascript" src="js/popush.js"></script>
 	<script type="text/javascript" src="js/room.js"></script>
 	<!--
@@ -40,7 +41,7 @@
 	<div class="navbar navbar-fixed-top hide" id="nav-head">
 		<div class="navbar-inner">
 			<div class="container" style="width: auto; padding: 0 20px;">
-				<a class="brand" href="#">Popush</a>
+				<a class="brand" style="cursor:default;">Popush</a>
 				<ul class="nav pull-right">
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -50,6 +51,8 @@
 						<ul class="dropdown-menu">
 							<li><a href="#changepassword" data-toggle="modal" onclick="changepasswordopen()" localization>changepassword</a></li>
 							<li><a href="#changeavatar" data-toggle="modal" onclick="changeavataropen()" localization>changeavatar</a></li>
+							<li class="divider"></li>
+							<!--<li><a style="cursor:pointer;" onclick="changeuilanguage()" localization>switchlang</a></li>-->
 							<li><a href="#changeskin" data-toggle="modal" data-backdrop="false" onclick="changeskinopen()" localization>changeskin</a></li>
 							<li class="divider"></li>
 							<li><a href="javascript:;" onclick="logout()" localization>logout</a></li>
@@ -351,16 +354,16 @@
 				</div>
 				<p localization>clicktochoose</p>
 				<p align="center">
-					<img id="skin-grey" src="/images/skin-grey.png" class="skinimg" onclick="chooseskin(this)" style="cursor:pointer;"/>
-					<img id="skin-dark" src="/images/skin-dark.png" class="skinimg" onclick="chooseskin(this)" style="cursor:pointer;"/>
-					<img id="skin-geometry" src="/images/skin-geometry.png" class="skinimg" onclick="chooseskin(this)" style="cursor:pointer;"/>
-					<img id="skin-wood" src="/images/skin-wood.png" class="skinimg" onclick="chooseskin(this)" style="cursor:pointer;"/>
+					<img id="skin-grey" skin="grey" src="/images/skin-grey.png" class="skinimg" onclick="chooseskin(this)" style="cursor:pointer;"/>
+					<img id="skin-dark" skin="dark" src="/images/skin-dark.png" class="skinimg" onclick="chooseskin(this)" style="cursor:pointer;"/>
+					<img id="skin-geometry" skin="geometry" src="/images/skin-geometry.png" class="skinimg" onclick="chooseskin(this)" style="cursor:pointer;"/>
+					<img id="skin-wood" skin="wood" src="/images/skin-wood.png" class="skinimg" onclick="chooseskin(this)" style="cursor:pointer;"/>
 				</p>				
 			</div>
 			
 			<div class="modal-footer">
 				<div id="changeskin-buttons">
-					<button class="btn" onclick="hidemasklayer()" data-dismiss="modal" aria-hidden="true" localization>ok</button>
+					<button class="btn" onclick="confirmchangeskin()" data-dismiss="modal" aria-hidden="true" localization>ok</button>
 					<button class="btn" onclick="cancelchangeskin()" data-dismiss="modal" aria-hidden="true" localization>cancel</button>
 				</div>
 			</div>

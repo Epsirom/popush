@@ -705,7 +705,7 @@ function changeavataropen() {
 	$('#changeavatar-img').attr('src', currentUser.avatar);
 }
 
-var currentskin_url;
+//var currentskin_url;
 function changeskinopen(){
 	currentskin_url = $('body').css("background");
 	$('#changeskin-message').hide();
@@ -898,12 +898,35 @@ function changeavatar(o) {
 
 
 function chooseskin(o){
-	var url =  'url(/images/' + o.id + '.png)'; 
-	$('body').css("background", url);
+	if (typeof(o) === "string") {
+		var new_skin = o;
+	} else {
+		var new_skin = $(o).attr("skin");
+	}
+	for (var i in popush_skins) {
+		if (popush_skins[i].name == new_skin) {
+			popush_skins[i].use();
+			selected_popush_skin = new_skin;
+			return;
+		}
+	}
+	//var url =  'url(/images/' + o.id + '.png)'; 
+	//$('body').css("background", url);
 }
+
+function confirmchangeskin() {
+	current_popush_skin = selected_popush_skin;
+	if (localStorage) {
+		localStorage['popush-skin'] = current_popush_skin;
+	}
+	hidemasklayer();
+}
+
 function cancelchangeskin(){
-	$('body').css("background", currentskin_url);
-	$('#screenblock').css("display", "none");
+	chooseskin(current_popush_skin);
+	hidemasklayer();
+	//$('body').css("background", currentskin_url);
+	//$('#screenblock').css("display", "none");
 }
 
 function initfilelistevent(fl) {
@@ -1101,6 +1124,13 @@ function changpopoverlang(){
 /////////////////////// initialize ///////////////////////////
 
 $(document).ready(function() {
+
+	// load skin
+	if (localStorage && localStorage['popush-skin']) {
+		current_popush_skin = localStorage['popush-skin'];
+	}
+	cancelchangeskin();
+
     setTimeout('loadfailed()', 20000);
 
     CodeMirror.on(window, "resize", function() {
@@ -1178,8 +1208,6 @@ $(document).ready(function() {
 			currentLang = "zh-cn";
 		}
 	}
-
-	
 
 	//为少改代码，临时做法
 	$('[localization]').attr("localization",function(){return $(this).html();});

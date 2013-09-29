@@ -27,7 +27,7 @@ JDK           | 7.0   |
 
 ## 获取源码
 
-	git clone https://github.com/qiankanglai/popush.git
+	git clone https://github.com/Epsirom/popush2.git
 
 ## 创建主目录
 
