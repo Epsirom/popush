@@ -297,14 +297,15 @@ function backtologin() {
 	$('#big-one').animate({height:'120px', padding:'60px', 'margin-bottom':'30px'}, 'fast', function() {
 		$('#big-one').removeAttr('style');
 		$('#big-one .container').css('margin','auto');
-		$('#login-inputName').focus();
 		resize();
+		$('#login-inputName').focus();
 	});
 	$('#nav-head').fadeOut('fast');
 	$('#filecontrol').hide();
 	$('#editor').hide();
 	$('#login').fadeIn('fast');
 	$('.modal').modal('hide');
+	$('#footer').fadeIn('fast');
 }
 
 ///////////////////// websocket & callback //////////////////////
