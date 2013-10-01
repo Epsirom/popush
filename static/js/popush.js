@@ -709,7 +709,6 @@ function changeavataropen() {
 //var currentskin_url;
 function changeskinopen(){
 	currentskin_url = $('body').css("background");
-	$('#changeskin-message').hide();
 	showmasklayer();
 }
 function showmasklayer(){
@@ -1128,6 +1127,7 @@ $(document).ready(function() {
 		current_popush_skin = localStorage['popush-skin'];
 	}
 	cancelchangeskin();
+	$("#changeskin").on("hide", cancelchangeskin);
 
     setTimeout('loadfailed()', 20000);
 
@@ -1223,9 +1223,9 @@ $(document).ready(function() {
 	}
 	
 	$('body').show();
-	$('#login-inputName').focus();
-
 	resize();
+	$('#login-inputName').focus();
+	
 	$(window).resize(resize);
 	$(window).scroll(function() {
 		$('#editormain-inner').css('left', (-$(window).scrollLeft()) + 'px');

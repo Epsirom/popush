@@ -342,14 +342,10 @@
 		<!--popover-->
 		<div id="changeskin" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="changeskinLabel" aria-hidden="true" data-backdrop="static">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="cancelchangeskin()">&times;</button>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				<h3 id="changeskinLabel" localization>changeskin</h3>
 			</div>
 			<div class="modal-body">
-				<div class="alert hide" id="changeskin-message">
-					<button type="button" class="close" onclick="$('#changeskin-message').slideUp()">&times;</button>
-					<span>Nothing here</span>
-				</div>
 				<p localization>clicktochoose</p>
 				<p align="center">
 					<img id="skin-grey" skin="grey" src="/images/skin-grey.png" class="skinimg" onclick="chooseskin(this)" style="cursor:pointer;"/>
@@ -362,7 +358,7 @@
 			<div class="modal-footer">
 				<div id="changeskin-buttons">
 					<button class="btn" onclick="confirmchangeskin()" data-dismiss="modal" aria-hidden="true" localization>ok</button>
-					<button class="btn" onclick="cancelchangeskin()" data-dismiss="modal" aria-hidden="true" localization>cancel</button>
+					<button class="btn" data-dismiss="modal" aria-hidden="true" localization>cancel</button>
 				</div>
 			</div>
 		</div>
