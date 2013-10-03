@@ -1,3 +1,6 @@
+/**
+* update: Huarong Chen
+*/
 var runLock = false;
 var debugLock = false;
 var waiting = false;
@@ -69,13 +72,11 @@ var issaving = false;
 var savetimeout = 500;
 
 function setsaving(){
-	$('#current-doc-state').addClass('red');
-	$('#current-doc-state').attr("localization", "saving...");
-	$('#current-doc-state').text(strings['saving...']);
+	$('#current-doc-state').addClass('red').setlocale('saving...');
 	$('#editor-back').attr('title', '');
 	$('#editor-back').popover({
 		html: true,
-		content: strings['unsaved'],
+		content: function() {return $.wraplocale("<p />", 'unsaved')},
 		placement: 'right',
 		trigger: 'hover',
 		container: 'body'
@@ -93,11 +94,8 @@ function setsaved(){
 
 function setsavedthen(timestamp){
 	if(savetimestamp == timestamp) {
-		$('#current-doc-state').removeClass('red');
-		$('#current-doc-state').attr("localization", "saved");
-		$('#current-doc-state').text(strings['saved']);
-		$('#editor-back').popover('destroy');
-		$('#editor-back').attr('title', strings['back']);
+		$('#current-doc-state').removeClass('red').setlocale('saved');
+		$('#editor-back').popover('destroy').setlocale('back', 'title');
 		issaving = false;
 		setrunanddebugstate();
 	}
@@ -419,7 +417,7 @@ socket.on('unshared', function(data) {
 		showmessagebox('info', 'you unshared', 1);
 	} else {
 		memberlistdoc.remove(data.name);
-		appendtochatbox(strings['systemmessage'], 'system', data.name + '&nbsp;' + strings['unshared'], new Date(data.time));
+		appendtochatbox($.wraplocale('<span />', 'systemmessage'), 'system', data.name + '&nbsp;' + $.wraplocale('<span />', 'unshared'), new Date(data.time));
 	}
 });
 
@@ -427,7 +425,7 @@ socket.on('shared', function(data) {
 	memberlistdoc.add(data);
 	memberlistdoc.setonline(data.name, false);
 	memberlistdoc.sort();
-	appendtochatbox(strings['systemmessage'], 'system', data.name + '&nbsp;' + strings['gotshared'], new Date(data.time));
+	appendtochatbox($.wraplocale('<span />', 'systemmessage'), 'system', data.name + '&nbsp;' + $.wraplocale('<span />', 'gotshared'), new Date(data.time));
 });
 
 socket.on('moved', function(data) {
@@ -457,7 +455,7 @@ socket.on('moved', function(data) {
 	changelanguage(ext);
 	checkrunanddebug(ext);
 	
-	appendtochatbox(strings['systemmessage'], 'system', strings['movedto'] + thename, new Date(data.time));
+	appendtochatbox($.wraplocale('<span />', 'systemmessage'), 'system', $.wraplocale('<span />', 'movedto') + thename, new Date(data.time));
 	$('#current-doc').html(htmlescape(thename));
 });
 
@@ -617,12 +615,11 @@ function run() {
 
 function setrun() {
 	runLock = true;
-	$('#editor-run').html('<i class="icon-stop"></i>');
-	$('#editor-run').attr('title', strings['kill-title']);
+	$('#editor-run').html('<i class="icon-stop"></i>').setlocale('kill-title', 'title');
 	$('#console-inner').html('');
 	$('#console-input').val('');
 	$('#editor-debug').addClass('disabled');
-	$('#console-title').text(strings['console']);
+	$('#console-title').setlocale('console');
 	openconsole();
 }
 
@@ -644,12 +641,11 @@ function debug() {
 
 function setdebug() {
 	debugLock = true;
-	$('#editor-debug').html('<i class="icon-eye-close"></i>');
-	$('#editor-debug').attr('title', strings['stop-debug-title']);
+	$('#editor-debug').html('<i class="icon-eye-close"></i>').setlocale('stop-debug-title', 'title');
 	$('#console-inner').html('');
 	$('#console-input').val('');
 	$('#editor-run').addClass('disabled');
-	$('#console-title').text(strings['console']);
+	$('#console-title').setlocale('console');
 	openconsole();
 }
 
@@ -753,13 +749,13 @@ function resize() {
 }
 
 socket.on('run', function(data){
-	appendtochatbox(strings['systemmessage'], 'system', data.name + '&nbsp;&nbsp;' + strings['runsaprogram'], new Date(data.time));
+	appendtochatbox($.wraplocale('<span />', 'systemmessage'), 'system', data.name + '&nbsp;&nbsp;' + $.wraplocale('<span />', 'runsaprogram'), new Date(data.time));
 	setrun();
 	operationLock = false;
 });
 
 socket.on('debug', function(data){
-	appendtochatbox(strings['systemmessage'], 'system', data.name + '&nbsp;&nbsp;' + strings['startdebug'], new Date(data.time));
+	appendtochatbox($.wraplocale('<span />', 'systemmessage'), 'system', data.name + '&nbsp;&nbsp;' + $.wraplocale('<span />', 'startdebug'), new Date(data.time));
 	
 	setdebug();
 
@@ -784,7 +780,7 @@ socket.on('running', function(data){
 	waiting = false;
 	runtoline(-1);
 	$('.debugandwait').addClass('disabled');
-	$('#console-title').text(strings['console']);
+	$('#console-title').setlocale('console');
 });
 
 socket.on('waiting', function(data){
@@ -800,12 +796,15 @@ socket.on('waiting', function(data){
 		expressionlist.setValue(k, data.exprs[k]);
 	}
 	$('.debugandwait').removeClass('disabled');
-	if(typeof data.line === 'number')
-		$('#console-title').text(strings['console'] + strings['waiting']);
-	else if(data.line !== null)
-		$('#console-title').text(strings['console'] + strings['waiting'] + '[' + data.line + ']');
-	else
-		$('#console-title').text(strings['console'] + strings['waiting'] + strings['nosource']);
+	if(typeof data.line === 'number') {
+		$('#console-title').setlocale('console|waiting');
+	}
+	else if(data.line !== null) {
+		$('#console-title').setlocale('console|waiting', undefined, '[' + data.line + ']');
+	}
+	else {
+		$('#console-title').setlocale('console|waiting|nosource');
+	}
 });
 
 socket.on('stdout', function(data){
@@ -824,13 +823,12 @@ socket.on('exit', function(data){
 	operationLock = false;
 
 	if(data.err.code !== undefined)
-		appendtochatbox(strings['systemmessage'], 'system', strings['programfinish'] + '&nbsp;' + data.err.code, new Date(data.time));
+		appendtochatbox($.wraplocale('<span />', 'systemmessage'), 'system', $.wraplocale('<span />', 'programfinish') + '&nbsp;' + data.err.code, new Date(data.time));
 	else
-		appendtochatbox(strings['systemmessage'], 'system', strings['programkilledby'] + '&nbsp;' + data.err.signal, new Date(data.time));
+		appendtochatbox($.wraplocale('<span />', 'systemmessage'), 'system', $.wraplocale('<span />', 'programkilledby') + '&nbsp;' + data.err.signal, new Date(data.time));
 
 	if(runLock) {
-		$('#editor-run').html('<i class="icon-play"></i>');
-		$('#editor-run').attr('title', strings['run-title']);
+		$('#editor-run').html('<i class="icon-play"></i>').setlocale('run-title', 'title');
 		runLock = false;
 	}
 	if(debugLock) {
@@ -847,8 +845,7 @@ socket.on('exit', function(data){
 		if(q.length > 0){
 			socket.emit('change', q[0]);
 		}
-		$('#editor-debug').html('<i class="icon-eye-open"></i>');
-		$('#editor-debug').attr('title', strings['debug-title']);
+		$('#editor-debug').html('<i class="icon-eye-open"></i>').setlocale('debug-title');
 		runtoline(-1);
 		for(var k in expressionlist.elements) {
 			expressionlist.setValue(expressionlist.elements[k].expression, null);
@@ -856,7 +853,7 @@ socket.on('exit', function(data){
 		debugLock = false;
 	}
 	setrunanddebugstate();
-	$('#console-title').text(strings['console'] + strings['finished']);
+	$('#console-title').setlocale('console|finished');
 });
 
 socket.on('join', function(data){
@@ -867,7 +864,7 @@ socket.on('join', function(data){
 	} else {
 		memberlistdoc.setonline(data.name, true);
 		memberlistdoc.sort();
-		appendtochatbox(strings['systemmessage'], 'system', data.name + '&nbsp;' + strings['join'], new Date(data.time));
+		appendtochatbox($.wraplocale('<span />', 'systemmessage'), 'system', data.name + '&nbsp;' + $.wraplocale('<span />', 'join'), new Date(data.time));
 		var cursor = newcursor(data.name);
 		if(cursors[data.name] && cursors[data.name].element)
 			$(cursors[data.name].element).remove();
@@ -878,7 +875,7 @@ socket.on('join', function(data){
 socket.on('leave', function(data){
 	memberlistdoc.setonline(data.name, false);
 	memberlistdoc.sort();
-	appendtochatbox(strings['systemmessage'], 'system', data.name + '&nbsp;' + strings['leave'], new Date(data.time));
+	appendtochatbox($.wraplocale('<span />', 'systemmessage'), 'system', data.name + '&nbsp;' + $.wraplocale('<span />', 'leave'), new Date(data.time));
 	if(cursors[data.name]) {
 		if(cursors[data.name].element)
 			$(cursors[data.name].element).remove();
@@ -895,8 +892,7 @@ socket.on('set', function(data){
 	bq.length = 0;
 	lock = false;
 
-	$('#editor-run').html('<i class="icon-play"></i>');
-	$('#editor-run').attr('title', strings['run-title']);
+	$('#editor-run').html('<i class="icon-play"></i>').setlocale('run-title', 'title');
 	runLock = false;
 	debugLock = false;
 	waiting = false;
@@ -966,7 +962,7 @@ socket.on('set', function(data){
 		expressionlist.setValue(k, data.exprs[k]);
 	}
 	
-	$('#console-title').text(strings['console']);
+	$('#console-title').setlocale('console');
 	
 	resize();
 	$('body').scrollTop(99999);
@@ -984,9 +980,9 @@ socket.on('set', function(data){
 			runtoline(data.line - 1);
 			$('.debugandwait').removeClass('disabled');
 			if(data.line !== null)
-				$('#console-title').text(strings['console'] + strings['waiting']);
+				$('#console-title').setlocale('console|waiting');
 			else
-				$('#console-title').text(strings['console'] + strings['waiting'] + strings['nosource']);
+				$('#console-title').setlocale('console|waiting|nosource');
 		}
 	}
 	setrunanddebugstate();

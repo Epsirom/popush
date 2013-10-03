@@ -1,3 +1,6 @@
+/**
+* update: Huarong Chen
+*/
 var allExpressionLists = [];
 
 function expressionList(table) {
@@ -19,10 +22,11 @@ function expressionList(table) {
 		clear: function() {
 			obj.html(
 				'<tr class="new"><td class="col1">&nbsp;</td>' +
-				'<td class="col2" onclick="allExpressionLists['+n+'].addExpression()" title="' +
-					strings['addexpression'] + '"><i class="icon-plus"></i></td>' +
-				'<td class="col3"></td></tr>'
-				);
+				$.wraplocale(
+					'<td class="col2" onclick="allExpressionLists['+n+'].addExpression()"><i class="icon-plus"></i></td>'
+					, "addexpression", "title"
+				) + '<td class="col3"></td></tr>'
+			);
 			elemid = 1;
 		},
 

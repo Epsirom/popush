@@ -244,3 +244,89 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
     visibility: hidden;
   }
 }
+
+
+/*CodeMirror optional themes*/
+
+
+/*Lesser-dark*/
+/*
+http://lesscss.org/ dark theme
+Ported to CodeMirror by Peter Kroon
+*/
+.cm-s-lesser-dark {
+  line-height: 1.3em;
+}
+.cm-s-lesser-dark {
+  font-family: 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono', 'Monaco', Courier, monospace !important;
+}
+
+.cm-s-lesser-dark.CodeMirror { background: #262626; color: #EBEFE7; text-shadow: 0 -1px 1px #262626; }
+.cm-s-lesser-dark div.CodeMirror-selected {background: #45443B !important;} /* 33322B*/
+.cm-s-lesser-dark .CodeMirror-cursor { border-left: 1px solid white !important; }
+.cm-s-lesser-dark pre { padding: 0 8px; }/*editable code holder*/
+
+.cm-s-lesser-dark.CodeMirror span.CodeMirror-matchingbracket { color: #7EFC7E; }/*65FC65*/
+
+.cm-s-lesser-dark .CodeMirror-gutters { background: #262626; border-right:1px solid #aaa; }
+.cm-s-lesser-dark .CodeMirror-linenumber { color: #777; }
+
+.cm-s-lesser-dark span.cm-keyword { color: #599eff; }
+.cm-s-lesser-dark span.cm-atom { color: #C2B470; }
+.cm-s-lesser-dark span.cm-number { color: #B35E4D; }
+.cm-s-lesser-dark span.cm-def {color: white;}
+.cm-s-lesser-dark span.cm-variable { color:#D9BF8C; }
+.cm-s-lesser-dark span.cm-variable-2 { color: #669199; }
+.cm-s-lesser-dark span.cm-variable-3 { color: white; }
+.cm-s-lesser-dark span.cm-property {color: #92A75C;}
+.cm-s-lesser-dark span.cm-operator {color: #92A75C;}
+.cm-s-lesser-dark span.cm-comment { color: #666; }
+.cm-s-lesser-dark span.cm-string { color: #BCD279; }
+.cm-s-lesser-dark span.cm-string-2 {color: #f50;}
+.cm-s-lesser-dark span.cm-meta { color: #738C73; }
+.cm-s-lesser-dark span.cm-error { color: #9d1e15; }
+.cm-s-lesser-dark span.cm-qualifier {color: #555;}
+.cm-s-lesser-dark span.cm-builtin { color: #ff9e59; }
+.cm-s-lesser-dark span.cm-bracket { color: #EBEFE7; }
+.cm-s-lesser-dark span.cm-tag { color: #669199; }
+.cm-s-lesser-dark span.cm-attribute {color: #00c;}
+.cm-s-lesser-dark span.cm-header {color: #a0a;}
+.cm-s-lesser-dark span.cm-quote {color: #090;}
+.cm-s-lesser-dark span.cm-hr {color: #999;}
+.cm-s-lesser-dark span.cm-link {color: #00c;}
+
+.cm-s-lesser-dark .CodeMirror-activeline-background {background: #3C3A3A !important;}
+.cm-s-lesser-dark .CodeMirror-matchingbracket {outline:1px solid grey; color:white !important;}
+
+
+/*Twilight*/
+
+.cm-s-twilight.CodeMirror { background: #141414; color: #f7f7f7; } /**/
+.cm-s-twilight .CodeMirror-selected { background: #323232 !important; } /**/
+
+.cm-s-twilight .CodeMirror-gutters { background: #222; border-right: 1px solid #aaa; }
+.cm-s-twilight .CodeMirror-linenumber { color: #aaa; }
+.cm-s-twilight .CodeMirror-cursor { border-left: 1px solid white !important; }
+
+.cm-s-twilight .cm-keyword {  color: #f9ee98; } /**/
+.cm-s-twilight .cm-atom { color: #FC0; }
+.cm-s-twilight .cm-number { color:  #ca7841; } /**/
+.cm-s-twilight .cm-def { color: #8DA6CE; }
+.cm-s-twilight span.cm-variable-2, .cm-s-twilight span.cm-tag { color: #607392; } /**/
+.cm-s-twilight span.cm-variable-3, .cm-s-twilight span.cm-def { color: #607392; } /**/
+.cm-s-twilight .cm-operator { color: #cda869; } /**/
+.cm-s-twilight .cm-comment { color:#777; font-style:italic; font-weight:normal; } /**/
+.cm-s-twilight .cm-string { color:#8f9d6a; font-style:italic; } /**/
+.cm-s-twilight .cm-string-2 { color:#bd6b18 } /*?*/
+.cm-s-twilight .cm-meta { background-color:#141414; color:#f7f7f7; } /*?*/
+.cm-s-twilight .cm-error { border-bottom: 1px solid red; }
+.cm-s-twilight .cm-builtin { color: #cda869; } /*?*/
+.cm-s-twilight .cm-tag { color: #997643; } /**/
+.cm-s-twilight .cm-attribute { color: #d6bb6d; } /*?*/
+.cm-s-twilight .cm-header { color: #FF6400; }
+.cm-s-twilight .cm-hr { color: #AEAEAE; }
+.cm-s-twilight .cm-link {   color:#ad9361; font-style:italic; text-decoration:none; } /**/
+
+.cm-s-twilight .CodeMirror-activeline-background {background: #27282E !important;}
+.cm-s-twilight .CodeMirror-matchingbracket {outline:1px solid grey; color:white !important;}
+
