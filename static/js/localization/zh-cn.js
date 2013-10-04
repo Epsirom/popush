@@ -2,8 +2,8 @@
 * author: Chaofan Yang, Lei Yang, Huarong Chen
 */
 popushlang.install('zh-CN', {
-		'popush-title'					:'Popush - 只是另外一个协作编程平台',
-		'popush-brand'					:'Popush',
+		'popush-title'			:'Popush - 只是另外一个协作编程平台',
+		'popush-brand'			:'Popush',
 		'hide-title'                    :'收起',
 		'show-title'                    :'展开',
 		'pleaseinput'                   :'请输入用户名',
@@ -115,12 +115,12 @@ popushlang.install('zh-CN', {
 		'voice'                         :'语音',
 		'removeexpression'              :'删除监视',
 		'novoice'                       :'该浏览器不支持语音，请使用<br />Chrome 18+或Opera 12+',
-		'switchlang'					:'切换至英文',
-		'username-help'					:'用户名只能由字母或数字组成，长度须在6-20之间',
-		'password-help'					:'密码的长度不能大于32',
-		'renterpassword'				:'请再次输入密码',
-		'changeskin'					:'更换皮肤',
-		'clicktochoose'					:'选择喜爱的皮肤，点击可预览效果。',
-		'changelanguage'				:'更换语言',
-		'language'						:'语言'
+		'switchlang'			:'切换至英文',
+		'username-help'			:'用户名只能由字母或数字组成，长度须在6-20之间',
+		'password-help'			:'密码的长度不能大于32',
+		'renterpassword'		:'请再次输入密码',
+		'changeskin'			:'更换皮肤',
+		'clicktochoose'			:'选择喜爱的皮肤，点击可预览效果。',
+		'changelanguage'		:'更换语言',
+		'language'			:'语言'
 	});
