@@ -63,7 +63,7 @@ JDK           | 7.0   |
 
 ## 安装依赖
 
-保证在以下版本软件的共同作用下，Popush能正确地部署。
+保证在以下版本软件的共同作用下，Popush能正确地运行。
 
 软件 | 版本 |
 --------------- | ---------- |
@@ -84,7 +84,7 @@ JDK             | 1.7.0_25   |
 
 ## 获取源码
 
-	git clone https://github.com/qiankanglai/popush.git
+	git clone https://github.com/Epsirom/popush2.git
 
 ## 设置POPUSH_PATH
 
