@@ -1,8 +1,9 @@
 /**
 * author: Chaofan Yang, Lei Yang, Huarong Chen
 */
-changeLang['zh-cn'] = function() {
-	strings = {
+popushlang.install('zh-CN', {
+		'popush-title'			:'Popush - 只是另外一个协作编程平台',
+		'popush-brand'			:'Popush',
 		'hide-title'                    :'收起',
 		'show-title'                    :'展开',
 		'pleaseinput'                   :'请输入用户名',
@@ -105,15 +106,21 @@ changeLang['zh-cn'] = function() {
 		'step-title'                    :'逐语句',
 		'next-title'                    :'逐过程',
 		'continue-title'                :'继续',
-		'finished'                      :'<已终止>',
-		'waiting'                       :'<暂挂>',
-		'nosource'                      :'<断点不在源代码内>',
+		'finished'                      :'&lt;已终止&gt;',
+		'waiting'                       :'&lt;暂挂&gt;',
+		'nosource'                      :'&lt;断点不在源代码内&gt;',
 		'too large'                     :'头像大小不能超过1M',
 		'esctoexit'                     :'按 Esc 退出最大化',
 		'finish-title'                  :'跳出过程',
 		'voice'                         :'语音',
 		'removeexpression'              :'删除监视',
 		'novoice'                       :'该浏览器不支持语音，请使用<br />Chrome 18+或Opera 12+',
-		'switchlang'			:'切换至英文'
-	};
-};
+		'switchlang'			:'切换至英文',
+		'username-help'			:'用户名只能由字母或数字组成，长度须在6-20之间',
+		'password-help'			:'密码的长度不能大于32',
+		'renterpassword'		:'请再次输入密码',
+		'changeskin'			:'更换皮肤',
+		'clicktochoose'			:'选择喜爱的皮肤，点击可预览效果。',
+		'changelanguage'		:'更换语言',
+		'language'			:'语言'
+	});

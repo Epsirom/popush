@@ -35,6 +35,10 @@ var gutterclick;
 
 var firstconnect = true;
 
+// 换肤过程中临时存储。
+var current_popush_skin = "geometry";
+var selected_popush_skin = "geometry";
+
 /////////////////////// locks //////////////////////////////////
 var loginLock = false;
 var registerLock = false;
@@ -86,43 +90,23 @@ function showmessage(id, stringid, type) {
 	o.removeClass('alert-info');
 	if(type && type != '' && type != 'warning')
 		o.addClass('alert-' + type);
-	$('#' + id + ' span').attr('localization', stringid);
-	if(strings[stringid])
-		$('#' + id + ' span').html(strings[stringid]);
-	else
-		$('#' + id + ' span').html(stringid);
+	$('#' + id + ' span').setlocale(stringid);
 	o.slideDown();
 }
 
 function showmessageindialog(id, stringid, index) {
 	if(index === undefined) {
 		$('#' + id + ' .control-group').addClass('error');
-		$('#' + id + ' .help-inline').attr('localization', stringid);
-		if(strings[stringid])
-			$('#' + id + ' .help-inline').text(strings[stringid]);
-		else
-			$('#' + id + ' .help-inline').text(stringid);
+		$('#' + id + ' .help-inline').setlocale(stringid);
 	} else {
 		$('#' + id + ' .control-group:eq('+index+')').addClass('error');
-		$('#' + id + ' .help-inline:eq('+index+')').attr('localization', stringid);
-		if(strings[stringid])
-			$('#' + id + ' .help-inline:eq('+index+')').text(strings[stringid]);
-		else
-			$('#' + id + ' .help-inline:eq('+index+')').text(stringid);
+		$('#' + id + ' .help-inline:eq('+index+')').setlocale(stringid);
 	}
 }
 
 function showmessagebox(title, content, timeout) {
-	$('#messagedialogLabel').attr('localization', title);
-	if(strings[title])
-		$('#messagedialogLabel').html(strings[title]);
-	else
-		$('#messagedialogLabel').html(title);
-	$('#messagedialogContent').attr('localization', content);
-	if(strings[content])
-		$('#messagedialogContent').html(strings[content]);
-	else
-		$('#messagedialogContent').html(content);
+	$('#messagedialogLabel').setlocale(title);
+	$('#messagedialogContent').setlocale(content);
 	$('#messagedialog').modal('show');
 	t = setTimeout('$(\'#messagedialog\').modal(\'hide\');', timeout*1000);
 }
@@ -296,14 +280,15 @@ function backtologin() {
 	$('#big-one').animate({height:'120px', padding:'60px', 'margin-bottom':'30px'}, 'fast', function() {
 		$('#big-one').removeAttr('style');
 		$('#big-one .container').css('margin','auto');
-		$('#login-inputName').focus();
 		resize();
+		$('#login-inputName').focus();
 	});
 	$('#nav-head').fadeOut('fast');
 	$('#filecontrol').hide();
 	$('#editor').hide();
 	$('#login').fadeIn('fast');
 	$('.modal').modal('hide');
+	$('#footer').fadeIn('fast');
 }
 
 ///////////////////// websocket & callback //////////////////////
@@ -377,6 +362,7 @@ socket.on('login', function(data){
 		operationLock = false;
 		$('#login-inputName').val('');
 		$('#login-inputPassword').val('');
+		$('#login-inputName').blur();
 		$('#login-message').hide();
 		$('#ownedfile').show();
 		$('#ownedfileex').hide();
@@ -607,6 +593,8 @@ function login() {
 		name:$('#login-inputName').val(),
 		password:$('#login-inputPassword').val()
 	});
+	$('#login-inputName').blur();	
+	$('#login-inputPassword').blur();
 }
 
 function logout() {
@@ -651,7 +639,7 @@ function newfileopen() {
 	$('#newfile-inputName').val('');
 	$('#newfile .control-group').removeClass('error');
 	$('#newfile .help-inline').text('');
-	$('#newfileLabel').text(strings['newfile']);
+	$('#newfileLabel').setlocale('newfile');
 	newfiletype = 'doc';
 }
 
@@ -659,7 +647,7 @@ function newfolderopen() {
 	$('#newfile-inputName').val('');
 	$('#newfile .control-group').removeClass('error');
 	$('#newfile .help-inline').text('');
-	$('#newfileLabel').text(strings['newfolder']);
+	$('#newfileLabel').setlocale('newfolder');
 	newfiletype = 'dir';
 }
 
@@ -699,6 +687,18 @@ function changepasswordopen() {
 function changeavataropen() {
 	$('#changeavatar-message').hide();
 	$('#changeavatar-img').attr('src', currentUser.avatar);
+}
+
+// for changing skin.
+function changeskinopen(){
+	showmasklayer();
+}
+// opacity mask for changing skin.
+function showmasklayer(){
+	$('#screenblock').css("display","block");
+}
+function hidemasklayer(){
+	$('#screenblock').css("display","none");
 }
 
 function changepassword() {
@@ -766,16 +766,12 @@ function togglechat(o) {
 		$('#editormain').parent().removeClass('span12');
 		$('#editormain').parent().addClass('span9');
 		$('#chatbox').show();
-		$(o).html('<i class="icon-forward"></i>');
-		$(o).attr('title', strings['hide-title']);
-		$(o).attr('titlelang', 'hide-title');
+		$(o).html('<i class="icon-forward"></i>').setlocale('hide-title', 'title');
 	} else {
 		$('#chatbox').hide();
 		$('#editormain').parent().removeClass('span9');
 		$('#editormain').parent().addClass('span12');
-		$(o).html('<i class="icon-backward"></i>');
-		$(o).attr('title', strings['show-title']);
-		$(o).attr('titlelang', 'show-title');
+		$(o).html('<i class="icon-backward"></i>').setlocale('show-title', 'title');
 	}
 	var o = $('#chat-show').get(0);
 	o.scrollTop = o.scrollHeight;
@@ -879,6 +875,32 @@ function changeavatar(o) {
 	reader.readAsDataURL(file);
 }
 
+// skinID can be string or jQuery object.
+// If string, it is the name of skin.
+// If jQuery object, it stored skin name in attribute "skin".
+function chooseskin(skinID){
+	if (typeof(skinID) === "string") {
+		var new_skin = skinID;
+	} else {
+		var new_skin = $(skinID).attr("skin");
+	}
+	if (popushskin.load(new_skin)) {
+		popushskin.apply(new_skin);
+		selected_popush_skin = new_skin;
+	}
+}
+// store change skin settings.
+function confirmchangeskin() {
+	current_popush_skin = selected_popush_skin;
+	$.cookie('skin', current_popush_skin);
+	hidemasklayer();
+}
+// reset to the skin before changed.
+function cancelchangeskin(){
+	chooseskin(current_popush_skin);
+	hidemasklayer();
+}
+
 function initfilelistevent(fl) {
 
 	fl.onname = function(o) {
@@ -898,9 +920,9 @@ function initfilelistevent(fl) {
 	
 	fl.ondelete = function(o) {
 		if(o.type == 'dir')
-			$('#delete').find('.folder').text(strings['folder']);
+			$('#delete').find('.folder').setlocale('folder');
 		else
-			$('#delete').find('.folder').text(strings['file']);
+			$('#delete').find('.folder').setlocale('file');
 		$('#delete-name').text(o.name);
 		$('#delete').modal('show');
 		deleteconfirm = function() {
@@ -968,62 +990,35 @@ function backto(n) {
 		currentDirString = getdirstring();
 	});
 }
-
-function changeuilanguage(){
-	//因为只有两种语言
-	currentLang = (currentLang === "zh-cn") ? "en-us" : "zh-cn";
-	if (changeLang[currentLang]) {
-		changeLang[currentLang]();
-		if (localStorage) {
-			localStorage["lang"] = currentLang;
+// langID can be "zh-CN", "en-US", etc...
+function changeuilanguage(langID){
+	// load and set the language dict.
+	var newlang = popushlang.load(langID)
+	if (newlang) {
+		$.load_dict(newlang);
+		$.cookie('lang', langID);
+	}
+	// disable current language option.
+	$("[changelang]").removeClass('disabled').css("cursor", "pointer").each(function() {
+		$this = $(this);
+		if ($this.attr("changelang") === langID) {
+			$this.addClass('disabled').css("cursor", "default");
 		}
-	}
-	changelocallang();
-	changetitlelang();
-	changpopoverlang();
-}
-
-function changelocallang(){
-	$('[localization]').html(function(index, old) {
-		var lz = $(this).attr("localization");
-		if(strings[lz])
-			return strings[lz];
-		return old;
-	});
-}
-
-function changetitlelang(){
-	$('[title]').attr('title', function(index, old) {
-		var lz = $(this).attr("titlelang");
-		if(strings[lz])
-			return strings[lz];
-		return old;
-	});
-}
-
-function changpopoverlang(){
-	$('#voice-on').attr('data-original-title',"");
-	if(novoice)
-		$('#voice-on').popover('destroy');	
-	if((!Browser.chrome || parseInt(Browser.chrome) < 18) &&
-		(!Browser.opera || parseInt(Browser.opera) < 12)) {
-		novoice = true;
-		$('#voice-on').addClass('disabled');
-		$('#voice-on').removeAttr('title');
-		$('#voice-on').popover({
-			html: true,
-			placement: 'left',
-			title:'',
-			content:strings['novoice'],
-			trigger: 'hover',
-			container: 'body'
-		});
-	}
+	})
 }
 
 /////////////////////// initialize ///////////////////////////
 
 $(document).ready(function() {
+
+	// load skin
+	var tmpskin = $.cookie('skin');
+	if (tmpskin && popushskin.load(tmpskin)) {
+		current_popush_skin = tmpskin;
+	}
+	cancelchangeskin();
+	$("#changeskin").on("hide", cancelchangeskin);
+
     setTimeout('loadfailed()', 20000);
 
     CodeMirror.on(window, "resize", function() {
@@ -1050,6 +1045,8 @@ $(document).ready(function() {
 	editor.on("gutterClick", function(cm, n) {
 		gutterclick(cm, n);
 	});
+	// change editor theme when change skin.
+	popushskin.set_editor(editor);
 	
 	gutterclick = function(cm, n) {};
 	
@@ -1086,24 +1083,24 @@ $(document).ready(function() {
 	});
 
 	//读取用户当前语言设置(若无，则读取系统语言)
-	if (localStorage && localStorage["lang"]) {
-		if (localStorage["lang"] == "en-us") {
-			currentLang = "zh-cn";
-		}
+	var cookieLang = $.cookie("lang");
+	if (cookieLang && popushlang.load(cookieLang)) {
+		// do nothing.
 	} else {
+		var userbrowserlang = "";
 		if (navigator.language) {
 			var userbrowserlang = navigator.language;
 		}
 		else {
 			var userbrowserlang = navigator.browserLanguage;
 		}
-		if (userbrowserlang == "en-US") {
-			currentLang = "zh-cn";
+		if (!popushlang.load(userbrowserlang)) {
+			userbrowserlang = "zh-CN";
 		}
+		cookieLang = userbrowserlang;
 	}
-	//为少改代码，临时做法
-	$('[localization]').attr("localization",function(){return $(this).html();});
-	changeuilanguage();
+	// language valid
+	changeuilanguage(cookieLang);
 	
 	if(!ENABLE_RUN) {
 		$('#editor-run').remove();
@@ -1117,9 +1114,67 @@ $(document).ready(function() {
 	}
 	
 	$('body').show();
-	$('#login-inputName').focus();
 
+	if((!Browser.chrome || parseInt(Browser.chrome) < 18) &&
+		(!Browser.opera || parseInt(Browser.opera) < 12)) {
+		novoice = true;
+		$('#voice-on').addClass('disabled');
+		$('#voice-on').removeAttr('title');
+		$('#voice-on').popover({
+			html: true,
+			placement: 'left',
+			title:'',
+			content: function() {return $.wraplocale('<span/>', 'novoice');},
+			trigger: 'hover',
+			container: 'body'
+		});
+	}
+
+	// popovers
+	$('#login-inputName').popover({
+		html: true,
+		placement: 'right',
+		title:'',
+		content: function() {return $.wraplocale('<span />', 'username-help');},
+		trigger: 'focus',
+		container: 'body'
+	});
+	$('#login-inputPassword').popover({
+		html: true,
+		placement: 'right',
+		title:'',
+		content: function() {return $.wraplocale('<span />', 'password-help');},
+		trigger: 'focus',
+		container: 'body'
+	});
+	$('#register-inputName').popover({
+		html: true,
+		placement: 'right',
+		title:'',
+		content: function() {return $.wraplocale('<span />', 'username-help');},
+		trigger: 'focus',
+		container: 'body'
+	});
+	$('#register-inputPassword').popover({
+		html: true,
+		placement: 'right',
+		title:'',
+		content: function() {return $.wraplocale('<span />', 'password-help');},
+		trigger: 'focus',
+		container: 'body'
+	});
+	$('#register-confirmPassword').popover({
+		html: true,
+		placement: 'right',
+		title:'',
+		content: function() {return $.wraplocale('<span />', 'renterpassword');},
+		trigger: 'focus',
+		container: 'body'
+	});
+	// resize first and then focus.
 	resize();
+	$('#login-inputName').focus();
+	
 	$(window).resize(resize);
 	$(window).scroll(function() {
 		$('#editormain-inner').css('left', (-$(window).scrollLeft()) + 'px');
