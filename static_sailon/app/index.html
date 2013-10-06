@@ -13,13 +13,17 @@
   <script src="js/directives.js"></script>
 </head>
 <body>
-<header class="page-header">
-    <h1>Popush</h1>
+<header class="page-header" ng-controller="TitleController">
+    <h1 ng-bind="popushTitle"></h1>
+    <h2 class="sub-title" ng-bind="popushSubTitle"></h2>
+    <img class="headr-right" src="img/logo.png" />
 </header>
-<div class="row-fluid">
-dsadsa
+
+<div class="main-body">
+  <div ng-view></div>
 </div>
-<footer class="footer">sailon 
+
+<footer class="footer">powered by sailon team
 </footer>
 </body>
 </html>

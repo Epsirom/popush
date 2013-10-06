@@ -1,12 +1,37 @@
 /* app css stylesheet */
-
+* {font-family:}
 .page-header{
 	padding-left: 10%;
+    padding-top: 2%;
 	padding-bottom: 9px;
-	margin: 20px 0 30px;
+	margin: 0px 0 30px;
+    height:120px;
+    color: #fff;
+    background: #00b5ad;
+}
+.headr-right{
+    margin-top: -160px;
+    padding-left: 43%;
+}
+.sub-title{
+    padding-left: 15%;
+    margin-top: 20px;
 }
 h1{
 	font-size: 100px;
+}
+.main-body{
+    height:263px;
+}
+.message{
+    text-align:center;
+}
+.switch-rel {
+    margin:5px 0 0 100px;
+}
+.form-horizontal{
+    min-width:420px;
+    position:relative;
 }
 .footer {
     color: rgb(153, 153, 153);
