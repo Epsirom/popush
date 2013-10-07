@@ -2,6 +2,7 @@
 <html ng-app="popush">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
   <title>Popush</title>
   <link rel="stylesheet" href="css/bootstrap.min.css"/>
   <link rel="stylesheet" href="css/flat.css"/>
@@ -20,13 +21,18 @@
     <h1 ng-bind="popushTitle"></h1>
     <h2 class="sub-title" ng-bind="popushSubTitle"></h2>
     <img class="headr-right" src="img/logo.png" />
+     <h2>{{'USERNAME'|translate}}</h2>
 </header>
-
 <div class="main-body">
+      <h2>{{'HEADLINE'|translate}}</h2>
+      <div ng-controller="TranslateCtrl">
+  <button ng-click="changeLanguage('zh-CN')" translate="USERNAME"></button>
+  <button ng-click="changeLanguage('en-US')" translate="PASSWORD"></button>
+</div>
   <div ng-view></div>
 </div>
 
-<footer class="footer">{{ 'AUTHOR' | translate}}
+<footer class="footer" translate="AUTHOR">
 </footer>
 </body>
 </html>

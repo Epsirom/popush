@@ -12,7 +12,7 @@ angular.module('popush.controllers', []).
   	$scope.signIn = "Sign In";
   	$scope.username = "Username";
   	$scope.password  = "Password";
-	$scope.signUp = "Sign Up";
+	  $scope.signUp = "Sign Up";
   	$scope.username = "Username";
   	$scope.password  = "Password";
   	$scope.confirmation  = "Confirm Password";
@@ -22,4 +22,9 @@ angular.module('popush.controllers', []).
   	$scope.signUpfn = function(){
   		alert('Sign Up');
   	};
-  }]);
+  }]).
+  controller('TranslateCtrl', ['$translate', '$scope', function ($translate, $scope) {
+  $scope.changeLanguage = function (langKey) {
+    $translate.uses(langKey);
+  };
+}]);
