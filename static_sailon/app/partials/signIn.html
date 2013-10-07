@@ -1,0 +1,30 @@
+<div class="container-fluid"> 
+ <div class="row-fluid" ng-controller="SignController">
+    <div class="span4 offset4">
+      <h2 class="message" ng-bind="signIn"></h2>
+      <div class="alert hide" ng-bind="loginMessage">
+      </div>
+      <hr />
+      <div class="form-horizontal">
+        <div class="control-group">
+          <label class="control-label" ng-bind="username"></label>
+          <div class="controls">
+            <input type="text" ng-model="loginInputName" />
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" ng-bind="password"></label>
+          <div class="controls">
+            <input type="password" ng-model="loginInputPassword" />
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls">
+            <button type="submit" class="btn" ng-click="signInfn()" ng-bind="signIn"></button>
+            <a class="switch-rel" href="#/signUp" ng-bind="signUp"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
