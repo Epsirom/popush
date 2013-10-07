@@ -3,7 +3,7 @@
 /* Controllers */
 
 angular.module('popush.controllers', []).
-	controller('TitleController', ['$scope',function($scope) {
+	controller('TitleController', ['$scope',  function($scope) {
 	  	$scope.popushTitle = "Popush";
 	  	$scope.popushSubTitle = "只是另外一个协作编程平台";
   }]).
