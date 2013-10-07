@@ -1,0 +1,37 @@
+.row-fluid textarea, .row-fluid input[type="text"], .row-fluid input[type="password"]
+{
+    border: 2px solid rgb(189, 195, 199);
+    color: rgb(52, 73, 94);
+    border-radius: 6px 6px 6px 6px;
+    box-shadow: none;
+    transition: border 0.25s linear 0s, color 0.25s linear 0s;
+}
+.control-group.focus textarea, .control-group.focus input[type="text"], .control-group.focus input[type="password"], .control-group.focus input[type="datetime"], .control-group.focus input[type="datetime-local"], .control-group.focus input[type="date"], .control-group.focus input[type="month"], .control-group.focus input[type="time"], .control-group.focus input[type="week"], .control-group.focus input[type="number"], .control-group.focus input[type="email"], .control-group.focus input[type="url"], .control-group.focus input[type="search"], .control-group.focus input[type="tel"], .control-group.focus input[type="color"], .control-group.focus .uneditable-input, textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="date"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="color"]:focus, .uneditable-input:focus {
+    border-color: rgb(26, 188, 156);
+    box-shadow: none;
+}
+
+.btn.btn-primary:hover, .btn.btn-primary:focus, .btn-group:focus .btn.btn-primary.dropdown-toggle {
+    background-color: rgb(72, 201, 176);
+}
+.btn.btn-primary {
+    background-color: rgb(26, 188, 156);
+}
+.btn:hover, .btn:focus, .btn-group:focus .btn.dropdown-toggle {
+    background-color: rgb(202, 207, 210);
+    color: rgb(255, 255, 255);
+    outline: medium none;
+    transition: all 0.25s ease 0s;
+}
+.btn {
+    border: medium none;
+    background: none repeat scroll 0% 0% rgb(189, 195, 199);
+    color: rgb(255, 255, 255);
+    padding: 9px 12px 10px;
+    line-height: 22px;
+    text-decoration: none;
+    text-shadow: none;
+    border-radius: 0px;
+    box-shadow: none;
+    transition: all 0.25s ease 0s;
+}
