@@ -1,0 +1,36 @@
+<div class="container-fluid"> 
+	<div class="row-fluid" ng-controller="SignUpController">
+		<div class="span4 offset4">
+			<h2 class="message" translate="SIGN_UP"></h2>
+			<div class="alert hide" ng-bind="registerMessage">
+			</div>
+			<hr />
+			<div class="form-horizontal">
+				<div class="control-group">
+					<label class="control-label" for="signUpInputName" translate="USERNAME"></label>
+					<div class="controls">
+						<input type="text" id="signUpInputName" ng-model="username" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="signUpInputPassword" translate="PASSWORD"></label>
+					<div class="controls">
+						<input type="password" id="signUpInputPassword" ng-model="password" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="confirmPassword" translate="CONFIRM_PASSWORD"></label>
+					<div class="controls">
+						<input type="password" id="confirmPassword" ng-model="confirmpsd" />
+					</div>
+				</div>
+	          <div class="control-group">
+	            <div class="controls">
+	              <button type="submit" class="btn btn-primary" ng-click="signUpfn()" translate="SIGN_UP"></button>
+	              <a class="switch-rel" href="#/" translate="SIGN_IN"></a>
+	            </div>
+	          </div>
+			</div>
+		</div>
+	</div>
+</div>
