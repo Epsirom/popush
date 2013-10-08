@@ -2,6 +2,7 @@
 <html ng-app="popush">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
   <title>Popush</title>
   <link rel="stylesheet" href="css/bootstrap.min.css"/>
   <link rel="stylesheet" href="css/flat.css"/>
@@ -9,6 +10,7 @@
   <script src="lib/angular/angular.js"></script>
   <script src="lib/angular-translate/angular-translate.min.js"></script>
   <script src="lib/angular-translate/angular-translate-loader-url.min.js"></script>
+  <script src="lib/angular/angular-cookies.min.js"></script>
   <script src="js/app.js"></script>
   <script src="js/services.js"></script>
   <script src="js/controllers.js"></script>
@@ -16,17 +18,22 @@
   <script src="js/directives.js"></script>
 </head>
 <body>
-<header class="page-header" ng-controller="TitleController">
-    <h1 ng-bind="popushTitle"></h1>
-    <h2 class="sub-title" ng-bind="popushSubTitle"></h2>
+<header class="page-header">
+    <h1 translate="POPUSH_TITLE"></h1>
+    <h2 class="sub-title" translate="POPUSH_SUBTITLE"></h2>
     <img class="headr-right" src="img/logo.png" />
 </header>
-
 <div class="main-body">
+<div ng-controller="TranslateCtrl">
+  <select>
+    <option ng-click="changeLanguage('en-US')" selected>English</option>
+    <option ng-click="changeLanguage('zh-CN')" >中文</option>
+  </select>
+</div>
   <div ng-view></div>
 </div>
 
-<footer class="footer">{{ 'AUTHOR' | translate}}
+<footer class="footer" translate="AUTHOR">
 </footer>
 </body>
 </html>
