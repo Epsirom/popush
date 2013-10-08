@@ -10,6 +10,7 @@
   <script src="lib/angular/angular.js"></script>
   <script src="lib/angular-translate/angular-translate.min.js"></script>
   <script src="lib/angular-translate/angular-translate-loader-url.min.js"></script>
+  <script src="lib/angular/angular-cookies.min.js"></script>
   <script src="js/app.js"></script>
   <script src="js/services.js"></script>
   <script src="js/controllers.js"></script>
@@ -17,17 +18,17 @@
   <script src="js/directives.js"></script>
 </head>
 <body>
-<header class="page-header" ng-controller="TitleController">
-    <h1 ng-bind="popushTitle"></h1>
-    <h2 class="sub-title" ng-bind="popushSubTitle"></h2>
+<header class="page-header">
+    <h1 translate="POPUSH_TITLE"></h1>
+    <h2 class="sub-title" translate="POPUSH_SUBTITLE"></h2>
     <img class="headr-right" src="img/logo.png" />
-     <h2>{{'USERNAME'|translate}}</h2>
 </header>
 <div class="main-body">
-      <h2>{{'HEADLINE'|translate}}</h2>
-      <div ng-controller="TranslateCtrl">
-  <button ng-click="changeLanguage('zh-CN')" translate="USERNAME"></button>
-  <button ng-click="changeLanguage('en-US')" translate="PASSWORD"></button>
+<div ng-controller="TranslateCtrl">
+  <select>
+    <option ng-click="changeLanguage('en-US')" selected>English</option>
+    <option ng-click="changeLanguage('zh-CN')" >中文</option>
+  </select>
 </div>
   <div ng-view></div>
 </div>
