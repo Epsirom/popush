@@ -1,7 +1,7 @@
 'use strict';
 
-function LanguageController($scope, userModel) {
-	$scope.changeLanguage = function (langKey) {
-	    $translate.uses(langKey);
+function LanguageController($scope, userModel, $translate) {
+	$scope.changeLang = function () {
+	    $translate.uses($scope.lang);
 	};
 }

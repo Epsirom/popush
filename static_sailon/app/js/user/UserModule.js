@@ -7,5 +7,5 @@ angular.module('userModule', ['ngCookies', 'socketModule']).
 	//controller('PasswordController', ['$scope', 'userModel', 'socket', PasswordController]).
 	//controller('AvatarController', ['$scope', 'userModel', 'socket', AvatarController]).
 	//controller('ThemeController', ['$scope', 'userModel', 'socket', ThemeController]).
-	controller('LanguageController', ['$scope', 'userModel', 'socket', LanguageController]);//.
+	controller('LanguageController', ['$scope', 'userModel', '$translate', LanguageController]);//.
 	//controller('FontController', ['$scope', 'userModel', 'socket', FontController]);
