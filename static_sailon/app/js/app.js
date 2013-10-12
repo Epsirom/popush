@@ -2,7 +2,7 @@
 
 
 // Declare app level module which depends on filters, and services
-var app = angular.module('popush', ['popush.filters', 'popush.services', 'popush.directives', 'popush.controllers','pascalprecht.translate','ngCookies']).
+var app = angular.module('popush', ['socketModule', 'userModule', 'pascalprecht.translate', 'ngCookies']).
   config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/', {templateUrl: 'partials/signIn.html', controller: 'SignInController'});
     $routeProvider.when('/signUp', {templateUrl: 'partials/signUp.html', controller: 'SignUpController'});
