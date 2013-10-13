@@ -7,7 +7,7 @@
 	margin: 0px 0 30px;
     height:120px;
     color: #fff;
-    background: #00b5ad;
+    background: rgb(45,53,56);
 }
 .headr-right{
     margin-top: -160px;
@@ -47,6 +47,10 @@ h1{
     padding: 8px 5px;
     height: 22px;
     text-indent: 6px;
+}
+.lang-switch{
+    float: right;
+    margin-right: 5%;
 }
 .footer {
     color: rgb(153, 153, 153);

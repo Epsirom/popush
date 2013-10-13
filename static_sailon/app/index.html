@@ -29,9 +29,9 @@
 </header>
 <div class="main-body">
 <div ng-controller="LanguageController">
-  <select>
-    <option ng-click="changeLanguage('en-US')" selected>English</option>
-    <option ng-click="changeLanguage('zh-CN')" >中文</option>
+  <select class="lang-switch" ng-model="lang" ng-change="changeLang()" ng-init="lang='en-US'">
+    <option value="en-US">English</option>
+    <option value="zh-CN">简体中文</option>
   </select>
 </div>
   <div ng-view></div>
