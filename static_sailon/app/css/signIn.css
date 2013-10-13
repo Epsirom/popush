@@ -76,30 +76,37 @@ h1{
     background-color: rgb(245, 245, 245);
 }
 
-.animate-switch-container > .ng-enter,
-.animate-switch-container > .ng-leave {
-  -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
-  -moz-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
-  -o-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
-  transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
-
-  position:absolute;
-  top:29.5%;
-  left:0;
-  right:0;
-  bottom:0;
+.animate-enter
+{
+    -webkit-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -moz-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -ms-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -o-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
 }
  
-.animate-switch-container > .ng-enter {
+.animate-enter {
+    position:absolute;
+    top:29.5%;
     left: -100%;
+    right:0;
+    bottom:0;
 }
-.animate-switch-container > .ng-enter.ng-enter-active {
+.animate-enter.animate-enter-active {
     left: 0;
 }
  
-.animate-switch-container > .ng-leave {
-    left:0;
+.animate-leave
+{
+    -webkit-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -moz-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -ms-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -o-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
 }
-.animate-switch-container > .ng-leave.ng-leave-active {
-    left:100%;
+.animate-leave {
+    opacity: 1;
+}
+.animate-leave.animate-leave-active{
+    opacity: 0;
 }

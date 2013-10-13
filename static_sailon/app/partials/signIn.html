@@ -11,7 +11,7 @@
   </select>
 </div>
 <div class="container-fluid" ng-controller="SwitchController"> 
- <div class="animate-switch-container" ng-switch on="choice">
+ <div ng-animate="'animate'" ng-switch on="choice">
     <div ng-switch-when="SIGN_IN">
       <div class="row-fluid" ng-controller="SignInController">
         <div class="span4 offset4">
