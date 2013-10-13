@@ -5,6 +5,6 @@ function SignUpController($scope, userModel, socket, $location) {
 
 	};
 	$scope.switchSignIn = function() {
-		$location.path('/');
+		//$location.path('/');
 	};
 }
