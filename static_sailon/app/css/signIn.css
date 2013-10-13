@@ -1,0 +1,105 @@
+/* app css stylesheet */
+* {font-family:}
+.page-header{
+	padding-left: 25%;
+    padding-top: 2%;
+	padding-bottom: 9px;
+	margin: 0px 0 30px;
+    height:120px;
+    color: #fff;
+    background: rgb(45,53,56);
+}
+.cloud{
+    background-image: url(../img/logo.png);
+    background-repeat: no-repeat;
+    width: 165px;
+    height: 107px;
+    margin-top: -130px;
+    margin-left: 480px;
+}
+.sub-title{
+    padding-left: 15%;
+    margin-top: 20px;
+    color: rgb(172, 179, 181);
+    font-family: Microsoft YaHei,'宋体' , Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif;
+}
+h1{
+	font-size: 100px;
+}
+.main-body{
+    height:263px;
+}
+.message{
+    text-align:center;
+}
+.switch-btn{
+    position: fixed;
+    top:65%;
+    right:30%;
+}
+.form-horizontal{
+    min-width:420px;
+    position:relative;
+}
+.form-horizontal .control-label {
+    padding-top: 10px;
+    width:120px;
+    }
+.form-horizontal .controls {
+    margin-left:140px;
+}
+.row-fluid textarea, .row-fluid input[type="text"], .row-fluid input[type="password"]
+{
+    font-family: "Lato",sans-serif;
+    font-size: 14px;
+    padding: 8px 5px;
+    height: 22px;
+    text-indent: 6px;
+}
+.controls .sign-in,.controls .sign-up
+{
+    float:right;
+    margin-right: 65px;
+}
+
+.lang-switch{
+    float: right;
+    margin-right: 5%;
+    width:100px;
+}
+.footer {
+    color: rgb(153, 153, 153);
+    text-align: center;
+    padding: 30px 0px;
+    margin-top: 70px;
+    border-top: 1px solid rgb(229, 229, 229);
+    background-color: rgb(245, 245, 245);
+}
+
+.animate-switch-container > .ng-enter,
+.animate-switch-container > .ng-leave {
+  -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
+  -moz-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
+  -o-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
+  transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
+
+  position:absolute;
+  top:29.5%;
+  left:0;
+  right:0;
+  bottom:0;
+}
+ 
+.animate-switch-container > .ng-enter {
+    left: -100%;
+}
+.animate-switch-container > .ng-enter.ng-enter-active {
+    left: 0;
+}
+ 
+.animate-switch-container > .ng-leave {
+    left:0;
+}
+.animate-switch-container > .ng-leave.ng-leave-active {
+    left:100%;
+}
