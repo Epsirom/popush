@@ -7,19 +7,17 @@ var app = angular.module('popush', ['socketModule', 'userModule', 'pascalprecht.
     $stateProvider
         .state('/', {
             url: '/',
-            views: {
-                "index": {
-                    templateUrl: 'partials/signIn.html'
-                }
-            }
+            templateUrl: 'partials/signIn.html'
         })
         .state('workspace', {
+            abstract: true,
             url: '/workspace',
+            templateUrl: 'partials/workspace.html'
+        })
+        .state('workspace.editor', {
+            url: '',
             views: {
-                "index": {
-                    templateUrl: 'partials/workspace.html'
-                },
-                "editor": {
+                'editor': {
                     templateUrl: 'partials/editor.html'
                 },
                 "catalogue": {
@@ -35,7 +33,7 @@ var app = angular.module('popush', ['socketModule', 'userModule', 'pascalprecht.
 	    });
 	    $translateProvider.translations({
   			  POPUSH_TITLE: "Popush",
-			  POPUSH_SUBTITLE: "another co-coding platform"
+			  POPUSH_SUBTITLE: "Another co-coding platform"
 		});
 	  	//$translateProvider.useUrlLoader('data/languages/en-US.json');
 	  	//var cookieLang='en-US';// Synchronously, you need to revise the <ng-init="lang='en-US'"> in TranslateController,index.html
