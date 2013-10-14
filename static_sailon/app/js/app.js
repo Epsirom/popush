@@ -2,12 +2,32 @@
 
 
 // Declare app level module which depends on filters, and services
-var app = angular.module('popush', ['socketModule', 'userModule', 'pascalprecht.translate', 'ngCookies']).
-  config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/', {templateUrl: 'partials/signIn.html', controller: 'SignInController'});
-    $routeProvider.when('/signUp', {templateUrl: 'partials/signUp.html', controller: 'SignUpController'});
-    $routeProvider.otherwise({redirectTo: '/'});
-  }]).
+var app = angular.module('popush', ['socketModule', 'userModule', 'pascalprecht.translate', 'ngCookies','ui.router']).
+  config(function ($stateProvider, $urlRouterProvider) {
+    $stateProvider
+        .state('/', {
+            url: '/',
+            views: {
+                "index": {
+                    templateUrl: 'partials/signIn.html'
+                }
+            }
+        })
+        .state('workspace', {
+            url: '/workspace',
+            views: {
+                "index": {
+                    templateUrl: 'partials/workspace.html'
+                },
+                "editor": {
+                    templateUrl: 'partials/editor.html'
+                },
+                "catalogue": {
+                    templateUrl: 'partials/catalogue.html'
+                }
+            }
+        })
+    }).
 	config(['$translateProvider', function($translateProvider) {
 		$translateProvider.useStaticFilesLoader({
 	      prefix: './data/languages/locale-',
