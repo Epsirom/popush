@@ -6,6 +6,12 @@
   "PASSWORD" : 				"密码",
   "SIGN_UP" : 				"注册",
   "CONFIRM_PASSWORD" : 		"确认密码",
+  "LOG_OUT":                "登出", 	
   "AUTHOR" : 				"Sailon开发小组敬上",
-  "pleaseinput" : 			"请输入用户名"
+  "pleaseinput" : 			"请输入用户名",
+  "ROOTDIR": 				"返回根目录",
+  "BACKWORD_DIR":           "返回上级目录",
+  "FORWARD_DIR":            "进入下级目录",
+  "FOLDER":                 "文件夹",
+  "FILE":                   "文件"
 }

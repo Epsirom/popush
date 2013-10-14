@@ -1,10 +1,17 @@
 {
-  "POPUSH_TITLE": "Popush",
-  "POPUSH_SUBTITLE": "Another co-coding platform",
-  "SIGN_IN": "Sign In",
-  "USERNAME": "Username",
-  "PASSWORD": "Password",
-  "SIGN_UP": "Sign Up",
-  "CONFIRM_PASSWORD": "Confirm Password",
-  "AUTHOR": "powered by sailon team"
+  "POPUSH_TITLE":        "Popush",
+  "POPUSH_SUBTITLE":     "Another co-coding platform",
+  "SIGN_IN":             "Sign In",
+  "USERNAME":            "Username",
+  "PASSWORD":            "Password",
+  "SIGN_UP":             "Sign Up",
+  "LOG_OUT":             "log out",
+  "CONFIRM_PASSWORD":    "Confirm Password",
+  "AUTHOR":              "powered by sailon team",
+  "pleaseinput" :        "Please input your username",
+  "ROOTDIR":             "Back to root directory",
+  "BACKWORD_DIR":        "Back to parent directory",
+  "FORWARD_DIR": 		 "Enter the subdirectory",
+  "FOLDER": 			 "Folder",
+  "FILE": 				 "File"
 }
