@@ -161,12 +161,13 @@ io.sockets.on('connection', function(socket){
 			if(users[user.name] && users[user.name] != socket){
 				delete users[user.name].session;
 				users[user.name].emit('unauthorized');
+			} else { // Here updated in 13,Oct. There's no need to emit login.
+				users[user.name] = socket;
+				docDAO.getDocByPath(socket.session.user._id, '/' + socket.session.user.name, function(err, docs){
+					socket.session.user.docs = docs;
+					socket.emit('login', {user:socket.session.user, sid:socket.session.sid});
+				});
 			}
-			users[user.name] = socket;
-			docDAO.getDocByPath(socket.session.user._id, '/' + socket.session.user.name, function(err, docs){
-				socket.session.user.docs = docs;
-				socket.emit('login', {user:socket.session.user, sid:socket.session.sid});
-			});
 		}else{
 			socket.emit('login', {err:'expired'});
 		}
@@ -190,9 +191,10 @@ io.sockets.on('connection', function(socket){
 				delete session[users[user.name].session.sid];
 				delete users[user.name].session;
 				users[user.name].emit('unauthorized');
+			} else { // Here updated in 13,Oct. There's no need to emit login.
+				users[user.name] = socket;
+				socket.emit('login', socket.session);
 			}
-			users[user.name] = socket;
-			socket.emit('login', socket.session);
 		});
 	});
 
