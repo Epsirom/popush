@@ -16,7 +16,32 @@ angular.module('socketModule', []).
 	factory('socket', ['$rootScope', 'SOCKET_IO', function($rootScope, SOCKET_IO) {
 		var socket = io.connect(SOCKET_IO);
 		return {
+			onScope: function(scope, events) {
+				var eventName;
+				for (eventName in events) {
+					this.on(eventName, events[eventName]);
+				}
+				scope.$on('$destroy', function() {
+					for (eventName in events) {
+						socket.removeAllListener(eventName);
+					}
+				})
+			},
 			on: function(eventName, callback) {
+				if (socket.$events && socket.$events[eventName]) {
+					return;
+				}
+				socket.on(eventName, function() {
+					var args = arguments;
+					$rootScope.$apply(function() {
+						callback.apply(socket, args);
+					});
+				});
+			},
+			forceOn: function(eventName, callback) {
+				if (socket.$events && socket.$events[eventName]) {
+					delete socket.$events[eventName];
+				}
 				socket.on(eventName, function() {
 					var args = arguments;
 					$rootScope.$apply(function() {
@@ -33,6 +58,9 @@ angular.module('socketModule', []).
 						}
 					})
 				})
+			},
+			removeAllListeners: function(e) {
+				socket.removeAllListeners(e);
 			}
 		}
 	}]);
