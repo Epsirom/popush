@@ -12,10 +12,10 @@
 }
 
 .btn.btn-primary:hover, .btn.btn-primary:focus, .btn-group:focus .btn.btn-primary.dropdown-toggle {
-    background-color: rgb(72, 201, 176);
+    background-color: rgb(105, 199, 115);
 }
 .btn.btn-primary {
-    background-color: rgb(26, 188, 156);
+    background-color: rgb(105, 199, 115);
 }
 .btn:hover, .btn:focus, .btn-group:focus .btn.dropdown-toggle {
     background-color: rgb(202, 207, 210);
@@ -31,7 +31,7 @@
     line-height: 22px;
     text-decoration: none;
     text-shadow: none;
-    border-radius: 0px;
+    border-radius: 4px;
     box-shadow: none;
     transition: all 0.25s ease 0s;
 }
