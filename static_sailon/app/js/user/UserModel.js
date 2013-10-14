@@ -35,12 +35,11 @@ function UserModel(socket, $location, $route, $cookies, POPUSH_SETTINGS) {
 	// User Data
 
 	var connected = false,
-		signed = false,
 		language = loadLang(),
-		userLock = {'signIn': false},
+		userLock = {'signIn': false, 'signed': false},
 		currentUser = {};
 
-	// User Services & Socket Services
+	// Socket Services
 
 	socket.forceOn('connect', function() {
 		socket.emit('version', {});
@@ -51,17 +50,16 @@ function UserModel(socket, $location, $route, $cookies, POPUSH_SETTINGS) {
 			$route.reload();
 		}
 		connected = true;
-		if($cookies.sid){
+		if($cookies['sid']){
+			userLock.signIn = true;
 			socket.emit('relogin', {sid:$cookies['sid']});
 		} else {
-			signed = false;
+			userLock.signIn = false;
 		}
-		
 	});
 
 	return {
 		isConnected: function() {return connected;},
-		signed: signed,
 		getLanguage: function() {return language;},
 		setLanguage: setLang,
 		lock: userLock,

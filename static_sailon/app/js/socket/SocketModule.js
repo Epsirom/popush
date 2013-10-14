@@ -19,11 +19,11 @@ angular.module('socketModule', []).
 			onScope: function(scope, events) {
 				var eventName;
 				for (eventName in events) {
-					this.on(eventName, events[eventName]);
+					this.forceOn(eventName, events[eventName]);
 				}
 				scope.$on('$destroy', function() {
 					for (eventName in events) {
-						socket.removeAllListener(eventName);
+						socket.removeAllListeners(eventName);
 					}
 				})
 			},

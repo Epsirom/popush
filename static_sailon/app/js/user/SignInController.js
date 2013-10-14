@@ -1,26 +1,32 @@
 'use strict';
 
 function SignInController($scope, userModel, socket, $location, $cookies) {
+	if (userModel.lock.signed) {
+		$location.path('/workspace');
+		return;
+	}
 	socket.onScope($scope, {
 		'login': function(data) {
+			userModel.lock.signIn = false;
 			if (!data) {
-				userModel.signed = false;
+				return;
 			} else if(data.err){
 				if(data.err == 'expired') {
 					delete $cookies['sid'];
 				} else {
 					$scope.alerts = [{type:'error', msg:data.err}];
 				}
-				userModel.signed = false;
 			} else {
 				userModel.currentUser = data.user;
 				$cookies['sid'] = data.sid;
+				userModel.lock.signed = false;
 				$location.path('/workspace');
 			}
 		},
 		'unauthorized': function() {
 			$scope.alerts = [{type:'error', msg:'unauthorized'}];
-			userModel.signed = false;
+			userModel.lock.signed = false;
+			userModel.lock.signIn = false;
 		}
 	});
 
@@ -35,10 +41,10 @@ function SignInController($scope, userModel, socket, $location, $cookies) {
 			$scope.alerts = [{type:'error', msg:'pleaseinput'}];
 			return;
 		}
-		if (userModel.signed) {
+		if (userModel.lock.signIn) {
 			return;
 		}
-		userModel.signed = true;
+		userModel.lock.signIn = true;
 		socket.emit('login', $scope.loginuser);
 	};
 }
