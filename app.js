@@ -38,7 +38,11 @@ function log(){
 	for(var i in sig){
 		process.on(sig[i], function(){
 			log('server stop');
-			process.kill(0, 'SIGKILL');
+			if (process.platform == 'linux') {
+		    	process.kill(0, 'SIGKILL');
+		    } else {
+		    	process.exit(0);
+		    }
 		});
 	}
 	process.on('uncaughtException', function(err){
