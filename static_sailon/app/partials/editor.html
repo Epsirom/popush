@@ -1,1 +1,16 @@
-<div style="text-align:center"	>I am editor page.</div>
+<div ng-controller="EditorController">
+	<div class="row-fluid">
+
+	</div>
+	<div class="row-fluid editor-toolbar">
+		<div class="editor-btns">
+			<button class="btn btn-primary editor-btn" title="运行"><i class="icon-play"></i></button>
+			<button class="btn btn-primary editor-btn" title="调试"><i class="icon-eye-open"></i></button>
+			<button class="btn btn-primary editor-btn" title="控制台"><i class="icon-share"></i></button>
+			<button class="btn btn-primary editor-btn" title="全屏"><i class="icon-fullscreen"></i></button>
+			<button class="btn btn-primary editor-btn" title="收起"><i class="icon-forward"></i></button>
+		</div>
+	</div>
+	<textarea ui-codemirror="editorOptions" ng-model="x">
+	</textarea>
+</div>
