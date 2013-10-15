@@ -2,7 +2,7 @@
 
 
 // Declare app level module which depends on filters, and services
-var app = angular.module('popush', ['socketModule', 'userModule', 'pascalprecht.translate', 'ngCookies','ui.router']).
+var app = angular.module('popush', ['socketModule', 'userModule', 'pascalprecht.translate', 'ngCookies','ui.router','ui.codemirror']).
   config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
         .state('/', {
@@ -18,7 +18,8 @@ var app = angular.module('popush', ['socketModule', 'userModule', 'pascalprecht.
             url: '',
             views: {
                 'editor': {
-                    templateUrl: 'partials/editor.html'
+                    templateUrl: 'partials/editor.html',
+                    controller: 'EditorController'
                 },
                 "catalogue": {
                     templateUrl: 'partials/catalogue.html'

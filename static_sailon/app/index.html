@@ -5,15 +5,20 @@
 
   <title>Popush</title>
   <link rel="stylesheet" href="css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="lib/codemirror/lib/codemirror.css">
   <link rel="stylesheet" href="css/flat.css"/>
   <link rel="stylesheet" href="css/signIn.css"/>
   <link rel="stylesheet" href="css/workspace.css"/>
+  <link rel="stylesheet" href="css/editor.css"/>
   <link rel="stylesheet" href="css/catalogue.css"/>
   <script src="lib/socket-io/socket.io.min.js"></script>
   <script src="lib/angular/angular.js"></script>
   <script src="lib/ui-bootstrap/ui-bootstrap-tpls-0.6.0.min.js"></script>
   <script src="lib/angular-translate/angular-translate.min.js"></script>
   <script src="lib/angular-translate/angular-translate-loader-url.min.js"></script>
+  <script src="lib/codemirror/lib/codemirror.js"></script>
+  <script src="lib/codemirror/addon/mode/loadmode.js"></script>
+  <script src="lib/ui-codemirror/ui-codemirror.js"></script>
   <script src="lib/angular/angular-cookies.min.js"></script>
   <script src="lib/angular-ui/angular-ui-router.min.js"></script>
   <script src="js/app.js"></script>
@@ -22,14 +27,13 @@
   <script src="js/user/SwitchController.js"></script>
   <script src="js/user/SignInController.js"></script>
   <script src="js/user/SignUpController.js"></script>
+  <script src="js/user/EditorController.js"></script>
   <script src="js/user/LanguageController.js"></script>
   <script src="js/user/WorkspaceController.js"></script>
   <script src="js/user/CatalogueController.js"></script>
   <script src="js/user/UserModule.js"></script>
 </head>
 <body>
-  
   <div ui-view></div>
-
 </body>
 </html>
