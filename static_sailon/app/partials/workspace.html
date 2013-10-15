@@ -1,18 +1,17 @@
-</div>
-<div class="container-fluid">
+<div class="container-fluid" ng-controller="WorkspaceController">
   <div class="row-fluid">
-          <div class="span3">
-                  <div class="row-fluid">
-                          <span ng-bind="username"></span>
+  	<div class="span3">
+  		<div class="row offset1 ws-userinfo">
         <img height="32" width="32" ng-src="{{avatarSrc}}" />
-        <span translate="LOG_OUT"></span>
-                  </div>
-                <div class="row-fluid">
-                          <div ui-view="catalogue"></div>
-                </div>
-          </div>
-          <div class="span9">
-                  <div ui-view="editor"></div>
-          </div>
+        <span ng-bind="username"></span>
+        <a class="btn-link" translate="LOG_OUT"></a>
+  		</div>
+		<div class="row-fluid">
+	  		<div ui-view="catalogue"></div>
+		</div>
+  	</div>
+  	<div class="span9">
+  		<div ui-view="editor"></div>
+  	</div>
   </div>
 </div>
