@@ -23,7 +23,7 @@ angular.module('socketModule', []).
 				}
 				scope.$on('$destroy', function() {
 					for (eventName in events) {
-						socket.removeAllListener(eventName);
+						socket.removeAllListeners(eventName);
 					}
 				})
 			},
