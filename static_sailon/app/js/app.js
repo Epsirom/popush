@@ -4,6 +4,7 @@
 // Declare app level module which depends on filters, and services
 var app = angular.module('popush', ['socketModule', 'userModule', 'pascalprecht.translate', 'ngCookies','ui.router','ui.codemirror']).
   config(function ($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise("/");
     $stateProvider
         .state('/', {
             url: '/',
@@ -21,8 +22,44 @@ var app = angular.module('popush', ['socketModule', 'userModule', 'pascalprecht.
                     templateUrl: 'partials/editor.html',
                     controller: 'EditorController'
                 },
-                "catalogue": {
+                'catalogue': {
                     templateUrl: 'partials/catalogue.html'
+                }
+            }
+        })
+        .state('workspace.userinfo',{
+            abstract: true,
+            url: '/userinfo',
+            views: {
+                'editor': {
+                    templateUrl: 'partials/userinfo.html'
+                },
+                'catalogue': {
+                    templateUrl: 'partials/catalogue.html'
+                }
+            }
+        })
+        .state('workspace.userinfo.settings',{
+            url: '',
+            views: {
+                '': {
+                    templateUrl: 'partials/settings.html'
+                }
+            }
+        })
+        .state('workspace.userinfo.avatarMgt',{
+            url: '/avatarMgt',
+            views: {
+                '': {
+                    templateUrl: 'partials/avatarMgt.html'
+                }
+            }
+        })
+        .state('workspace.userinfo.passwordMgt',{
+            url: '/passwordMgt',
+            views: {
+                '': {
+                    templateUrl: 'partials/passwordMgt.html'
                 }
             }
         })

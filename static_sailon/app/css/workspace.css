@@ -1,3 +1,15 @@
+.ws-mainbody{
+	min-width: 1300px;
+}
+.ws-editor-innner{
+	max-width: 1000px;
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+}
 .ws-userinfo{
 	padding: 10px;
+}
+.ws-catalogue{
+	min-width: 300px;
 }
