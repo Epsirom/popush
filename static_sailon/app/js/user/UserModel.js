@@ -36,7 +36,7 @@ function UserModel(socket, $location, $route, $cookies, POPUSH_SETTINGS) {
 
 	var connected = false,
 		language = loadLang(),
-		userLock = {'signIn': false, 'signed': false},
+		userLock = {'signIn': false, 'signed': false, 'operation':false},
 		currentUser = {};
 
 	// Socket Services

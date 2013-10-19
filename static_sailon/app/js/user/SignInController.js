@@ -17,7 +17,7 @@ function SignInController($scope, userModel, socket, $location, $cookies) {
 					$scope.alerts = [{type:'error', msg:data.err}];
 				}
 			} else {
-				userModel.currentUser = data.user;
+				userModel.user = data.user;
 				$cookies['sid'] = data.sid;
 				userModel.lock.signed = false;
 				$location.path('/workspace');
@@ -36,7 +36,8 @@ function SignInController($scope, userModel, socket, $location, $cookies) {
 		$scope.alerts = [];
 	}
 	$scope.signInFn = function() {
-		$location.path('/workspace');
+		//$location.path('/workspace');
+		
 		if (!$scope.loginuser || !$scope.loginuser.name) {
 			$scope.alerts = [{type:'error', msg:'pleaseinput'}];
 			return;

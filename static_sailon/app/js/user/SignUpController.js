@@ -5,19 +5,18 @@ function SignUpController($scope, userModel, socket, $location, $cookies) {
 	socket.onScope($scope, {
 		'register':function(data){
 			if (!data){
-				userModel.lock.signUp = false;
+				
 			}else if (data.err){				
 				$scope.alerts = [{type:'error', msg:data.err}];
-				userModel.lock.signUp = false;
+
 			} else{
-				userModel.lock.signUp = true;
 				$scope.alerts = [{type:'success', msg:'SignupSucceed'}];
 				//emit succeed, but onScope.login can't receive anything
 				userModel.signed = true;
 				socket.emit('login', $scope.registeruser);
 				//
-				userModel.lock.signUp = false;
-			}	
+			}
+			userModel.lock.signUp = false;	
 		}
 	});
 	
@@ -53,16 +52,13 @@ function SignUpController($scope, userModel, socket, $location, $cookies) {
 			$scope.alerts = [{type:'error', msg:'InvalidPassword'}];
 			return;
 		}
-		if ($scope.registeruser.password != $scope.registeruser.confirmpsd){
+		if ($scope.registeruser.password != $scope.registeruser.confirmpwd){
 			$scope.alerts = [{type:'error', msg:'TwoPasswordsDidNotMatch'}];
 			return;
 		}
 		
 		userModel.lock.signUp = true;
-		socket.emit('register', {
-			name:$scope.registeruser.name,
-			password:$scope.registeruser.password
-		});
+		socket.emit('register', $scope.registeruser);
 	};
 
 }
