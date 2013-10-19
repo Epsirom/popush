@@ -28,5 +28,15 @@
   "AVATAR_MGT":             "头像管理",
   "CLICK_CHANGE":           "点击上传图像",
   "LANG_CHANGE":            "语言更改",
-  "THEME_CHANGE":           "主题更改"
+  "THEME_CHANGE":           "主题更改",
+  "FULL_SCREEN":            "全屏",
+  "RUN":                    "运行",
+  "DEBUG":                  "调试",
+  "CONSOLE":                "控制台",
+  "HIDE_CHAT_WINDOW":       "隐藏",
+  "NEW_FILE":               "新建文件",
+  "NEW_FOLDER":             "新建文件夹",
+  "RENAME":                 "重命名",
+  "DELETE":                 "删除",
+  "SHARE":                  "共享"
 }
