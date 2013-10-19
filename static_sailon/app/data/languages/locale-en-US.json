@@ -28,5 +28,15 @@
   "AVATAR_MGT":          "Avatar",
   "CLICK_CHANGE":        "click the image to change",
   "LANG_CHANGE":         "Language Change",
-  "THEME_CHANGE":        "Theme Change"
+  "THEME_CHANGE":        "Theme Change",
+  "FULL_SCREEN":            "Full screen",
+  "RUN":                    "Run",
+  "DEBUG":                  "Debug",
+  "CONSOLE":                "Console",
+  "HIDE_CHAT_WINDOW":       "Hide",
+  "NEW_FILE":               "New file",
+  "NEW_FOLDER":             "New folder",
+  "RENAME":                 "Rename",
+  "DELETE":                 "Delete",
+  "SHARE":                  "Share"
 }
