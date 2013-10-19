@@ -1,0 +1,21 @@
+.CodeMirror {
+    line-height: 1.5;
+    height: 392px;
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 4px 4px 4px 4px;
+    overflow: hidden;
+    background: none repeat scroll 0% 0% white;
+    color: black;
+}
+.editor-btn
+{
+    margin:5px 10px 5px 10px;
+}
+.editor-btns
+{
+    float:right;
+}
+.editor-toolbar
+{
+    background-color:rgb(225,225,225);
+}
