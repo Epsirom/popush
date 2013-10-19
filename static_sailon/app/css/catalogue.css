@@ -1,0 +1,57 @@
+.cat-toolbar{
+	margin: 10px 0px;
+	padding: 10px 15px 15px 10px;
+	background: none repeat scroll 0% 0% rgb(225, 225, 225);
+	height: 30px;
+}
+.cat-tool-btn{
+	padding: 5px 12px;
+	cursor: pointer;
+	background: none repeat scroll 0% 0% rgb(238, 238, 238);
+	border: 1px solid rgb(213, 213, 213);
+	box-shadow: none;
+}
+.cat-folder{
+	font-size: 18px;
+	line-height: 30px;
+}
+.cat-files-container{
+	padding-left: 22px;
+	padding-top: 10px;
+	padding-right: 10px;
+	color: rgb(51, 51, 51);
+	background: none repeat scroll 0% 0% rgb(225, 225, 225);
+}
+.cat-filestree{
+	margin:0px;
+	padding:0px;
+	list-style:none;
+	margin-left:10px;
+}
+.cat-filestree .cat-filestree-item{
+	cursor:default;
+	font-size:15px;
+	line-height:24px;
+}
+.cat-filestree .cat-filestree-item>.files{
+	display:none;
+	margin-left:8px;
+}
+.cat-filestree .cat-filestree-item>.name>i.icon-file{
+	color:transparent;
+}
+.cat-filestree .cat-filestree-item>.name>.icon-folder-close{
+	display:inline-block;
+}
+.cat-filestree .cat-filestree-item>.name>.icon-folder-open{
+	display:none;
+}
+.cat-filestree .cat-filestree-item.open>.files{
+	display:block;
+}
+.cat-filestree .cat-filestree-item.open>.name>.icon-folder-close{
+	display:none;
+}
+.cat-filestree .cat-filestree-item.open>.name>.icon-folder-open{
+	display:inline-block;
+}
