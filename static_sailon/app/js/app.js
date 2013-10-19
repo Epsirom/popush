@@ -2,28 +2,64 @@
 
 
 // Declare app level module which depends on filters, and services
-var app = angular.module('popush', ['socketModule', 'userModule', 'pascalprecht.translate', 'ngCookies','ui.router']).
+var app = angular.module('popush', ['socketModule', 'userModule', 'pascalprecht.translate', 'ngCookies','ui.router','ui.codemirror']).
   config(function ($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise("/");
     $stateProvider
         .state('/', {
             url: '/',
+            templateUrl: 'partials/signIn.html'
+        })
+        .state('workspace', {
+            abstract: true,
+            url: '/workspace',
+            templateUrl: 'partials/workspace.html'
+        })
+        .state('workspace.editor', {
+            url: '',
             views: {
-                "index": {
-                    templateUrl: 'partials/signIn.html'
+                'editor': {
+                    templateUrl: 'partials/editor.html',
+                    controller: 'EditorController'
+                },
+                'catalogue': {
+                    templateUrl: 'partials/catalogue.html'
                 }
             }
         })
-        .state('workspace', {
-            url: '/workspace',
+        .state('workspace.userinfo',{
+            abstract: true,
+            url: '/userinfo',
             views: {
-                "index": {
-                    templateUrl: 'partials/workspace.html'
+                'editor': {
+                    templateUrl: 'partials/userinfo.html'
                 },
-                "editor": {
-                    templateUrl: 'partials/editor.html'
-                },
-                "catalogue": {
+                'catalogue': {
                     templateUrl: 'partials/catalogue.html'
+                }
+            }
+        })
+        .state('workspace.userinfo.settings',{
+            url: '',
+            views: {
+                '': {
+                    templateUrl: 'partials/settings.html'
+                }
+            }
+        })
+        .state('workspace.userinfo.avatarMgt',{
+            url: '/avatarMgt',
+            views: {
+                '': {
+                    templateUrl: 'partials/avatarMgt.html'
+                }
+            }
+        })
+        .state('workspace.userinfo.passwordMgt',{
+            url: '/passwordMgt',
+            views: {
+                '': {
+                    templateUrl: 'partials/passwordMgt.html'
                 }
             }
         })
@@ -35,7 +71,7 @@ var app = angular.module('popush', ['socketModule', 'userModule', 'pascalprecht.
 	    });
 	    $translateProvider.translations({
   			  POPUSH_TITLE: "Popush",
-			  POPUSH_SUBTITLE: "another co-coding platform"
+			  POPUSH_SUBTITLE: "Another co-coding platform"
 		});
 	  	//$translateProvider.useUrlLoader('data/languages/en-US.json');
 	  	//var cookieLang='en-US';// Synchronously, you need to revise the <ng-init="lang='en-US'"> in TranslateController,index.html
