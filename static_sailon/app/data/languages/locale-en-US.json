@@ -9,7 +9,8 @@
   "CONFIRM_PASSWORD":    "Confirm Password",
   "AUTHOR":              "powered by sailon team",
   "pleaseinput" :        "Please input your username",
-  "ROOTDIR":             "Back to root directory",
+  "BACKROOTDIR": 	     "Back to root directory",
+  "ROOTDIR":             "Root Directory",
   "BACKWORD_DIR":        "Back to parent directory",
   "FORWARD_DIR": 		 "Enter the subdirectory",
   "FOLDER": 			 "Folder",
@@ -38,5 +39,7 @@
   "NEW_FOLDER":             "New folder",
   "RENAME":                 "Rename",
   "DELETE":                 "Delete",
-  "SHARE":                  "Share"
+  "SHARE":                  "Share",
+  "SAVE":                   "Save",
+  "SHARED_USERS":           "Shared users"
 }

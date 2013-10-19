@@ -23,6 +23,12 @@ var app = angular.module('popush', ['popushFilters','socketModule', 'userModule'
                 },
                 'catalogue': {
                     templateUrl: 'partials/catalogue.html'
+                },
+                'collaborators': {
+                    templateUrl: 'partials/collaborators.html'
+                },
+                'message':{
+                    templateUrl: 'partials/message.html'
                 }
             }
         })
@@ -35,6 +41,12 @@ var app = angular.module('popush', ['popushFilters','socketModule', 'userModule'
                 },
                 'catalogue': {
                     templateUrl: 'partials/catalogue.html'
+                },
+                'collaborators': {
+                    templateUrl: 'partials/collaborators.html'
+                },
+                'message':{
+                    templateUrl: 'partials/message.html'
                 }
             }
         })
