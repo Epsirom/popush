@@ -19,9 +19,7 @@
 	padding-left: 22px;
 	padding-top: 10px;
 	padding-right: 10px;
-	top: 112px;
 	color: rgb(51, 51, 51);
-	font-family: FontAwesome;
 	background: none repeat scroll 0% 0% rgb(225, 225, 225);
 }
 .cat-filestree{
@@ -51,9 +49,9 @@
 .cat-filestree .cat-filestree-item.open>.files{
 	display:block;
 }
-.cat-filestree .cat-filestree-item.open>.name>.icon-caret-right{
+.cat-filestree .cat-filestree-item.open>.name>.icon-folder-close{
 	display:none;
 }
-.cat-filestree .cat-filestree-item.open>.name>.icon-caret-down{
+.cat-filestree .cat-filestree-item.open>.name>.icon-folder-open{
 	display:inline-block;
 }

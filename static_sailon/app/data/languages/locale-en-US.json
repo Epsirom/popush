@@ -13,5 +13,20 @@
   "BACKWORD_DIR":        "Back to parent directory",
   "FORWARD_DIR": 		 "Enter the subdirectory",
   "FOLDER": 			 "Folder",
-  "FILE": 				 "File"
+  "FILE": 				 "File",
+  "OLD_PASSWORD":        "Old password",
+  "NEW_PASSWORD":        "New password",
+  "AVATAR":              "Avatar",
+  "CHANGE_AVATAR":       "Change avatar",
+  "CHANGE_PASSWORD":     "Change password",
+  "USER_INFO":           "Personal Info",
+  "BACKTO_EDITOR":       "Back to editor",
+  "OK":                  "OK",
+  "CANCEL":              "Cancel",
+  "ACCOUNT_SETTINGS":    "Account Settings",
+  "PASSWARD_MGT":        "Password",
+  "AVATAR_MGT":          "Avatar",
+  "CLICK_CHANGE":        "click the image to change",
+  "LANG_CHANGE":         "Language Change",
+  "THEME_CHANGE":        "Theme Change"
 }

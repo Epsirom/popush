@@ -1,0 +1,91 @@
+.userinfo-header{
+	text-align: center;
+	height: 22px;
+	font-size: 30px;
+	padding: 20px 0px 20px 0px;
+}
+.userinfo-section{
+	background: none repeat scroll 0% 0% rgb(225, 225, 225);
+	border: 1px solid rgb(234, 234, 234);
+	margin-bottom: 30px;
+}
+.userinfo-inner{
+	padding: 40px;
+	padding-bottom: 20px;
+}
+.userinfo-center{
+	text-align: center;
+}
+.userinfo-avatar{
+	padding-left: 43px;
+	cursor:pointer;
+}
+.userinfo-text{
+	padding-left: 20px;
+}
+.userinfo-btn{
+	padding-left: 30px;	
+}
+.userinfo-switch{
+	width: 128px;
+}
+.userinfo-icon{
+	font-size: 20px;
+	float: left;
+	cursor:pointer;
+}
+.userinfo-lateralbar{
+
+	background: none repeat scroll 0% 0% rgb(225, 225, 225);
+	overflow-y: auto;
+}
+.userinfo-lateralbar .userinfo-title{
+    padding-top: 12px;
+    padding-right: 10px;
+    padding-left: 35px;
+    font-size: 30px;
+    color: rgb(187, 187, 187);
+}
+.userinfo-lateralbar .userinfo-icon{
+	font-size: 100px;
+	line-height: 130px;
+}
+.userinfo-lateralbar .userinfo-menu{
+	margin-left:35px;
+	margin-top:30px;
+	margin-right:25px;
+	margin-bottom:15px;
+}
+.userinfo-lateralbar .userinfo-menu .menu{
+	list-style:none;
+	margin:0px;
+	padding:0px;
+	font-size:18px;
+	line-height:35px;
+}
+.userinfo-lateralbar .userinfo-menu .menu li a:not(.btn){
+	color:#555;font-weight:200;
+	line-height:2em;
+	padding-left:10px;
+	border-left:4px solid #e5e5e5;
+}
+.userinfo-lateralbar .userinfo-menu .menu li a:not(.btn):hover{
+	border-color:#e1e1e1;
+}
+.userinfo-lateralbar .userinfo-menu .menu li.active>a:not(.btn){
+	color:#333;font-weight:normal;
+	border-color:#50bf82;
+}
+.userinfo-lateralpanel .userinfo-menu .menu li .menu{
+	font-size:14px;
+	line-height:25px;
+	display:none;margin-left:24px;
+}
+.userinfo-lateralbar .userinfo-menu .menu li .menu.active{
+	display:block;
+}
+.userinfo-lateralbar .userinfo-menu .menu li .btn{
+	margin-top:8px;
+	margin-bottom:8px;
+	border:none;
+}
