@@ -53,25 +53,30 @@
             <div class="control-group">
               <label class="control-label" for="signUpInputName" translate="USERNAME"></label>
               <div class="controls">
-                <input type="text" id="signUpInputName" ng-model="username" />
+                <input type="text" id="signUpInputName" ng-model="registeruser.name" />
               </div>
             </div>
             <div class="control-group">
               <label class="control-label" for="signUpInputPassword" translate="PASSWORD"></label>
               <div class="controls">
-                <input type="password" id="signUpInputPassword" ng-model="password" />
+                <input type="password" id="signUpInputPassword" ng-model="registeruser.password" />
               </div>
             </div>
             <div class="control-group">
               <label class="control-label" for="confirmPassword" translate="CONFIRM_PASSWORD"></label>
               <div class="controls">
-                <input type="password" id="confirmPassword" ng-model="confirmpsd" />
+                <input type="password" id="confirmPassword" ng-model="registeruser.confirmpsd" />
               </div>
             </div>
                 <div class="control-group">
+                  <!--
                   <alert type="errType" close="closeErr()" translate="{{errorMsg}}" ng-show="hasError"></alert>
+                  -->
+      
+                  <alert ng-repeat="alert in alerts" type="alert.type" close="closeErr()" >{{alert.msg | translate}}</alert>
+                  
                   <div class="controls">
-                    <button type="submit" class="btn btn-primary sign-up" ng-click="signUpFn()" translate="SIGN_UP"></button>
+                  <button type="submit" class="btn btn-primary sign-up" ng-click="signUpFn()" translate="SIGN_UP"></button>
                   </div>
                 </div>
           </div>
