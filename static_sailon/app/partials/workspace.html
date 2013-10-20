@@ -16,11 +16,13 @@
       <div class="row-fluid">
           <div ui-view="collaborators"></div>
       </div>
-    	</div>
-    	<div class="span9 ws-editor-innner">
-    		<div ui-view="editor"></div>
-    	</div>
     </div>
+  	<div class="span9 ws-editor-innner">
+  		<div ui-view="editor"></div>
+  	</div>
+    <div ui-view="message"></div>
+  </div>
+</div>
     <!--preload-->
     <div ng-include="'partials/avatarMgt.html'" style="display:none"></div>
     <div ng-include="'partials/passwordMgt.html'" style="display:none"></div>
