@@ -1,22 +1,38 @@
 <div class="row-fluid userinfo-section">
-	<div class="userinfo-inner userinfo-center">
+	<div class="userinfo-inner">
 		<div ng-controller="LanguageController">
-			<span translate="LANG_CHANGE"></span>
-			<span>
-			  <select class="userinfo-switch" ng-model="lang" ng-change="changeLang()">
-			    <option value="en-US">English</option>
-			    <option value="zh-CN">简体中文</option>
-			  </select>
-			</span>
+			<div class="row-fluid">
+				<div class="span5">
+					<div class="userinfo-right" translate="LANG_CHANGE"></div>
+				</div>
+				<div class="span7">
+					<div class="userinfo-left">
+					  <select class="userinfo-switch" ng-model="lang" ng-change="changeLang()">
+					    <option value="en-US">English</option>
+					    <option value="zh-CN">简体中文</option>
+					  </select>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div >
-			<span translate="THEME_CHANGE"></span>
-			<span>
-			  <select class="userinfo-switch" >
-			    <option value="popushStyle1">风格1</option>
-			    <option value="popushStyle2">风格2</option>
-			  </select>
-			</span>
+		<div><!--Add Controller here-->
+			<div class="row-fluid">
+				<div class="span5">
+					<div class="userinfo-right" translate="THEME_CHANGE"></div>
+				</div>
+				<div class="span7">
+					<div class="userinfo-left">
+					  <select class="userinfo-switch" >
+					    <option value="popushStyle1">风格1</option>
+					    <option value="popushStyle2">风格2</option>
+					  </select>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="userinfo-center userinfo-marginleft">
+			<button type="submit" class="btn" translate="SAVE"></button>
 		</div>
 	</div>
 </div>

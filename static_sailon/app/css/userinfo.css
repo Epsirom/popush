@@ -16,6 +16,15 @@
 .userinfo-center{
 	text-align: center;
 }
+.userinfo-marginleft{
+	margin-left: -30px;
+}
+.userinfo-right{
+	float:right;
+}
+.userinfo-left{
+	float: left;
+}
 .userinfo-avatar{
 	padding-left: 43px;
 	cursor:pointer;
@@ -38,6 +47,9 @@
 
 	background: none repeat scroll 0% 0% rgb(225, 225, 225);
 	overflow-y: auto;
+}
+.userinfo-height{
+	min-height: 560px;
 }
 .userinfo-lateralbar .userinfo-title{
     padding-top: 12px;
