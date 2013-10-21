@@ -2,7 +2,7 @@
 
 
 // Declare app level module which depends on filters, and services
-var app = angular.module('popush', ['userModule', 'workspaceModule', 'pascalprecht.translate', 'ui.router', 'ui.codemirror']).
+var app = angular.module('popush', ['popushFilters','socketModule', 'userModule', 'workspaceModule', 'pascalprecht.translate', 'ngCookies','ui.router','ui.codemirror']).
   config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/");
     $stateProvider
@@ -23,6 +23,12 @@ var app = angular.module('popush', ['userModule', 'workspaceModule', 'pascalprec
                 },
                 'catalogue': {
                     templateUrl: 'partials/catalogue.html'
+                },
+                'collaborators': {
+                    templateUrl: 'partials/collaborators.html'
+                },
+                'message':{
+                    templateUrl: 'partials/message.html'
                 }
             }
         })
@@ -35,6 +41,12 @@ var app = angular.module('popush', ['userModule', 'workspaceModule', 'pascalprec
                 },
                 'catalogue': {
                     templateUrl: 'partials/catalogue.html'
+                },
+                'collaborators': {
+                    templateUrl: 'partials/collaborators.html'
+                },
+                'message':{
+                    templateUrl: 'partials/message.html'
                 }
             }
         })

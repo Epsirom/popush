@@ -1,4 +1,4 @@
-<div class="container-fluid" ng-controller="WorkspaceController">
+<div class="container-fluid ws-container" ng-controller="WorkspaceController">
   <div class="row-fluid ws-mainbody">
   	<div class="span3 ws-catalogue">
       <!--userinfo-->
@@ -9,18 +9,20 @@
         <a class="btn-link" translate="LOG_OUT" ng-click="logoutFn()"></a>
   		</div>
       <!--catalogue-->
-  		<div class="row-fluid">
-  	  		<div ui-view="catalogue"></div>
+  		<div class="row-fluid ws-catalogue-block">
+  	  		<div ui-view="catalogue" class="ws-catalogue-inner"></div>
   		</div>
       <!--collaborators-->
       <div class="row-fluid">
           <div ui-view="collaborators"></div>
       </div>
-    	</div>
-    	<div class="span9 ws-editor-innner">
-    		<div ui-view="editor"></div>
-    	</div>
     </div>
+  	<div class="span9 ws-editor-innner">
+  		<div ui-view="editor"></div>
+  	</div>
+    <div ui-view="message"></div>
+  </div>
+</div>
     <!--preload-->
     <div ng-include="'partials/avatarMgt.html'" style="display:none"></div>
     <div ng-include="'partials/passwordMgt.html'" style="display:none"></div>

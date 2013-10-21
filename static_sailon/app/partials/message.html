@@ -1,0 +1,11 @@
+<div ng-controller="MessageController">
+	<ul class="message-list active">
+	    <li class="message-item" ng-repeat="msg in messages">
+	        <i class="icon icon-white icon-exclamation-sign"></i>
+	        <p ng-bind="msg"></p>
+	        <div class="remove" ng-click="removeMsg($index)">
+		        <i class="esc icon-white icon-remove"></i>
+	        </div>
+	    </li>
+	</ul>
+</div>

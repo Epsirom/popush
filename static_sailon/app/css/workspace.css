@@ -1,5 +1,9 @@
+.ws-container{
+	height: 100%;
+}
 .ws-mainbody{
 	min-width: 1300px;
+	height: 100%;
 }
 .ws-editor-innner{
 	max-width: 1000px;
@@ -11,5 +15,14 @@
 	padding: 10px;
 }
 .ws-catalogue{
-	min-width: 300px;
+	min-width: 280px;
+	height: 100%;
+}
+.ws-catalogue-block{
+	height:75%;
+}
+.ws-catalogue-inner{
+	height: 95%;
+	border: 10px solid rgb(225, 225, 225);
+	overflow: auto;
 }
