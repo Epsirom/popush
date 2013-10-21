@@ -1,4 +1,4 @@
-<div class="container-fluid" ng-controller="WorkspaceController">
+<div class="container-fluid ws-container" ng-controller="WorkspaceController">
   <div class="row-fluid ws-mainbody">
   	<div class="span3 ws-catalogue">
       <!--userinfo-->
@@ -9,8 +9,8 @@
         <a class="btn-link" translate="LOG_OUT"></a>
   		</div>
       <!--catalogue-->
-  		<div class="row-fluid">
-  	  		<div ui-view="catalogue"></div>
+  		<div class="row-fluid ws-catalogue-block">
+  	  		<div ui-view="catalogue" class="ws-catalogue-inner"></div>
   		</div>
       <!--collaborators-->
       <div class="row-fluid">
