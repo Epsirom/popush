@@ -9,7 +9,8 @@
   "LOG_OUT":                "登出", 	
   "AUTHOR" : 				"Sailon开发小组敬上",
   "pleaseinput" : 			"请输入用户名",
-  "ROOTDIR": 				"返回根目录",
+  "BACKROOTDIR": 			"返回根目录",
+  "ROOTDIR":                "根目录",
   "BACKWORD_DIR":           "返回上级目录",
   "FORWARD_DIR":            "进入下级目录",
   "FOLDER":                 "文件夹",
@@ -28,5 +29,17 @@
   "AVATAR_MGT":             "头像管理",
   "CLICK_CHANGE":           "点击上传图像",
   "LANG_CHANGE":            "语言更改",
-  "THEME_CHANGE":           "主题更改"
+  "THEME_CHANGE":           "主题更改",
+  "FULL_SCREEN":            "全屏",
+  "RUN":                    "运行",
+  "DEBUG":                  "调试",
+  "CONSOLE":                "控制台",
+  "HIDE_CHAT_WINDOW":       "隐藏",
+  "NEW_FILE":               "新建文件",
+  "NEW_FOLDER":             "新建文件夹",
+  "RENAME":                 "重命名",
+  "DELETE":                 "删除",
+  "SHARE":                  "共享",
+  "SAVE":                   "保存",
+  "SHARED_USERS":           "共享用户"
 }
