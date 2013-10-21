@@ -168,4 +168,23 @@ function EditorController($scope, userModel, socket, $location) {
     	}
     }
 
+    $scope.chat_show = false;
+    $scope.editor_width = 'span12'; 
+    $scope.toggleChat = function()
+    {
+        $scope.chat_show = !$scope.chat_show;
+        if($scope.editor_width=='span12')
+        {
+            $scope.editor_width = 'span9';
+        }
+        else
+        {
+            $scope.editor_width = 'span12';
+        }
+    }
+
+    $scope.setFullScreen = function()
+    {
+
+    }
 }

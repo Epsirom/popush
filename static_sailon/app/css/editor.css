@@ -54,3 +54,29 @@
     padding-top: 15px;
     padding-left: 10px;
 }
+
+.edt-chat
+{
+    height:464px;
+    overflow:auto;
+    padding:5px 10px;
+    border:1px solid #ccc;
+    -webkit-border-radius:4px;
+    -moz-border-radius:4px;
+    border-radius:4px;
+}
+.edt-chat-inner 
+{
+    width:100%;
+    cursor:text;
+    overflow:hidden;
+}
+.edt-input-msg
+{
+    margin-top: 5px;
+    width:220px;
+}
+.edt-chat-btn
+{
+    float:right;
+}
