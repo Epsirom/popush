@@ -7,15 +7,50 @@
     background: none repeat scroll 0% 0% white;
     color: black;
 }
-.editor-btn
+.edt-file-btn,.edt-editor-btn
 {
     margin:5px 10px 5px 10px;
 }
-.editor-btns
+.edt-file-btns,.edt-editor-btns
 {
     float:right;
 }
-.editor-toolbar
+.edt-file-toolbar,.edt-editor-toolbar
 {
     background-color:rgb(225,225,225);
+}
+.edt-close-btn:hover
+{
+    background-color: #FF9966;
+}
+.edt-col1
+{
+    width: 40px;
+}
+.edt-col2 
+{
+    width: 40px;
+}
+.edt-col3
+{
+    vertical-align: middle !important;
+}
+.edt-ol4 
+{
+    width: 40px;
+}
+.edt-col5 
+{
+    width: 155px;
+}
+.edt-file-icon
+{
+    width : 32px;
+    height : 32px;
+}
+.edt-filepath
+{
+    float:left;
+    padding-top: 15px;
+    padding-left: 10px;
 }

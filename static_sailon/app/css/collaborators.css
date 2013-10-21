@@ -1,0 +1,21 @@
+.cr-container{
+	background: none repeat scroll 0% 0% rgb(225, 225, 225);
+}
+.cr-avatar-container{
+	padding: 5px 10px 0px 10px;
+	border: 5px solid rgb(225, 225, 225);
+	overflow: auto;
+	background-color: #fff;
+	max-height: 37px;
+}
+.cr-item{
+	padding-bottom: 5px;
+	padding-right: 1px;
+	padding-left: 0px;
+}
+.cr-text{
+	padding: 10px 0px 5px 10px;
+	margin-top: 10px;
+	font-size: 18px;
+	color: #000;
+}
