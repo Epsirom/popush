@@ -12,56 +12,37 @@
 		</a>
 	</div>
 </div>
+
+
 <!-- Files -->
+<script type="text/ng-template" id="filetree_render.html">
+	<span class="name">
+		<i class="icon-folder-close" ng-if="file.type === 0"></i>
+		<i class="icon-folder-open" ng-if="file.type === 0"></i>
+		<i class="icon-file" ng-if="file.type === 1"></i>
+		{{file.name}}
+	</span>
+	<div class="file" ng-if="file.type === 0">
+		<ul class="cat-filetree">
+			<li ng-repeat="file in file.nodes" ng-include="'filetree_render.html'"></li>
+		</ul>
+	</div>
+</script>
+
 <div class="cat-files-container">
 	<div class="cat-folder" translate="FOLDER"></div>
-	<ul class="cat-filestree">
-		<li class="cat-filestree-item open">
+	<ul class="cat-filestree" ng-controller="FileTreeController">
+		<li class="cat-filestree-item">
 			<span class="name">
-			    <i class="icon-folder-close"></i>
-			    <i class="icon-folder-open"></i>
-		        project01
+				<i class="icon-eye-open"></i>
+				{{ 'SHARED_FILES' | translate}}
 			</span>
-			<div class="file">
-				<ul class="cat-filestree">
-					<li class="cat-filestree-item open">
-						<span class="name">
-						    <i class="icon-folder-close"></i>
-						    <i class="icon-folder-open"></i>
-					        src
-						</span>
-						<div class="file">
-							<ul class="cat-filestree">
-							    <li class="cat-filestree-item">
-				    			    <span class="name">
-								        <i class="icon-file"></i>
-								            popush.h
-								    </span>
-							    </li>
-							    <li class="cat-filestree-item">
-				    			    <span class="name">
-								        <i class="icon-file"></i>
-								            popush.cpp
-								    </span>
-							    </li>
-							</ul>
-						</div>
-					</li>
+			<div class="file" ng-if="tree.shared.length > 0">
+				<ul class="cat-filetree">
+					<li class="cat-filestree-item" ng-repeat="file in tree.shared" ng-include="'filetree_render.html'"></li>
 				</ul>
 			</div>
 		</li>
-		<li class="cat-filestree-item">
-			<span class="name">
-			    <i class="icon-folder-close"></i>
-			    <i class="icon-folder-open"></i>
-		        project02
-			</span>
-		</li>
-		<li class="cat-filestree-item">
-		    <span class="name">
-		        <i class="icon-file"></i>
-		            README.txt
-		    </span>
-		</li>
+		<li ng-repeat="file in tree.self" ng-include="'filetree_render.html'" class="cat-filestree-item" ng-class="file.status ? 'open' : ''"></li>
 	</ul>
 </div>
