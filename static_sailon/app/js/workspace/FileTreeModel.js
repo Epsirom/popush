@@ -51,7 +51,7 @@ function FileTreeModel(userModel) {
 			for (i = 0; i < len; ++i) {
 				deleteRoot(root.nodes[i]);
 			}
-			delete {'root' : root}.root;
+			delete root.nodes;
 		}
 	}
 
@@ -60,6 +60,7 @@ function FileTreeModel(userModel) {
 		for (i = 0, len = root.nodes.length; i < len; ++i) {
 			if (!root.nodes[i].touched) {
 				deleteRoot(root.nodes[i]);
+				delete root.nodes[i];
 				root.nodes.splice(i, 1);
 				--i;
 				--len;

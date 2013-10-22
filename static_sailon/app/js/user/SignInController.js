@@ -20,7 +20,7 @@ function SignInController($scope, userModel, socket, $location, $cookies, fileTr
 				userModel.user = data.user;
 				fileTreeModel.update(data.user.docs);
 				$cookies['sid'] = data.sid;
-				userModel.lock.signed = false;
+				userModel.lock.signed = true;
 				$location.path('/workspace');
 			}
 		},
