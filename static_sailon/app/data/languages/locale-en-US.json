@@ -42,5 +42,6 @@
   "DELETE":                 "Delete",
   "SHARE":                  "Share",
   "SAVE":                   "Save",
-  "SHARED_USERS":           "Shared users"
+  "SHARED_USERS":           "Shared users",
+  "SHARED_FILES":           "Shared files"
 }
