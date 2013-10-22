@@ -18,7 +18,7 @@ function SignInController($scope, userModel, socket, $location, $cookies, fileTr
 				}
 			} else {
 				userModel.user = data.user;
-				fileTreeModel.update(data.user.docs);
+				fileTreeModel.update({'doc':data.user.docs});
 				$cookies['sid'] = data.sid;
 				userModel.lock.signed = true;
 				$location.path('/workspace');
