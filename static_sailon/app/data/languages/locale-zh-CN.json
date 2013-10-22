@@ -42,5 +42,6 @@
   "DELETE":                 "删除",
   "SHARE":                  "共享",
   "SAVE":                   "保存",
-  "SHARED_USERS":           "共享用户"
+  "SHARED_USERS":           "共享用户",
+  "SHARED_FILES":           "共享文件"
 }

@@ -4,7 +4,7 @@ function FileTreeModel(userModel) {
 	
 	// Data
 
-	var selfRoot = [], sharedRoot = [];
+	var selfRoot = [], sharedRoot = ['sfile1','sfile2'];
 
 	// File Services
 
