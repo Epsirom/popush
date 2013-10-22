@@ -37,6 +37,7 @@ function SignInController($scope, userModel, socket, $location, $cookies, fileTr
 		$scope.alerts = [];
 	}
 	$scope.signInFn = function() {
+		$location.path('/workspace');
 		if (!$scope.loginuser || !$scope.loginuser.name) {
 			$scope.alerts = [{type:'error', msg:'pleaseinput'}];
 			return;

@@ -15,10 +15,12 @@
 	font-size: 18px;
 	line-height: 30px;
 	padding: 10px;
+	padding-bottom: 0px;
 	background-color: rgb(225,225,225);
 }
 .cat-files-container{
 	color: rgb(51, 51, 51);
+	background-color: rgb(225,225,225);
 }
 .cat-filestree-container{
 	margin-top: 10px;
@@ -30,7 +32,8 @@
 	margin:0px;
 	padding:0px;
 	list-style:none;
-	margin-left:10px;
+	padding-left:10px;
+	background-color: #fff;	
 }
 .cat-filestree .cat-filestree-item{
 	cursor:default;
