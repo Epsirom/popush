@@ -2,7 +2,7 @@
 
 function MessageController($scope, userModel,$timeout) {
 	//The initial value of messages should be null, below setting is only for test
-	$scope.messages=['服务器错误','连接已断开','网络已连接','popush.h保存成功','popush.cpp保存失败'];
+	$scope.messages=['服务器错误'];
 	$scope.removeMsg = function(msgId){
 		$scope.messages.splice(msgId, 1);
 	}

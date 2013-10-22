@@ -1,12 +1,12 @@
 <div class="container-fluid ws-container" ng-controller="WorkspaceController">
   <div class="row-fluid ws-mainbody">
-  	<div class="span3 ws-catalogue">
+  	<div class="span2 ws-catalogue">
       <!--userinfo-->
   		<div class="row offset1 ws-userinfo">
-        <a ui-sref="workspace.userinfo.settings" ><img height="32" width="32" ng-src="{{avatarSrc}}" /></a>
-        <span ng-bind="username"></span>
+        <a ui-sref="workspace.userinfo.settings" ><img height="32" width="32" ng-src="{{user.avatar}}" /></a>
+        <span ng-bind="user.name"></span>
         <span class="offset1"></span>
-        <a class="btn-link" translate="LOG_OUT"></a>
+        <a class="btn-link" translate="LOG_OUT" ng-click="logoutFn()"></a>
   		</div>
       <!--catalogue-->
   		<div class="row-fluid ws-catalogue-block">
@@ -17,7 +17,7 @@
           <div ui-view="collaborators"></div>
       </div>
     </div>
-  	<div class="span9 ws-editor-innner">
+  	<div class="span10 ws-editor-innner">
   		<div ui-view="editor"></div>
   	</div>
     <div ui-view="message"></div>
@@ -26,3 +26,4 @@
     <!--preload-->
     <div ng-include="'partials/avatarMgt.html'" style="display:none"></div>
     <div ng-include="'partials/passwordMgt.html'" style="display:none"></div>
+</div>
