@@ -1,13 +1,15 @@
 <!--change avatar-->
-<div class="row-fluid userinfo-section">
+<div class="row-fluid userinfo-section" ng-controller = "AvatarController">
 	<div class="userinfo-inner">
 		<div class="userinfo-center userinfo-marginleft">
+			<alert ng-repeat="alert in alerts" type="alert.type" close="closeErr()" >{{alert.msg | translate}}</alert>
 			<div>
-				<img ng-src="/data/avatar/character.png" width="256" height="256" class="userinfo-avatar" />
+				<label for="uploader">
+					<img ng-src={{currentuser.avatar}} width="256" height="256" class="userinfo-avatar" ng-click="changeAvatarTrigger()"/>
+					<input id="uploader" style="display:none" type="file" name="upload" accept="image/png,image/jpeg" ng-model-instant id="fileToUpload" onchange="angular.element(this).scope().changeAvatarFn(this)"/>
+				</label>
 			</div>
-			<div style="overflow:hidden;height:0;max-height:0;">
-				<input type="file" name="upload" accept="image/png,image/jpeg" />
-			</div>
+			
 		</div>
 		<div class="userinfo-center">
 			<div translate="CLICK_CHANGE"></div>
