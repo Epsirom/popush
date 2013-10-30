@@ -43,5 +43,8 @@
   "SHARE":                  "Share",
   "SAVE":                   "Save",
   "SHARED_USERS":           "Shared users",
-  "SHARED_FILES":           "Shared files"
+  "SHARED_FILES":           "Shared files",
+  "FILENAME":               "Filename",
+  "STATE":                  "State",
+  "LAST_MODIFIED":          "Last Modified"
 }

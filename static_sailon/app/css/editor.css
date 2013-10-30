@@ -80,3 +80,12 @@
 {
     float:right;
 }
+.edt-chat-name
+{
+    color: #00a;
+    font-size: 12px;
+}
+.self
+{
+    color: #0a0;
+}

@@ -94,3 +94,45 @@ var app = angular.module('popush', ['popushFilters','socketModule', 'userModule'
 	run(['$translate', 'userModel', function($translate, userModel) {
 		$translate.uses(userModel.getLanguage());
 	}]);
+
+    app.directive('resize', function ($window) {
+    return function (scope, element) {
+        var w = angular.element($window);
+        scope.getWindowDimensions = function () {
+            return { 'h': w[0].innerHeight, 'w': w[0].innerWidth };
+        };
+        scope.$watch(scope.getWindowDimensions, function (newValue, oldValue) {
+            scope.windowHeight = newValue.h;
+            scope.windowWidth = newValue.w;
+            
+            scope.style = function () {
+               var tmp = newValue.w - 380;
+               if(tmp < 0)
+                    tmp = 600;
+                return { 
+                    'height': (newValue.h + 0) + 'px', 
+                    'width': tmp + 'px' 
+                };
+            };
+            
+        }, true);
+    
+        w.bind('resize', function () {
+            scope.$apply();
+        });
+        }
+    });
+
+    app.directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.ngEnter);
+                });
+
+                event.preventDefault();
+            }
+        });
+    };
+});
