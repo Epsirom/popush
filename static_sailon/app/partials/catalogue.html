@@ -1,9 +1,9 @@
 <!-- Files -->
 <script type="text/ng-template" id="filetree_render.html">
-	<span class="name" ng-if="file.type === 0" ng-click="updateFolder(file);">
-		<i class="icon-folder-close" ng-show="file.status === 0"></i>
-		<i class="icon-folder-open" ng-show="file.status > 0"></i>
-		{{file.name}}
+	<span class="name" ng-if="file.type === 0">
+		<i class="icon-folder-close" ng-show="file.status === 0" ng-click="updateFolder(file);"></i>
+		<i class="icon-folder-open" ng-show="file.status > 0" ng-click="updateFolder(file);"></i>
+		<span ng-click="showFolder(file);">{{file.name}}</span>
 	</span>
 	<span class="name" ng-if="file.type === 1">
 		<i class="icon-file"></i>
@@ -22,7 +22,7 @@
 <div class="cat-files-container">
 	<ul class="cat-filestree" ng-controller="FileTreeController">
 		<li class="cat-filestree-item">
-			<span class="name" ng-click="changeSharedStatus()">
+			<span class="name" ng-click="changeSharedStatus();">
 				<i class="icon-eye-open"></i>
 				{{ 'SHARED_FILES' | translate}}
 			</span>
@@ -32,10 +32,10 @@
 						<img src="img/init.gif" />{{'IS_LOADING' | translate}}
 					</li>
 					<li class="cat-filestree-item" ng-repeat="shared in tree.shared" ng-show="tree.rootStatus.shared === 1">
-						<span class="name" ng-if="shared.type === 0" ng-click="openFolder(shared);">
-							<i class="icon-folder-close" ng-show="shared.status === 0"></i>
-							<i class="icon-folder-open" ng-show="shared.status > 0"></i>
-							{{shared.name}}
+						<span class="name" ng-if="shared.type === 0">
+							<i class="icon-folder-close" ng-show="shared.status === 0" ng-click="openFolder(shared);"></i>
+							<i class="icon-folder-open" ng-show="shared.status > 0" ng-click="openFolder(shared);"></i>
+							<span ng-click="showFolder(shared);">{{shared.name}}</span>
 						</span>
 						<span class="name" ng-if="shared.type === 1">
 							<i class="icon-file"></i>

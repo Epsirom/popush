@@ -22,6 +22,11 @@ function FileTreeModel(userModel, socket) {
 			flag = false;
 			for (j = 0, lenj = currentRoot.length; j < lenj; ++j) {
 				if (currentRoot[j].name === paths[i]) {
+					if (currentRoot[j].status > 0) {
+						currentRoot[j].status = 1;
+					} else {
+						currentRoot[j].status = 0;
+					}
 					currentRoot = currentRoot[j].nodes;
 					flag = true;
 					break;
@@ -31,8 +36,14 @@ function FileTreeModel(userModel, socket) {
 				return null;
 			}
 		}
+		lenj = paths.length - 1;
 		for (i = 0, len = currentRoot.length; i < len; ++i) {
-			if (currentRoot[i].name === paths[len - 1]) {
+			if (currentRoot[i].name === paths[lenj]) {
+				if (currentRoot[i].status > 0) {
+					currentRoot[i].status = 1;
+				} else {
+					currentRoot[i].status = 0;
+				}
 				return currentRoot[i];
 			}
 		}
@@ -87,8 +98,10 @@ function FileTreeModel(userModel, socket) {
 				if (currentRoot[j].name === paths[i]) {
 					currentRoot[j].path = tmpPath;
 					currentRoot[j].touched = true;
-					if (currentRoot[j].status === 2) {
+					if (currentRoot[j].status > 0) {
 						currentRoot[j].status = 1;
+					} else {
+						currentRoot[j].status = 0;
 					}
 					currentRoot = currentRoot[j].nodes;
 					flag = true;
@@ -99,7 +112,7 @@ function FileTreeModel(userModel, socket) {
 				var newFile = {
 					'name': paths[i],
 					'path': tmpPath,
-					'status': 0,
+					'status': 1,
 					'type': 0,
 					'touched': true,
 					'nodes': []
@@ -116,6 +129,11 @@ function FileTreeModel(userModel, socket) {
 				deleteRoot(currentRoot[j]);
 				currentRoot[j].type = (doc.type === "doc") ? 1 : 0;
 				currentRoot[j].touched = true;
+				if (currentRoot[j].status > 0) {
+					currentRoot[j].status = 1;
+				} else {
+					currentRoot[j].status = 0;
+				}
 				currentRoot[j].path = tmpPath;
 				if ((doc.type === "doc") && currentRoot[j].nodes) {delete currentRoot[j].nodes;}
 				else if ((doc.type === "dir") && (!currentRoot[j].nodes)) {currentRoot[j].nodes = [];}
@@ -135,14 +153,14 @@ function FileTreeModel(userModel, socket) {
 		}
 	};
 
-	var updateFiles = function(doc) {
-		var i, len;
-		if (doc.doc instanceof Array) {
+	var updateFiles = function(docpack) {
+		var i, len, doc = docpack.doc;
+		if (doc instanceof Array) {
 			clearTouch({'nodes': selfRoot});
 			clearTouch({'nodes': sharedRoot});
-			len = doc.doc.length;
+			len = doc.length;
 			for (i = 0; i < len; ++i) {
-				touchFile(doc.doc[i]);
+				touchFile(doc[i]);
 			}
 			removeUntouched({'nodes': selfRoot});
 			removeUntouched({'nodes': sharedRoot});

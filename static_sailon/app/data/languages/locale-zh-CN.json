@@ -43,5 +43,9 @@
   "SHARE":                  "共享",
   "SAVE":                   "保存",
   "SHARED_USERS":           "共享用户",
-  "SHARED_FILES":           "共享文件"
+  "SHARED_FILES":           "共享文件",
+  "unauthorized":           "用户名和密码不匹配",
+  "needrelogin":            "需要重新登录",
+  "loginsuccess":           "登录成功！",
+  "USER_SETTINGS":          "用户设置"
 }

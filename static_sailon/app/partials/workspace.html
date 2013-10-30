@@ -3,7 +3,7 @@
   	<div class="span2 ws-catalogue">
       <!--userinfo-->
   		<div class="row offset1 ws-userinfo">
-        <a ui-sref="workspace.userinfo.settings" ><img height="32" width="32" ng-src="{{user.avatar}}" /></a>
+        <a class="btn-link" ng-click="showSettings();" ><img height="32" width="32" ng-src="{{user.avatar}}" /></a>
         <span ng-bind="user.name"></span>
         <span class="offset1"></span>
         <a class="btn-link" translate="LOG_OUT" ng-click="logoutFn()"></a>
@@ -19,7 +19,7 @@
       </div>
     </div>
   	<div class="span10 ws-editor-innner">
-  		<div ui-view="editor"></div>
+  		<div ui-view="tabs"></div>
   	</div>
     <div ui-view="message"></div>
   </div>

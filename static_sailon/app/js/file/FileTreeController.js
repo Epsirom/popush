@@ -2,6 +2,7 @@
 
 function FileTreeController($scope, userModel, fileTreeModel, socket){
 	$scope.tree = fileTreeModel;
+	var isClicked = false;
 	$scope.changeSharedStatus = function() {
 		if (fileTreeModel.rootStatus.shared > 0) {
 			fileTreeModel.rootStatus.shared = 0;
@@ -28,5 +29,8 @@ function FileTreeController($scope, userModel, fileTreeModel, socket){
 		} else {
 			doc.status = 1;
 		}
+	}
+	$scope.showFolder = function(doc) {
+		alert("hehehe");
 	}
 }
