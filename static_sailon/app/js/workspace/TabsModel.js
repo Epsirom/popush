@@ -21,6 +21,10 @@ function TabsModel(userModel, fileTreeModel, socket) {
 		current = tabs[len];
 	}
 
+	var openFolder = function(doc) {
+		
+	}
+
 	return {
 		'tabs': tabs,
 		'current': current,
