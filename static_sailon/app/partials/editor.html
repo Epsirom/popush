@@ -1,7 +1,7 @@
-<div ng-controller="EditorController">
+<div ng-controller="EditorController" >
 	<div class="row-fluid" style="padding-top:10px">
-	<tabset>
-	    <tab ng-repeat="tab in tabs" active="tab.active">
+	<tabset >
+	    <tab ng-repeat="tab in tabs" active="tab.active" >
 	    	<tab-heading>
         		{{tab.title}} 
         		<a class="edt-close-btn btn-link" ng-click="closeFile()"><i class="icon-remove"></i></a>
@@ -41,11 +41,17 @@
 				<div class="span3" ng-show="chat_show">
 					<div class="edt-chat">
 						<div class="edt-chat-inner">
+							<p ng-repeat="chatmessage in chatmessages">
+								<span class="edt-chat-name self">
+									{{chatmessage.name}}&nbsp;&nbsp;{{chatmessage.time}}
+								</span><br>
+								{{chatmessage.content}}
+							</p>
 						</div>
 					</div>
-					<input class="edt-input-msg" type="text">
+					<input ng-model="inputMessage" class="edt-input-msg" type="text" />
 					<div class="edt-chat-btn">
-						<button class="btn" type="button"><i class="icon-comment"></i></button>
+						<button class="btn" type="button" ng-click="sendChatMessage()"><i class="icon-comment"></i></button>
 						<button class="btn active" type="button" id="voice-on"><i class="icon-volume-up"></i></button>
 					</div>
 				</div>
@@ -80,9 +86,9 @@
 						<tr>
 							<th class="edt-col1">&nbsp;</th>
 							<th class="edt-col2">&nbsp;</th>
-							<th class="edt-col3">文件名</th>
-							<th class="edt-col4">状态</th>
-							<th class="edt-col5">修改时间</th>
+							<th class="edt-col3" translate="FILENAME"></th>
+							<th class="edt-col4" translate="STATE"></th>
+							<th class="edt-col5" translate="LAST_MODIFIED"></th>
 						</tr>
 						<tr ng-repeat = "file in files">
 							<td class="edt-col1"><input type="checkbox"></input></td>

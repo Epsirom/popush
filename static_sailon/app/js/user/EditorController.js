@@ -185,6 +185,35 @@ function EditorController($scope, userModel, socket, $location) {
 
     $scope.setFullScreen = function()
     {
-
+    }
+    
+    $scope.chatmessages=[
+        {
+            'name':'fuge',
+            'time':'10:57:38',
+            'content':'Hello everyone, I am idiot, absolutely.'
+        },
+        {
+            'name':'fuge',
+            'time':'10:57:39',
+            'content':'Will you marry me?'
+        },
+    ];
+    $scope.inputMessage="123";
+    $scope.sendChatMessage = function()
+    {   
+        $scope.inputMessage = "";
+    /*
+        if($scope.inputMessage != "")
+        {   
+            $scope.newMsg.content = $scope.inputMessage;
+            //$scope.newMsg.name = "fuge";
+            //$scope.newMsg.time = "10:57:39";
+            $scope.chatmessages.content.push($scope.newMsg);
+            $scope.chatmessages.name.push($scope.newMsg);
+            $scope.chatmessages.time.push($scope.newMsg);
+            $scope.inputMessage = "";
+        }
+        */
     }
 }
