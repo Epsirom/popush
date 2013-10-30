@@ -2,12 +2,12 @@
 	height: 100%;
 }
 .ws-mainbody{
-	min-width: 1300px;
 	height: 100%;
+	min-width: 1300px;
 }
 .ws-editor-innner{
-	max-width: 1000px;
     width: 100%;
+    min-width: 600px;
     margin-right: auto;
     margin-left: auto;
 }
@@ -15,11 +15,10 @@
 	padding: 10px;
 }
 .ws-catalogue{
-	min-width: 280px;
 	height: 100%;
 }
 .ws-catalogue-block{
-	height:75%;
+	height:70%;
 }
 .ws-catalogue-inner{
 	height: 95%;

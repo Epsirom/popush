@@ -29,7 +29,7 @@
             <div class="control-group">
               <label class="control-label" for="loginInputPassword" translate="PASSWORD"></label>
               <div class="controls">
-                <input type="password" id="loginInputPassword" ng-model="loginuser.password" />
+                <input type="password" id="loginInputPassword" ng-model="loginuser.password" ng-enter="signInFn()" />
               </div>
             </div>
             <div class="control-group">
@@ -65,7 +65,7 @@
             <div class="control-group">
               <label class="control-label" for="confirmPassword" translate="CONFIRM_PASSWORD"></label>
               <div class="controls">
-                <input type="password" id="confirmPassword" ng-model="registeruser.confirmpsd" />
+                <input type="password" id="confirmPassword" ng-model="registeruser.confirmpsd" ng-enter="signUpFn()" />
               </div>
             </div>
                 <div class="control-group">
