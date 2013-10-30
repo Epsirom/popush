@@ -1,0 +1,19 @@
+<div class="row-fluid userinfo-section">
+	<div class="userinfo-inner">
+		<div ng-controller="LanguageController">
+			<div class="row-fluid">
+				<div class="span5">
+					<div class="userinfo-right" translate="LANG_CHANGE"></div>
+				</div>
+				<div class="span7">
+					<div class="userinfo-left">
+						<select class="userinfo-switch" ng-model="lang" ng-change="changeLang()">
+							<option value="en-US">English</option>
+							<option value="zh-CN">简体中文</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

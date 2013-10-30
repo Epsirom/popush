@@ -27,9 +27,8 @@
   "ACCOUNT_SETTINGS":    "Account Settings",
   "PASSWARD_MGT":        "Password",
   "AVATAR_MGT":          "Avatar",
-  "CLICK_CHANGE":        "click the image to change",
-  "LANG_CHANGE":         "Language Change",
-  "THEME_CHANGE":        "Theme Change",
+  "CLICK_CHANGE":        "Click the image to change",
+  "LANG_CHANGE":         "Change language",
   "FULL_SCREEN":            "Full screen",
   "RUN":                    "Run",
   "DEBUG":                  "Debug",
@@ -50,5 +49,6 @@
   "USER_SETTINGS":          "User Settings",
   "FILENAME":               "Filename",
   "STATE":                  "State",
-  "LAST_MODIFIED":          "Last Modified"
+  "LAST_MODIFIED":          "Last Modified",
+  "LANGUAGE_MGT":           "Language"
 }

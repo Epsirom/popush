@@ -32,48 +32,6 @@ var app = angular.module('popush', ['popushFilters', 'socketModule', 'userModule
                 }
             }
         })
-        .state('workspace.userinfo',{
-            abstract: true,
-            url: '/userinfo',
-            views: {
-                'editor': {
-                    templateUrl: 'partials/userinfo.html'
-                },
-                'catalogue': {
-                    templateUrl: 'partials/catalogue.html'
-                },
-                'collaborators': {
-                    templateUrl: 'partials/collaborators.html'
-                },
-                'message':{
-                    templateUrl: 'partials/message.html'
-                }
-            }
-        })
-        .state('workspace.userinfo.settings',{
-            url: '',
-            views: {
-                '': {
-                    templateUrl: 'partials/settings.html'
-                }
-            }
-        })
-        .state('workspace.userinfo.avatarMgt',{
-            url: '/avatarMgt',
-            views: {
-                '': {
-                    templateUrl: 'partials/avatarMgt.html'
-                }
-            }
-        })
-        .state('workspace.userinfo.passwordMgt',{
-            url: '/passwordMgt',
-            views: {
-                '': {
-                    templateUrl: 'partials/passwordMgt.html'
-                }
-            }
-        })
     }).
 	config(['$translateProvider', function($translateProvider) {
 		$translateProvider.useStaticFilesLoader({

@@ -5,12 +5,49 @@ function FileTreeModel(userModel, socket) {
 	// Data
 
 	var selfRoot = [], sharedRoot = [],
-		rootStatus = {'self': 1, 'shared': 0};
+		rootStatus = {'self': 'on', 'shared': 'off'};
 
 	// File Services
 
+	var getNameByPath = function(path) {
+		if (typeof(path) !== "string") {
+			return;
+		}
+		var paths = path.split("/");
+		return paths[paths.length - 1];
+	}
+
+	var refreshStatus = function(doc) {
+		if (!doc.status) {
+			doc.status = 'off';
+		} else if (doc.status !== 'off') {
+			doc.status = 'on';
+		}
+	}
+
+	var refreshInfo = function(node, doc) {
+		if (doc.createTime) {
+			node.createTime = doc.createTime;
+		}
+		if (doc.modifyTime) {
+			node.modifyTime = doc.modifyTime;
+		}
+		if (doc.members) {
+			node.members = doc.members;
+		}
+		if (doc.path) {
+			node.path = doc.path;
+		}
+		if (doc.permission) {
+			node.permission = doc.permission;
+		}
+		if (doc.type) {
+			node.type = doc.type;
+		}
+	}
+
 	var selectRoot = function(path) {
-		var paths = path.split("/"), i, len, currentRoot, j, lenj, flag, filename, folder;
+		var paths = path.split("/"), i, len, currentRoot, j, lenj, flag, filename, folder, tmpPath;
 		len = paths.length;
 		if (len < 3) {
 			return null;
@@ -22,11 +59,7 @@ function FileTreeModel(userModel, socket) {
 			flag = false;
 			for (j = 0, lenj = currentRoot.length; j < lenj; ++j) {
 				if (currentRoot[j].name === paths[i]) {
-					if (currentRoot[j].status > 0) {
-						currentRoot[j].status = 1;
-					} else {
-						currentRoot[j].status = 0;
-					}
+					refreshStatus(currentRoot[j]);
 					currentRoot = currentRoot[j].nodes;
 					flag = true;
 					break;
@@ -36,14 +69,10 @@ function FileTreeModel(userModel, socket) {
 				return null;
 			}
 		}
-		lenj = paths.length - 1;
+		lenj = len - 1;
 		for (i = 0, len = currentRoot.length; i < len; ++i) {
 			if (currentRoot[i].name === paths[lenj]) {
-				if (currentRoot[i].status > 0) {
-					currentRoot[i].status = 1;
-				} else {
-					currentRoot[i].status = 0;
-				}
+				refreshStatus(currentRoot[i]);
 				return currentRoot[i];
 			}
 		}
@@ -89,7 +118,7 @@ function FileTreeModel(userModel, socket) {
 		}
 		flag = (paths[1] === userModel.user.name);
 		currentRoot = flag ? selfRoot : sharedRoot;
-		tmpPath = flag ? "/" + paths[1] : "";
+		tmpPath = flag ? ("/" + paths[1]) : "";
 		i = flag ? 2 : 1;
 		for (; i < len - 1; ++i) {
 			flag = false;
@@ -98,22 +127,22 @@ function FileTreeModel(userModel, socket) {
 				if (currentRoot[j].name === paths[i]) {
 					currentRoot[j].path = tmpPath;
 					currentRoot[j].touched = true;
-					if (currentRoot[j].status > 0) {
-						currentRoot[j].status = 1;
-					} else {
-						currentRoot[j].status = 0;
-					}
+					refreshStatus(currentRoot[j]);
 					currentRoot = currentRoot[j].nodes;
 					flag = true;
 					break;
 				}
 			}
 			if (!flag) {
+				var curTime = new Date();
 				var newFile = {
 					'name': paths[i],
+					'createTime': curTime.getTime(),
+					'modifyTime': curTime.getTime(),
+					'members': [],
 					'path': tmpPath,
-					'status': 1,
-					'type': 0,
+					'status': 'on',
+					'type': 'dir',
 					'touched': true,
 					'nodes': []
 				};
@@ -122,19 +151,12 @@ function FileTreeModel(userModel, socket) {
 			}
 		}
 		flag = false;
-		filename = paths[len - 1];
-		tmpPath += ("/" + filename);
 		for (j = 0, lenj = currentRoot.length; j < lenj; ++j) {
-			if (currentRoot[j].name === filename) {
-				deleteRoot(currentRoot[j]);
-				currentRoot[j].type = (doc.type === "doc") ? 1 : 0;
+			if (currentRoot[j].name === paths[len - 1]) {
+				refreshInfo(currentRoot[j], doc);
 				currentRoot[j].touched = true;
-				if (currentRoot[j].status > 0) {
-					currentRoot[j].status = 1;
-				} else {
-					currentRoot[j].status = 0;
-				}
-				currentRoot[j].path = tmpPath;
+				refreshStatus(currentRoot[j]);
+
 				if ((doc.type === "doc") && currentRoot[j].nodes) {delete currentRoot[j].nodes;}
 				else if ((doc.type === "dir") && (!currentRoot[j].nodes)) {currentRoot[j].nodes = [];}
 				flag = true;
@@ -142,14 +164,14 @@ function FileTreeModel(userModel, socket) {
 			}
 		}
 		if (!flag) {
-			currentRoot.push({
+			var tmpObj = {
 				'name': paths[len - 1],
-				'path': tmpPath,
-				'status': 0,
-				'type': (doc.type === "doc") ? 1 : 0,
-				'touched': true,
-				'nodes': (doc.type === "doc") ? null : []
-			});
+				'status': 'off', 
+				'touched': true, 
+				'nodes': (doc.type === 'doc') ? null : []
+			};
+			refreshInfo(tmpObj, doc);
+			currentRoot.push(tmpObj);
 		}
 	};
 
@@ -164,10 +186,12 @@ function FileTreeModel(userModel, socket) {
 			}
 			removeUntouched({'nodes': selfRoot});
 			removeUntouched({'nodes': sharedRoot});
-			if (rootStatus.self > 0)
-				rootStatus.self = 1;
-			if (rootStatus.shared > 0)
-				rootStatus.shared = 1;
+			if (rootStatus.self !== 'off') {
+				rootStatus.self = 'on';
+			}
+			if (rootStatus.shared !== 'off') {
+				rootStatus.shared = 'on';
+			}
 		} else {
 			clearTouch(selectRoot(doc.path));
 			len = doc.docs.length;
@@ -220,8 +244,8 @@ function FileTreeModel(userModel, socket) {
 		'delete': deleteRoot,
 		'select': selectRoot,
 		'update': updateFiles,
-		'open': function(path) {changeFileStatus(path, 1, true);},
-		'close': function(path) {changeFileStatus(path, 0, false);},
+		'open': function(path) {changeFileStatus(path, 'on', true);},
+		'close': function(path) {changeFileStatus(path, 'off', false);},
 		'self': selfRoot,
 		'shared': sharedRoot,
 		'rootStatus': rootStatus
