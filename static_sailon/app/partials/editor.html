@@ -15,22 +15,19 @@
 			    			</span>
 			    		</div>
 						<div class="edt-editor-btns">
-						    <button class="btn btn-primary edt-editor-btn" title="{{'RUN' | translate }}">
-						   		<i class="icon-play"></i>
+						    <button class="btn btn-primary edt-editor-btn" ng-class="docModel.runable? enabled:disabled"  title="{{'RUN' | translate }}" >
+						   		<i ng-class="docModel.lock.run? icon-stop:icon-play" ></i>
 						   	</button> 
-						    <button class="btn btn-primary edt-editor-btn" title="{{'DEBUG' | translate }}">
-						    	<i class="icon-eye-open"></i>
+						    <button class="btn btn-primary edt-editor-btn" ng-class="docModel.debugable? enabled:disabled" title="{{'DEBUG' | translate }}">
+						    	<i ng-class="docModel.lock.debug? icon-eye-close:icon-eye-open"></i>
 						    </button>
-						    <button class="btn btn-primary edt-editor-btn" title="{{'CONSOLE' | translate }}">
+						    <button class="btn btn-primary edt-editor-btn" ng-class="docModel.console?active" title="{{'CONSOLE' | translate }}">
 						    	<i class="icon-share"></i>
 						    </button>
-						    <button class="btn btn-primary edt-editor-btn" ng-click="setFullScreen()" title="{{'FULL_SCREEN' | translate }}">
+						    <button class="btn btn-primary edt-editor-btn" title="{{'FULL_SCREEN' | translate }}">
 						    	<i class="icon-fullscreen"></i>
 						    </button>
-						    <button class="btn btn-primary edt-editor-btn" ng-hide="chat_show" ng-click="toggleChat()" title="{{'SHOW_CHAT_WINDOW' | translate }}">
-						    	<i class="icon-backward"></i>
-						    </button>
-						    <button class="btn btn-primary edt-editor-btn" ng-show="chat_show" ng-click="toggleChat()" title="{{'HIDE_CHAT_WINDOW' | translate }}">
+						    <button class="btn btn-primary edt-editor-btn" title="{{'HIDE_CHAT_WINDOW' | translate }}">
 						    	<i class="icon-forward"></i>
 						    </button>
 						</div>
