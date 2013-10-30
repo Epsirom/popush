@@ -3,9 +3,11 @@
 }
 .ws-mainbody{
 	height: 100%;
+	min-width: 1300px;
 }
 .ws-editor-innner{
     width: 100%;
+    min-width: 600px;
     margin-right: auto;
     margin-left: auto;
 }
@@ -16,7 +18,7 @@
 	height: 100%;
 }
 .ws-catalogue-block{
-	height:75%;
+	height:70%;
 }
 .ws-catalogue-inner{
 	height: 95%;
