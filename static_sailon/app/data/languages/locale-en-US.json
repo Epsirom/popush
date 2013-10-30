@@ -34,6 +34,7 @@
   "RUN":                    "Run",
   "DEBUG":                  "Debug",
   "CONSOLE":                "Console",
+  "SHOW_CHAT_WINDOW":       "Show",
   "HIDE_CHAT_WINDOW":       "Hide",
   "NEW_FILE":               "New file",
   "NEW_FOLDER":             "New folder",
@@ -41,5 +42,13 @@
   "DELETE":                 "Delete",
   "SHARE":                  "Share",
   "SAVE":                   "Save",
-  "SHARED_USERS":           "Shared users"
+  "SHARED_USERS":           "Shared users",
+  "SHARED_FILES":           "Shared files",
+  "unauthorized":           "Your username and password didn't match. Please try again.",
+  "needrelogin":            "Need to re-login.",
+  "loginsuccess":          "Login successfully!",
+  "USER_SETTINGS":          "User Settings",
+  "FILENAME":               "Filename",
+  "STATE":                  "State",
+  "LAST_MODIFIED":          "Last Modified"
 }

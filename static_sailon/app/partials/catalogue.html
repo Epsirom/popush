@@ -1,63 +1,58 @@
 <!-- Files -->
-<div class="cat-files-container">
-	<div class="cat-folder" >
-		<span>
-			<a class="btn cat-tool-btn" title="{{ 'BACKROOTDIR' | translate}}" ng-click="backToRootDir()">
-				<i class="icon-home"></i>
-			</a>
-		</span>
-		<span translate="ROOTDIR">
-		</span>
-	</div>
-	<div class="cat-filestree-container">
-		<ul class="cat-filestree">
-			<li class="cat-filestree-item open">
-				<span class="name">
-				    <i class="icon-folder-close"></i>
-				    <i class="icon-folder-open"></i>
-			        project01
-				</span>
-				<div class="file">
-					<ul class="cat-filestree">
-						<li class="cat-filestree-item open">
-							<span class="name">
-							    <i class="icon-folder-close"></i>
-							    <i class="icon-folder-open"></i>
-						        src
-							</span>
-							<div class="file">
-								<ul class="cat-filestree">
-								    <li class="cat-filestree-item">
-					    			    <span class="name">
-									        <i class="icon-file"></i>
-									            popush.h
-									    </span>
-								    </li>
-								    <li class="cat-filestree-item">
-					    			    <span class="name">
-									        <i class="icon-file"></i>
-									            popush.cpp
-									    </span>
-								    </li>
-								</ul>
-							</div>
-						</li>
-					</ul>
-				</div>
+<script type="text/ng-template" id="filetree_render.html">
+	<span class="name" ng-if="file.type === 0">
+		<i class="icon-folder-close" ng-show="file.status === 0" ng-click="updateFolder(file);"></i>
+		<i class="icon-folder-open" ng-show="file.status > 0" ng-click="updateFolder(file);"></i>
+		<span ng-click="showFolder(file);">{{file.name}}</span>
+	</span>
+	<span class="name" ng-if="file.type === 1">
+		<i class="icon-file"></i>
+		{{file.name}}
+	</span>
+	<div class="file" ng-if="file.type === 0" ng-show="file.status > 0">
+		<ul class="cat-filetree">
+			<li ng-show="file.status === 2">
+				<img src="img/init.gif" />{{'IS_LOADING' | translate}}
 			</li>
-			<li class="cat-filestree-item">
-				<span class="name">
-				    <i class="icon-folder-close"></i>
-				    <i class="icon-folder-open"></i>
-			        project02
-				</span>
-			</li>
-			<li class="cat-filestree-item">
-			    <span class="name">
-			        <i class="icon-file"></i>
-			            README.txt
-			    </span>
-			</li>
+			<li ng-repeat="file in file.nodes" ng-include="'filetree_render.html'" ng-show="file.status === 1"></li>
 		</ul>
 	</div>
+</script>
+
+<div class="cat-files-container">
+	<ul class="cat-filestree" ng-controller="FileTreeController">
+		<li class="cat-filestree-item">
+			<span class="name" ng-click="changeSharedStatus();">
+				<i class="icon-eye-open"></i>
+				{{ 'SHARED_FILES' | translate}}
+			</span>
+			<div class="file" ng-if="tree.shared.length > 0" ng-show="tree.rootStatus.shared > 0">
+				<ul class="cat-filetree">
+					<li ng-show="tree.rootStatus.shared === 2">
+						<img src="img/init.gif" />{{'IS_LOADING' | translate}}
+					</li>
+					<li class="cat-filestree-item" ng-repeat="shared in tree.shared" ng-show="tree.rootStatus.shared === 1">
+						<span class="name" ng-if="shared.type === 0">
+							<i class="icon-folder-close" ng-show="shared.status === 0" ng-click="openFolder(shared);"></i>
+							<i class="icon-folder-open" ng-show="shared.status > 0" ng-click="openFolder(shared);"></i>
+							<span ng-click="showFolder(shared);">{{shared.name}}</span>
+						</span>
+						<span class="name" ng-if="shared.type === 1">
+							<i class="icon-file"></i>
+							{{shared.name}}
+						</span>
+						<div class="file" ng-if="shared.type === 0" ng-show="shared.status > 0">
+							<ul class="cat-filetree">
+								<li ng-show="shared.status === 2">
+									<img src="img/init.gif" />{{'IS_LOADING' | translate}}
+								</li>
+								<li ng-repeat="file in shared.nodes" ng-include="'filetree_render.html'" ng-show="shared.status === 1"></li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</li>
+		<li ng-repeat="file in tree.self" ng-include="'filetree_render.html'" class="cat-filestree-item"></li>
+	</ul>
 </div>

@@ -10,7 +10,6 @@ function PasswordController($scope, userModel, socket) {
 			} else{
 				$scope.alerts = [{type:'success', msg:'ChangePasswordSucceed'}];
 			}
-			console.log('m');	
 			userModel.lock.operation = false;
 		}
 	});
