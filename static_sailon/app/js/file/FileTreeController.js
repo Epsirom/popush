@@ -2,32 +2,31 @@
 
 function FileTreeController($scope, userModel, fileTreeModel, socket){
 	$scope.tree = fileTreeModel;
-	var isClicked = false;
 	$scope.changeSharedStatus = function() {
-		if (fileTreeModel.rootStatus.shared > 0) {
-			fileTreeModel.rootStatus.shared = 0;
+		if (fileTreeModel.rootStatus.shared !== 'off') {
+			fileTreeModel.rootStatus.shared = 'off';
 		} else {
-			fileTreeModel.rootStatus.shared = 2;
+			fileTreeModel.rootStatus.shared = 'loading';
 			socket.emit('doc', {
 				'path': '/' + userModel.user.name
 			});
 		}
 	};
 	$scope.updateFolder = function(doc) {
-		if (doc.status > 0) {
-			doc.status = 0
+		if (doc.status !== 'off') {
+			doc.status = 'off';
 		} else {
-			doc.status = 2;
+			doc.status = 'loading';
 			socket.emit('doc', {
 				'path': doc.path
 			});
 		}
 	}
 	$scope.openFolder = function(doc) {
-		if (doc.status > 0) {
-			doc.status = 0
+		if (doc.status !== 'off') {
+			doc.status = 'off'
 		} else {
-			doc.status = 1;
+			doc.status = 'on';
 		}
 	}
 	$scope.showFolder = function(doc) {

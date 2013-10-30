@@ -29,7 +29,6 @@
   "AVATAR_MGT":             "头像管理",
   "CLICK_CHANGE":           "点击上传图像",
   "LANG_CHANGE":            "语言更改",
-  "THEME_CHANGE":           "主题更改",
   "FULL_SCREEN":            "全屏",
   "RUN":                    "运行",
   "DEBUG":                  "调试",
@@ -50,5 +49,6 @@
   "USER_SETTINGS":          "用户设置",
   "FILENAME":               "文件名",
   "STATE":                  "状态",
-  "LAST_MODIFIED":          "修改时间"
+  "LAST_MODIFIED":          "修改时间",
+  "LANGUAGE_MGT":           "界面语言"
 }
