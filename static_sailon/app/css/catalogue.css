@@ -47,18 +47,7 @@
 .cat-filestree .cat-filestree-item>.name>i.icon-file{
 	color:transparent;
 }
-.cat-filestree .cat-filestree-item>.name>.icon-folder-close{
-	display:inline-block;
-}
-.cat-filestree .cat-filestree-item>.name>.icon-folder-open{
-	display:none;
-}
-.cat-filestree .cat-filestree-item.open>.files{
-	display:block;
-}
-.cat-filestree .cat-filestree-item.open>.name>.icon-folder-close{
-	display:none;
-}
-.cat-filestree .cat-filestree-item.open>.name>.icon-folder-open{
-	display:inline-block;
+.name {
+	white-space: nowrap;
+	cursor: pointer;
 }

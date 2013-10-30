@@ -32,11 +32,21 @@ function UserModel(socket, $location, $route, $cookies, POPUSH_SETTINGS) {
 		}
 	}
 
+	var logout = function() {
+		socket.emit('logout', {
+		});
+		userLock.signed = false;
+		userLock.signIn = false;
+		delete {'u': currentUser}.u;
+		delete $cookies['sid'];
+		$location.path("/"); 
+	}
+
 	// User Data
 
 	var connected = false,
 		language = loadLang(),
-		userLock = {'signIn': false, 'signed': false},
+		userLock = {'signIn': false, 'signed': false, 'relogin': false},
 		currentUser = {};
 
 	// Socket Services
@@ -58,11 +68,17 @@ function UserModel(socket, $location, $route, $cookies, POPUSH_SETTINGS) {
 		}
 	});
 
+	socket.forceOn('unauthorized', function() {
+		userLock.relogin = true;
+		logout();
+	});
+
 	return {
 		isConnected: function() {return connected;},
 		getLanguage: function() {return language;},
 		setLanguage: setLang,
 		lock: userLock,
-		user: currentUser
+		user: currentUser,
+		logout: logout
 	};
 }
