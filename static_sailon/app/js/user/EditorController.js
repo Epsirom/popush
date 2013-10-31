@@ -28,6 +28,15 @@ var languagemap = {
 	'vbs':		'vb',
 	'xml':		'xml',
 };
+
+function winHeight() {
+    return window.innerHeight || (document.documentElement || document.body).clientHeight;
+}
+
+function isFullScreen(cm) {
+    return /\bCodeMirror-fullscreen\b/.test(cm.getWrapperElement().className);
+}
+
 function EditorController($scope, userModel, socket, $location) {
 	$scope.editorOptions = {
         lineWrapping : true,
@@ -35,21 +44,27 @@ function EditorController($scope, userModel, socket, $location) {
         indentUnit: 4,
 		indentWithTabs: true,
 		value: "function test()\n{\n\tvar Huarong = 'Dadi', Yanglei = 'Nanshen';\n}",
-        onLoad : function(_editor){
+        onLoad : function(cm){
 				    // Editor part
-				    $scope.editor = _editor;
-				    var _doc = _editor.getDoc();
-				    _editor.focus();
+				    $scope.editor = cm;
+				    var _doc = cm.getDoc();
+				    cm.focus();
 
 				    // Options
 				    CodeMirror.modeURL = "/lib/codemirror/mode/%N/%N.js";
-				    _editor.setOption("mode", "javascript");
-   					CodeMirror.autoLoadMode(_editor, "javascript");
+				    cm.setOption("mode", "javascript");
+   					CodeMirror.autoLoadMode(cm, "javascript");
 
 				    // Events
-				    _editor.on("beforeChange", function(){ });
-				    _editor.on("change", function(){ });
+				    cm.on("beforeChange", function(){ });
+				    cm.on("change", function(){ });
 				},
+        extraKeys: {
+            "Esc": function(cm) {
+                if (isFullScreen(cm)) $scope.setFullScreen(false);
+                //resize();
+            }
+        },
 		gutters: ["runat", "CodeMirror-linenumbers", "breakpoints"],
     };
 
@@ -134,7 +149,8 @@ function EditorController($scope, userModel, socket, $location) {
 		        indentUnit: 4,
 				indentWithTabs: true,
 				value: "<html>\n<body>\n</body>\n</html>",
-		        onLoad : function(_editor){
+		        onLoad : function(cm){
+                            $scope.editor = cm;
 						    CodeMirror.modeURL = "/lib/codemirror/mode/%N/%N.js";
 		   					if(languagemap[icon])
 							{
@@ -147,6 +163,12 @@ function EditorController($scope, userModel, socket, $location) {
 								CodeMirror.autoLoadMode($scope.editor, '');
    							}
 						},
+                extraKeys: {
+                    "Esc": function(cm) {
+                        if (isFullScreen(cm)) $scope.setFullScreen(false);
+                        //resize();
+                    }
+                },
 				gutters: ["runat", "CodeMirror-linenumbers", "breakpoints"],
     		};
    		}
@@ -170,6 +192,7 @@ function EditorController($scope, userModel, socket, $location) {
 
     $scope.chat_show = false;
     $scope.editor_width = 'span12'; 
+    $scope.show_tooltip = false;
     $scope.toggleChat = function()
     {
         $scope.chat_show = !$scope.chat_show;
@@ -183,8 +206,25 @@ function EditorController($scope, userModel, socket, $location) {
         }
     }
 
-    $scope.setFullScreen = function()
+    $scope.setFullScreen = function(full)
     {
+        var wrap = $scope.editor.getWrapperElement();
+        if (full) 
+        {
+            wrap.className += " CodeMirror-fullscreen";
+            wrap.style.height = winHeight() + "px";
+            $scope.show_tooltip = true;
+            //$timeout($scope.show_tooltip = false, 1000);
+            document.documentElement.style.overflow = "hidden";
+        }
+        else
+        {
+            wrap.className = wrap.className.replace(" CodeMirror-fullscreen", "");
+            wrap.style.height = "";
+            document.documentElement.style.overflow = "";
+        }
+        $scope.editor.refresh();
+        $scope.editor.focus();
     }
     
     $scope.chatmessages=[
