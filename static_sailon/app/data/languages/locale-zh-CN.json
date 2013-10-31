@@ -50,5 +50,8 @@
   "FILENAME":               "文件名",
   "STATE":                  "状态",
   "LAST_MODIFIED":          "修改时间",
-  "LANGUAGE_MGT":           "界面语言"
+  "LANGUAGE_MGT":           "界面语言",
+  "CONFIRM_DELETION":       "确认删除",
+  "CONFIRM_DELE_FILE":      "确认删除文件: ",
+  "CONFIRM_DELE_FOLDER":    "确认删除文件夹及其所有内容: "
 }

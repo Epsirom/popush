@@ -1,3 +1,6 @@
+.nav{
+    margin-bottom: 5px;
+}
 .CodeMirror {
     line-height: 1.5;
     height: 392px;
@@ -10,6 +13,8 @@
 .edt-file-btn,.edt-editor-btn
 {
     margin:5px 10px 5px 10px;
+    padding: 6px 10px 6px 10px;
+    background-color: rgb(255, 255, 255) !important;
 }
 .edt-file-btns,.edt-editor-btns
 {

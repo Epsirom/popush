@@ -50,5 +50,8 @@
   "FILENAME":               "Filename",
   "STATE":                  "State",
   "LAST_MODIFIED":          "Last Modified",
-  "LANGUAGE_MGT":           "Language"
+  "LANGUAGE_MGT":           "Language",
+  "CONFIRM_DELETION":       "Confirm Deletion",
+  "CONFIRM_DELE_FILE":      "Confirm to delete file: ",
+  "CONFIRM_DELE_FOLDER":    "Confirm to delete folder and all its content"
 }

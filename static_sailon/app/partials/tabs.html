@@ -60,17 +60,19 @@
 						<div class="edt-filepath">
 							<span ng-repeat="p in tab.path"> / <a class="btn-link">{{p}}</a></span>
 						</div>
-						<div class="edt-file-btns">
+						<div class="edt-file-btns" ng-controller="DlgController">
+							<!-- new file-->
 							<button class="btn btn-primary edt-file-btn" title="{{'NEW_FILE' | translate }}">
 								<i class="icon-file"></i>
 							</button>
+							<!-- the end of new file-->
 							<button class="btn btn-primary edt-file-btn" title="{{'NEW_FOLDER' | translate }}">
 								<i class="icon-folder-close"></i>
 							</button>
 							<button class="btn btn-primary edt-file-btn" title="{{'RENAME' | translate }}">
 								<i class="icon-pencil"></i>
 							</button>
-							<button class="btn btn-primary edt-file-btn" title="{{'DELETE' | translate }}">
+							<button class="btn btn-primary edt-file-btn" title="{{'DELETE' | translate }}" ng-click="open()">
 								<i class="icon-trash"></i>
 							</button>
 							<button class="btn btn-primary edt-file-btn" title="{{'SHARE' | translate }}">
@@ -106,3 +108,19 @@
 		</tabset>
 	</div>
 </div>
+
+
+<script type="text/ng-template" id="deletion.html">
+    <div class="modal-header">
+    	<button type="button" class="close" ng-click="cancel()">&times;</button>
+        <h3 translate="CONFIRM_DELETION"></h3>
+    </div>
+    <div class="modal-body">
+        {{'CONFIRM_DELE_FILE' | translate}} <br/>
+        {{'CONFIRM_DELE_FOLDER' | translate}}
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
