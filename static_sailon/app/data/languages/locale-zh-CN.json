@@ -60,5 +60,8 @@
   "CREATE":                 "创建",
   "createfilesuccess":      "文件创建成功",
   "createfoldersuccess":    "文件夹创建成功",
-  "file exists":            "创建失败：文件已存在"
+  "file exists":            "创建失败：文件已存在",
+  "CONFIRM_DELETION":       "确认删除",
+  "CONFIRM_DELE_FILE":      "确认删除文件: ",
+  "CONFIRM_DELE_FOLDER":    "确认删除文件夹及其所有内容: "
 }
