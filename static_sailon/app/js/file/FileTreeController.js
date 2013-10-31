@@ -1,36 +1,35 @@
 'use strict';
 
-function FileTreeController($scope, userModel, fileTreeModel, socket){
+function FileTreeController($scope, userModel, fileTreeModel, socket, tabsModel){
 	$scope.tree = fileTreeModel;
-	var isClicked = false;
 	$scope.changeSharedStatus = function() {
-		if (fileTreeModel.rootStatus.shared > 0) {
-			fileTreeModel.rootStatus.shared = 0;
+		if (fileTreeModel.rootStatus.shared !== 'off') {
+			fileTreeModel.rootStatus.shared = 'off';
 		} else {
-			fileTreeModel.rootStatus.shared = 2;
-			socket.emit('doc', {
-				'path': '/' + userModel.user.name
-			});
+			fileTreeModel.updateRoot();
 		}
 	};
 	$scope.updateFolder = function(doc) {
-		if (doc.status > 0) {
-			doc.status = 0
+		if (doc.status !== 'off') {
+			doc.status = 'off';
 		} else {
-			doc.status = 2;
-			socket.emit('doc', {
-				'path': doc.path
-			});
+			fileTreeModel.updateByObj(doc);
 		}
 	}
 	$scope.openFolder = function(doc) {
-		if (doc.status > 0) {
-			doc.status = 0
+		if (doc.status !== 'off') {
+			doc.status = 'off'
 		} else {
-			doc.status = 1;
+			doc.status = 'on';
 		}
 	}
 	$scope.showFolder = function(doc) {
-		alert("hehehe");
+		$scope.updateFolder(doc);
+		tabsModel.addFolder(doc);
 	}
+	$scope.showSharedFolder = function(doc) {
+		$scope.openFolder(doc);
+		tabsModel.addFolder(doc);
+	}
+	fileTreeModel.closeChildren({'nodes': fileTreeModel.shared});
 }

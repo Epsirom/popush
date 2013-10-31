@@ -1,0 +1,26 @@
+<div class="row-fluid" ng-controller="SettingsController">
+	<div class="span2 userinfo-lateralbar">
+		<div class="userinfo-height " ng-style="usrinfomenuSize()" resize>
+			<div class="userinfo-title" translate="USER_INFO">
+			</div>
+			<div class="userinfo-menu">
+				<ul class="menu">
+					<li ng-class="setting_type == 'language' ? 'active' : ''">
+						<a class="setting-item" translate="LANGUAGE_MGT" ng-click="switch_setting('language')"></a>
+					</li>
+					<li ng-class="setting_type == 'avatar' ? 'active' : ''">
+						<a class="setting-item" translate="AVATAR_MGT" ng-click="switch_setting('avatar')"></a>
+					</li>
+					<li ng-class="setting_type == 'password' ? 'active' : ''">
+						<a class="setting-item" translate="PASSWARD_MGT" ng-click="switch_setting('password')"></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="span10 userinfo-infoblock" ng-style="usrinfoSize()" resize>
+		<div ng-include="'partials/languageMgt.html'" ng-if="setting_type == 'language'"></div>
+		<div ng-include="'partials/avatarMgt.html'" ng-if="setting_type == 'avatar'"></div>
+		<div ng-include="'partials/passwordMgt.html'" ng-if="setting_type == 'password'"></div>
+	</div>
+</div>

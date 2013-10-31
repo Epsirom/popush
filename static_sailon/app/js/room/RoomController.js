@@ -1,7 +1,7 @@
 'use strict';
 
-function RoomController($scope, userModel, socket, $location, tabsModel) {
-	$scope.currentTab = tabsModel.current;
+function RoomController($scope, userModel, socket, $location, tabsModel, roomGlobal) {
+	$scope.currentTab = {'path': ["bin","das","Dadi.cpp"]};
 	$scope.editorOptions = {
         lineWrapping : true,
         lineNumbers: true,
@@ -26,7 +26,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel) {
 				},
         extraKeys: {
             "Esc": function(cm) {
-                if (isFullScreen(cm)) $scope.setFullScreen(false);
+                if (roomGlobal.isFullScreen(cm)) $scope.setFullScreen(false);
                 //resize();
             }
         },
@@ -66,7 +66,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel) {
         if (full) 
         {
             wrap.className += " CodeMirror-fullscreen";
-            wrap.style.height = winHeight() + "px";
+            wrap.style.height = roomGlobal.winHeight() + "px";
             document.documentElement.style.overflow = "hidden";
         }
         else

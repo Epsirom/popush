@@ -19,7 +19,9 @@ function SignInController($scope, userModel, socket, $location, $cookies, fileTr
 				return;
 			} else {
 				userModel.user = data.user;
+
 				fileTreeModel.update({'doc':data.user.docs});
+
 				$cookies['sid'] = data.sid;
 				userModel.lock.signed = true;
 				$location.path('/workspace');
@@ -38,11 +40,13 @@ function SignInController($scope, userModel, socket, $location, $cookies, fileTr
 		$scope.alerts = [];
 	}
 	$scope.signInFn = function() {
+
 		if (!$scope.loginuser || !$scope.loginuser.name) {
 			$scope.alerts = [{type:'error', msg:'pleaseinput'}];
 			return;
 		}
 		if (userModel.lock.signIn) {
+			$scope.alerts = [{type:'error', msg:'signing'}];
 			return;
 		}
 		userModel.lock.signIn = true;

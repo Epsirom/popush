@@ -10,7 +10,7 @@
   		</div>
       <!--catalogue-->
       <div class="cat-folder" translate="FOLDER"></div>
-  		<div class="row-fluid ws-catalogue-block">
+  		<div class="row-fluid ws-catalogue-block" ng-style="filetreeSize()" resize>
   	  		<div ui-view="catalogue" class="ws-catalogue-inner"></div>
   		</div>
       <!--collaborators-->
@@ -24,6 +24,3 @@
     <div ui-view="message"></div>
   </div>
 </div>
-    <!--preload-->
-    <div ng-include="'partials/avatarMgt.html'" style="display:none"></div>
-    <div ng-include="'partials/passwordMgt.html'" style="display:none"></div>
