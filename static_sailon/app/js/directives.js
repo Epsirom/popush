@@ -101,10 +101,25 @@ angular.module('popushDirectives', []).
 	        });
 	    };
 	}).
-	directive('focus', function () {
-	  return function (scope, element, attrs) {
-	    attrs.$observe('focus', function (newValue) {
-	      newValue === 'true' && element[0].focus();
-	    });
-	  }
-	});
+    directive('ngBlur', ['$parse', function($parse) {
+        return function(scope, element, attr) {
+        var fn = $parse(attr['ngBlur']);
+        element.bind('blur', function(event) {
+            scope.$apply(function() {
+            fn(scope, {$event:event});
+        });
+        });
+     }
+    }]).
+    directive('focus', function($timeout) {
+      return {
+        link: function(scope, element, attrs) {
+          scope.$watch(attrs.focus, function(value) {
+            if(value === true) { 
+                element[0].focus();
+                scope[attrs.focus] = false;
+            }
+          });
+        }
+      };
+    });;

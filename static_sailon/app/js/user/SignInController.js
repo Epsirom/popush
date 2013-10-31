@@ -46,6 +46,7 @@ function SignInController($scope, userModel, socket, $location, $cookies, fileTr
 			return;
 		}
 		if (userModel.lock.signIn) {
+			$scope.alerts = [{type:'error', msg:'signing'}];
 			return;
 		}
 		userModel.lock.signIn = true;
