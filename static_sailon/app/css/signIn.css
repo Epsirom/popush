@@ -8,6 +8,9 @@
     height:120px;
     color: #fff;
     background: rgb(45,53,56);
+    position: absolute;
+    width: 75%;
+    min-width: 750px;
 }
 .cloud{
     background-image: url(../img/logo.png);
@@ -33,9 +36,9 @@ h1{
     text-align:center;
 }
 .switch-btn{
-    position: fixed;
-    top:55%;
-    right:33%;
+    float: right;
+    margin-right: -100px;
+    margin-top: 10px;
 }
 .form-horizontal{
     min-width:420px;
@@ -71,42 +74,11 @@ h1{
     color: rgb(153, 153, 153);
     text-align: center;
     padding: 30px 0px;
-    margin-top: 200px;
+    margin-top: 70px;
     border-top: 1px solid rgb(229, 229, 229);
     background-color: rgb(245, 245, 245);
-}
-
-.animate-enter
-{
-    -webkit-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-    -moz-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-    -ms-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-    -o-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-    transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    height: 30px;
+    width: 100%;
+    position: absolute;
 }
  
-.animate-enter {
-    position:absolute;
-    top:29.5%;
-    left: -100%;
-    right:0;
-    bottom:0;
-}
-.animate-enter.animate-enter-active {
-    left: 0;
-}
- 
-.animate-leave
-{
-    -webkit-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-    -moz-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-    -ms-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-    -o-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-    transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-}
-.animate-leave {
-    opacity: 1;
-}
-.animate-leave.animate-leave-active{
-    opacity: 0;
-}
