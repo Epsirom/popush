@@ -1,6 +1,6 @@
 'use strict';
 
-function MessageModel($timeout) {
+function MessageModel($timeout, socket) {
 	var msgs = [];
 	var curId = 0;
 
@@ -26,7 +26,7 @@ function MessageModel($timeout) {
 			}
 		}
 	}
-
+	
 	return {
 		'msgs': msgs,
 		'append': appendMsg,

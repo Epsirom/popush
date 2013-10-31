@@ -1,15 +1,14 @@
 <div ng-controller="TabsController">
 	<div class="row-fluid" style="padding-top:10px">
 		<tabset>
-			<tab ng-repeat="tab in tabs" active="tab.active" class="tab-header">
+			<tab ng-repeat="tab in tabMgr.tabs" class="tab-header" active="tab.active" select="selectTab($index)">
 				<tab-heading>
 					{{tab.title | translate}}
-					<a class="edt-close-btn btn-link" ng-click="closeTab($index)" ng-if="tabs.length > 1"> <i class="icon-remove"></i>
+					<a class="edt-close-btn btn-link" ng-click="closeTab($index)" ng-if="tabMgr.tabs.length > 1"> <i class="icon-remove"></i>
 					</a>
 				</tab-heading>
 				<!--If tab.type == setting-->
-				<div class="row-fluid" ng-if="tab.type == 'setting'" ng-include="'partials/usersettings.html'">
-				</div>
+				<div class="row-fluid" ng-if="tab.type == 'setting'" ng-include="'partials/usersettings.html'"></div>
 				<!--If tab.type == room-->
 				<div class="row-fluid" ng-if="tab.type=='room'">
 					<div ng-class="editor_width">
@@ -55,53 +54,7 @@
 					</div>
 				</div>
 				<!--If tab.type == file-->
-				<div class="row-fluid" ng-if="tab.type=='folder'">
-					<div class="row-fluid edt-file-toolbar">
-						<div class="edt-filepath">
-							<span ng-repeat="p in tab.path"> / <a class="btn-link">{{p}}</a></span>
-						</div>
-						<div class="edt-file-btns">
-							<button class="btn btn-primary edt-file-btn" title="{{'NEW_FILE' | translate }}">
-								<i class="icon-file"></i>
-							</button>
-							<button class="btn btn-primary edt-file-btn" title="{{'NEW_FOLDER' | translate }}">
-								<i class="icon-folder-close"></i>
-							</button>
-							<button class="btn btn-primary edt-file-btn" title="{{'RENAME' | translate }}">
-								<i class="icon-pencil"></i>
-							</button>
-							<button class="btn btn-primary edt-file-btn" title="{{'DELETE' | translate }}">
-								<i class="icon-trash"></i>
-							</button>
-							<button class="btn btn-primary edt-file-btn" title="{{'SHARE' | translate }}">
-								<i class="icon-share"></i>
-							</button>
-						</div>
-					</div>
-					<table class="table table-hover">
-						<tbody>
-							<tr>
-								<th class="edt-col1">&nbsp;</th>
-								<th class="edt-col2">&nbsp;</th>
-								<th class="edt-col3">文件名</th>
-								<th class="edt-col4">状态</th>
-								<th class="edt-col5">修改时间</th>
-							</tr>
-							<tr ng-repeat = "file in files">
-								<td class="edt-col1">
-									<input type="checkbox"/>
-								</td>
-								<td class="edt-col2">
-									<img class="edt-file-icon" src="img/ext/{{file.icon}}.png"></td>
-								<td class="edt-col3">
-									<a class="btn-link" ng-click="openFile('{{file.name}}','{{file.icon}}','{{file.type}}')">{{file.name}}</a>
-								</td>
-								<td class="edt-col4">{{file.status}}</td>
-								<td class="edt-col5">{{file.time}}</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
+				<div class="row-fluid" ng-if="tab.type=='dir'" ng-include="'partials/filelist.html'" ng-controller="FileListController"></div>
 			</tab>
 		</tabset>
 	</div>

@@ -50,5 +50,15 @@
   "FILENAME":               "Filename",
   "STATE":                  "State",
   "LAST_MODIFIED":          "Last Modified",
-  "LANGUAGE_MGT":           "Language"
+  "LANGUAGE_MGT":           "Language",
+  "IS_LOADING":             "Loading...",
+  "EMPTY_FOLDER":           "<empty>",
+  "FILE_NAME":              "Filename",
+  "FILE_STATUS":            "Status",
+  "FILE_MODIFIED":          "Modified Time",
+  "NO_FILE":                "This directory is empty.",
+  "CREATE":                 "Create",
+  "createfilesuccess":      "Create file successfully",
+  "createfoldersuccess":    "Create folder successfully",
+  "file exists":            "Create fail: file exists"
 }
