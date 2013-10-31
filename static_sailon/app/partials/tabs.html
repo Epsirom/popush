@@ -10,49 +10,7 @@
 				<!--If tab.type == setting-->
 				<div class="row-fluid" ng-if="tab.type == 'setting'" ng-include="'partials/usersettings.html'"></div>
 				<!--If tab.type == room-->
-				<div class="row-fluid" ng-if="tab.type=='room'">
-					<div ng-class="editor_width">
-						<div class="row-fluid edt-editor-toolbar">
-							<div class="edt-filepath">
-								<span ng-repeat="p in tab.path"> / <a class="btn-link">{{p}}</a></span>
-							</div>
-							<div class="edt-editor-btns">
-								<button class="btn btn-primary edt-editor-btn" title="{{'RUN' | translate }}"> <i class="icon-play"></i>
-								</button>
-								<button class="btn btn-primary edt-editor-btn" title="{{'DEBUG' | translate }}">
-									<i class="icon-eye-open"></i>
-								</button>
-								<button class="btn btn-primary edt-editor-btn" title="{{'CONSOLE' | translate }}">
-									<i class="icon-share"></i>
-								</button>
-								<button class="btn btn-primary edt-editor-btn" ng-click="setFullScreen()" title="{{'FULL_SCREEN' | translate }}">
-									<i class="icon-fullscreen"></i>
-								</button>
-								<button class="btn btn-primary edt-editor-btn" ng-hide="chat_show" ng-click="toggleChat()" title="{{'SHOW_CHAT_WINDOW' | translate }}">
-									<i class="icon-backward"></i>
-								</button>
-								<button class="btn btn-primary edt-editor-btn" ng-show="chat_show" ng-click="toggleChat()" title="{{'HIDE_CHAT_WINDOW' | translate }}">
-									<i class="icon-forward"></i>
-								</button>
-							</div>
-						</div>
-						<textarea ui-codemirror="tab.editor" ng-model="model" ui-refresh="true"></textarea>
-					</div>
-					<div class="span3" ng-show="chat_show">
-						<div class="edt-chat">
-							<div class="edt-chat-inner"></div>
-						</div>
-						<input class="edt-input-msg" type="text">
-						<div class="edt-chat-btn">
-							<button class="btn" type="button">
-								<i class="icon-comment"></i>
-							</button>
-							<button class="btn active" type="button" id="voice-on">
-								<i class="icon-volume-up"></i>
-							</button>
-						</div>
-					</div>
-				</div>
+				div class="row-fluid" ng-if="tab.type=='room'" ng-include="'partials/room.html'"></div>
 				<!--If tab.type == file-->
 				<div class="row-fluid" ng-if="tab.type=='dir'" ng-include="'partials/filelist.html'" ng-controller="FileListController"></div>
 			</tab>

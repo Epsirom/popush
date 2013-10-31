@@ -2,7 +2,7 @@
 
 
 // Declare app level module which depends on filters, and services
-var app = angular.module('popush', ['popushFilters', 'socketModule', 'userModule', 'workspaceModule', 'fileModule', 'pascalprecht.translate', 'ngCookies','ui.router','ui.codemirror']).
+var app = angular.module('popush', ['popushFilters', 'socketModule', 'userModule', 'workspaceModule', 'fileModule','roomModule', 'pascalprecht.translate', 'ngCookies','ui.router','ui.codemirror']).
   config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/");
     $stateProvider
@@ -91,6 +91,28 @@ var app = angular.module('popush', ['popushFilters', 'socketModule', 'userModule
 
                 event.preventDefault();
             }
+         });
+      };
+    }).
+    directive('ngBlur', ['$parse', function($parse) {
+        return function(scope, element, attr) {
+        var fn = $parse(attr['ngBlur']);
+        element.bind('blur', function(event) {
+            scope.$apply(function() {
+            fn(scope, {$event:event});
         });
-    };
-});
+        });
+     }
+    }]).
+    directive('focusMe', function($timeout) {
+      return {
+        link: function(scope, element, attrs) {
+          scope.$watch(attrs.focusMe, function(value) {
+            if(value === true) { 
+                element[0].focus();
+                scope[attrs.focusMe] = false;
+            }
+          });
+        }
+      };
+    });
