@@ -3,12 +3,8 @@
 function TabsModel(userModel, fileTreeModel, socket) {
 
 	// Data
-	var path1 = ["bin","das","Dadi.cpp"];
-    var path2 = ["bin","das"];
 	var tabs = [
-			{'type': 'room', 'title': 'Dadi.cpp', 'path':path1},
-			{'type': 'folder', 'title': '123','path':path2},
-			{'type': 'room', 'title': 'Dadi.cpp', 'path':path1}];
+			{'type': 'room', 'title': 'Dadi.cpp', 'path':["bin","das","Dadi.cpp"]}];
 	var current = null;
 
 	// Tab Services

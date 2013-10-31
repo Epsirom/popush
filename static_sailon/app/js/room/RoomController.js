@@ -1,7 +1,7 @@
 'use strict';
 
 function RoomController($scope, userModel, socket, $location, tabsModel) {
-	$scope.currentTab = tabsModel.current;
+	$scope.currentTab = {'path': ["bin","das","Dadi.cpp"]};
 	$scope.editorOptions = {
         lineWrapping : true,
         lineNumbers: true,
