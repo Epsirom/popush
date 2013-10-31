@@ -77,10 +77,9 @@ function RunController($scope, docModel, socket, $location, $cookies){
 
 	function runBtnClick(){
 
-		//按钮已经被禁用，大概不需要这句话了？
 		if (! docModel.runEnabled) 
 			return;
-		if ()
+		
 	}
 
 
@@ -93,7 +92,7 @@ function RunController($scope, docModel, socket, $location, $cookies){
 		if (! docModel.lock.run){
 			socket.emit('kill');
 		} else {
-			socket.emit('run'),currentDoc);
+			socket.emit('run',currentDoc);
 		}
 	}
 

@@ -90,7 +90,7 @@ function docModel(socket, $location, $route, POPUSH_SETTINGS) {
 		state: state,
 		runable: runable,
 		debugable: debugable,
-		bq: []
+		bq: [],
 		bps: "",
 		runningLne: -1,
 		console: false, //open = true, close = false
