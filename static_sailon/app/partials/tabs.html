@@ -1,60 +1,19 @@
 <div ng-controller="TabsController">
 	<div class="row-fluid" style="padding-top:10px">
 		<tabset>
-			<tab ng-repeat="tab in tabs" active="tab.active" class="tab-header">
+			<tab ng-repeat="tab in tabs" active="tab.active" class="tab-header" ng-click="click(tab.type)">
 				<tab-heading>
 					{{tab.title | translate}}
 					<a class="edt-close-btn btn-link" ng-click="closeTab($index)" ng-if="tabs.length > 1"> <i class="icon-remove"></i>
 					</a>
 				</tab-heading>
 				<!--If tab.type == setting-->
-				<div class="row-fluid" ng-if="tab.type == 'setting'" ng-include="partials/settings.html">
+				<div class="row-fluid" ng-if="tab.type == 'setting'" ng-include="'partials/settings.html'">
 				</div>
-				<!--If tab.type == file-->
-				<div class="row-fluid" ng-if="tab.type=='file'">
-					<div ng-class="editor_width">
-						<div class="row-fluid edt-editor-toolbar">
-							<div class="edt-filepath">
-								<span ng-repeat="p in tab.path"> / <a class="btn-link">{{p}}</a></span>
-							</div>
-							<div class="edt-editor-btns">
-								<button class="btn btn-primary edt-editor-btn" title="{{'RUN' | translate }}"> <i class="icon-play"></i>
-								</button>
-								<button class="btn btn-primary edt-editor-btn" title="{{'DEBUG' | translate }}">
-									<i class="icon-eye-open"></i>
-								</button>
-								<button class="btn btn-primary edt-editor-btn" title="{{'CONSOLE' | translate }}">
-									<i class="icon-share"></i>
-								</button>
-								<button class="btn btn-primary edt-editor-btn" ng-click="setFullScreen()" title="{{'FULL_SCREEN' | translate }}">
-									<i class="icon-fullscreen"></i>
-								</button>
-								<button class="btn btn-primary edt-editor-btn" ng-hide="chat_show" ng-click="toggleChat()" title="{{'SHOW_CHAT_WINDOW' | translate }}">
-									<i class="icon-backward"></i>
-								</button>
-								<button class="btn btn-primary edt-editor-btn" ng-show="chat_show" ng-click="toggleChat()" title="{{'HIDE_CHAT_WINDOW' | translate }}">
-									<i class="icon-forward"></i>
-								</button>
-							</div>
-						</div>
-						<textarea ui-codemirror="tab.editor" ng-model="model" ui-refresh="true"></textarea>
-					</div>
-					<div class="span3" ng-show="chat_show">
-						<div class="edt-chat">
-							<div class="edt-chat-inner"></div>
-						</div>
-						<input class="edt-input-msg" type="text">
-						<div class="edt-chat-btn">
-							<button class="btn" type="button">
-								<i class="icon-comment"></i>
-							</button>
-							<button class="btn active" type="button" id="voice-on">
-								<i class="icon-volume-up"></i>
-							</button>
-						</div>
-					</div>
+				<!--If tab.type == room-->
+				<div class="row-fluid" ng-if="tab.type=='room'" ng-include="'partials/room.html'">
 				</div>
-				<!--If tab.type == file-->
+				<!--If tab.type == folder-->
 				<div class="row-fluid" ng-if="tab.type=='folder'">
 					<div class="row-fluid edt-file-toolbar">
 						<div class="edt-filepath">

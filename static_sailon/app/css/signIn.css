@@ -34,8 +34,8 @@ h1{
 }
 .switch-btn{
     position: fixed;
-    top:65%;
-    right:30%;
+    top:55%;
+    right:33%;
 }
 .form-horizontal{
     min-width:420px;
@@ -71,7 +71,7 @@ h1{
     color: rgb(153, 153, 153);
     text-align: center;
     padding: 30px 0px;
-    margin-top: 70px;
+    margin-top: 200px;
     border-top: 1px solid rgb(229, 229, 229);
     background-color: rgb(245, 245, 245);
 }

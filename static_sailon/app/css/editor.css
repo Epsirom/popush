@@ -1,11 +1,27 @@
 .CodeMirror {
     line-height: 1.5;
-    height: 392px;
+    height: 545px;
     border: 1px solid rgb(204, 204, 204);
     border-radius: 4px 4px 4px 4px;
     overflow: hidden;
     background: none repeat scroll 0% 0% white;
     color: black;
+}
+.CodeMirror-fullscreen {
+    display:block;
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    z-index:99;
+    background:#fff;
+}
+.tab-content {
+    overflow: hidden;
+}
+.table td
+{
+    padding:0px;
 }
 .edt-file-btn,.edt-editor-btn
 {
@@ -56,7 +72,7 @@
 }
 
 .edt-chat
-{
+{   
     height:464px;
     overflow:auto;
     padding:5px 10px;
@@ -64,6 +80,99 @@
     -webkit-border-radius:4px;
     -moz-border-radius:4px;
     border-radius:4px;
+}
+.edt-chat-window {
+    margin-left: 15px !important;
+}
+.edt-under-editor
+{
+    height:150px;
+    margin-top:10px;
+    border:1px solid #ccc;
+    -webkit-border-radius:4px;
+    -moz-border-radius:4px;
+    border-radius:4px;
+}
+.edt-console
+{
+    border-right: 1px solid #ccc;
+}
+.edt-varlist
+{
+    width: 34.042553191% !important;
+    margin-left: 0 !important;
+    display: block;
+    float: left;
+    width: 100%;
+    min-height: 30px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.well-top {
+    border:none;
+    margin:0;
+    padding:0;
+    -webkit-border-radius:0;
+    -moz-border-radius:0;
+    border-radius:0;
+}
+.edt-console-title
+{
+    border-bottom:1px solid #ddd;
+    padding:4px 0 4px 10px;
+}
+.edt-console-inner
+{
+    height:83px;
+    overflow:auto;
+    padding:4px 8px;
+}
+.edt-console-input
+{
+    padding: 4px !important;
+    height: 20px !important;
+    text-indent: 4px !important;
+    margin-bottom: 0px !important;
+    border-radius: 4px !important;
+    width:98.4%;
+}
+.edt-varlist-input
+{
+    padding: 4px 0px !important;
+    height: 10px !important;
+    text-indent: 0px !important;
+    line-height: 14px;
+    margin-bottom: 0px !important;
+    border-radius: 4px !important;
+    width:75px;
+}
+#varlist-table 
+{
+    margin:0;
+    border-bottom:1px solid #ddd;
+    font-size:12px;
+}
+#varlist-table td 
+{
+    padding-left:10px;
+}
+#varlist-table .col1
+{
+    width:24px;
+}
+#varlist-table .col2 span 
+{
+    display:block;
+}
+#varlist-table .col3 
+{
+    padding-left:4px;
+    width:66%;
+}
+.debug-btn
+{
+    padding: 4px 18.5px;
 }
 .edt-chat-inner 
 {

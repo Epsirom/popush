@@ -244,6 +244,7 @@ function setFullScreen(cm, full) {
 		$('#fullscreentip').fadeIn();
 		setTimeout('$(\'#fullscreentip\').fadeOut();', 1000);
 		wrap.className += " CodeMirror-fullscreen";
+		
 		wrap.style.height = winHeight() + "px";
 		document.documentElement.style.overflow = "hidden";
 	} else {

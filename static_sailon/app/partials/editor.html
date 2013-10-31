@@ -24,7 +24,7 @@
 						    <button class="btn btn-primary edt-editor-btn" title="{{'CONSOLE' | translate }}">
 						    	<i class="icon-share"></i>
 						    </button>
-						    <button class="btn btn-primary edt-editor-btn" ng-click="setFullScreen()" title="{{'FULL_SCREEN' | translate }}">
+						    <button class="btn btn-primary edt-editor-btn" ng-click="setFullScreen(true)" title="{{'FULL_SCREEN' | translate }}">
 						    	<i class="icon-fullscreen"></i>
 						    </button>
 						    <button class="btn btn-primary edt-editor-btn" ng-hide="chat_show" ng-click="toggleChat()" title="{{'SHOW_CHAT_WINDOW' | translate }}">
@@ -91,7 +91,7 @@
 							<th class="edt-col5" translate="LAST_MODIFIED"></th>
 						</tr>
 						<tr ng-repeat = "file in files">
-							<td class="edt-col1"><input type="checkbox"></input></td>
+							<td class="edt-col1"><input type="checkbox"/></td>
 							<td class="edt-col2"><img class="edt-file-icon" src="img/ext/{{file.icon}}.png"></td>
 							<td class="edt-col3">
 								<a class="btn-link" ng-click="openFile('{{file.name}}','{{file.icon}}','{{file.type}}')">
