@@ -1,6 +1,6 @@
 'use strict';
 
-function FileListController($scope, tabsModel, userModel, fileTreeModel, FILE_EXTENSION_MAP, socket, messageModel) {
+function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlobal, socket, messageModel) {
 	socket.onScope($scope, {
 		'new': function(data) {
 			if (data.err) {
@@ -44,7 +44,7 @@ function FileListController($scope, tabsModel, userModel, fileTreeModel, FILE_EX
 			return 'dict';
 		}
 		var fileName = doc.name.split('.'), ext = fileName[fileName.length - 1];
-		if (FILE_EXTENSION_MAP[ext]) {
+		if (roomGlobal.languagemap[ext]) {
 			return ext;
 		} else {
 			return 'file';
