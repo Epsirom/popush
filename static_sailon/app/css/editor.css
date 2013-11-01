@@ -29,10 +29,18 @@
     padding: 6px 10px 6px 10px;
     background-color: rgb(255, 255, 255) !important;
 }
+.edt-file-btn > i {
+    width: 14px;
+    height: 14px;
+}
 .edt-file-btns,.edt-editor-btns
 {
     float:right;
 }
+.edt-file-toolbar {
+    height: 44px;
+}
+
 .edt-file-toolbar,.edt-editor-toolbar
 {
     background-color:rgb(225,225,225);
@@ -51,7 +59,7 @@
 }
 .edt-col3
 {
-    width: 70px;
+    width: 240px;
 }
 .edt-col4 
 {

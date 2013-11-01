@@ -15,8 +15,37 @@ function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlo
 					'path': tabsModel.getPath()
 				});
 			}
+		},
+		'move': function(data) {
+			if (data.err) {
+				messageModel.append('ranameErr:' + data.err);
+			} else {
+				messageModel.append('renamesuccess');
+				socket.emit('doc', {
+					'path': tabsModel.getPath()
+				});
+			}
+		},
+		'delete': function(data) {
+			if (data.err) {
+				messageModel.append('deleteErr:' + data.err);
+			} else {
+				messageModel.append('deletesuccess');
+			}
+			socket.emit('doc', {
+				'path': tabsModel.getPath()
+			});
 		}
-	})
+	});
+
+	$scope.isMyself = function(path) {
+		if (path.split('/')[1] == userModel.user.name) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	$scope.changePath = function(tab, index) {
 		var newPath = tab.doc.path.split('/').slice(0, index + 2).join('/'),
 			obj = fileTreeModel.select(newPath);
@@ -58,6 +87,7 @@ function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlo
 
 	$scope.itemMode = [];
 	// item mode can be: 'rename', 'delete'
+	$scope.tmpName = [];
 
 	$scope.enterCreate = function(ntype) {
 		if ($scope.operateMode == 'create') {
@@ -85,7 +115,20 @@ function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlo
 			'type': $scope.creater.type,
 			'path': tabsModel.getPath() + "/" + $scope.creater.name
 		});
-		$scope.creater.type = 'none';
 		$scope.creater.name = '';
+		$scope.operateMode = 'default';
 	};
+	$scope.renameFile = function(index, name) {
+		socket.emit('move', {
+			'path': tabsModel.getPath() + "/" + name,
+			'newPath': tabsModel.getPath() + "/" + $scope.tmpName[index]
+		});
+		$scope.itemMode[index] = '';
+	};
+	$scope.deleteFile = function(index, obj) {
+		socket.emit('delete', {
+			'path': obj.path
+		});
+		$scope.itemMode[index] = '';
+	}
 }

@@ -111,7 +111,7 @@ angular.module('popushDirectives', []).
         });
      }
     }]).
-    directive('focus', function($timeout) {
+    directive('focus', function() {
       return {
         link: function(scope, element, attrs) {
           scope.$watch(attrs.focus, function(value) {
@@ -122,4 +122,5 @@ angular.module('popushDirectives', []).
           });
         }
       };
-    });;
+    })
+    ;
