@@ -1,16 +1,6 @@
 <div class="cr-container">
 	<div class="cr-text" translate="SHARED_USERS"></div>
 	<div class="cr-avatar-container"><!--add ng-repeat here-->
-		<img class="cr-item" height="32" width="32" ng-src="{{avatarSrc}}" popover="{{username}}" popover-trigger="mouseenter" />
-		<img class="cr-item" height="32" width="32" ng-src="{{avatarSrc}}" popover="{{username}}" popover-trigger="mouseenter" />
-		<img class="cr-item" height="32" width="32" ng-src="{{avatarSrc}}" popover="{{username}}" popover-trigger="mouseenter" />
-		<img class="cr-item" height="32" width="32" ng-src="{{avatarSrc}}" popover="{{username}}" popover-trigger="mouseenter" />
-		<img class="cr-item" height="32" width="32" ng-src="{{avatarSrc}}" popover="{{username}}" popover-trigger="mouseenter" />
-		<img class="cr-item" height="32" width="32" ng-src="{{avatarSrc}}" popover="{{username}}" popover-trigger="mouseenter" />
-		<img class="cr-item" height="32" width="32" ng-src="{{avatarSrc}}" popover="{{username}}" popover-trigger="mouseenter" />
-		<img class="cr-item" height="32" width="32" ng-src="{{avatarSrc}}" popover="{{username}}" popover-trigger="mouseenter" />
-		<img class="cr-item" height="32" width="32" ng-src="{{avatarSrc}}" popover="{{username}}" popover-trigger="mouseenter" />
-		<img class="cr-item" height="32" width="32" ng-src="{{avatarSrc}}" popover="{{username}}" popover-trigger="mouseenter" />
-		<img class="cr-item" height="32" width="32" ng-src="{{avatarSrc}}" popover="{{username}}" popover-trigger="mouseenter" />
+		<img ng-repeat="member in members" class="cr-item" height="32" width="32" ng-src="{{member.avatar}}" popover="{{member.name}}" popover-trigger="mouseenter" />
 	</div>
 </div>

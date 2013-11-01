@@ -6,6 +6,7 @@ function FileTreeModel(userModel, socket) {
 
 	var selfRoot = [], sharedRoot = [],
 		rootStatus = {'self': 'on', 'shared': 'on'};
+	var tabsFn = {};
 
 	// File Services
 
@@ -34,6 +35,9 @@ function FileTreeModel(userModel, socket) {
 		}
 		if (doc.members) {
 			node.members = doc.members;
+		}
+		if (doc.owner) {
+			node.owner = doc.owner;
 		}
 		if (doc.path) {
 			node.path = doc.path;
@@ -210,12 +214,14 @@ function FileTreeModel(userModel, socket) {
 				rootStatus.shared = 'on';
 			}
 		} else {
-			clearTouch(selectRoot(doc.path));
+			var obj = selectRoot(doc.path);
+			refreshInfo(obj, doc);
+			clearTouch(obj);
 			len = doc.docs.length;
 			for (i = 0; i < len; ++i) {
 				touchFile(doc.docs[i]);
 			}
-			removeUntouched(selectRoot(doc.path));
+			removeUntouched(obj);
 		}
 	}
 
@@ -255,6 +261,9 @@ function FileTreeModel(userModel, socket) {
 
 	socket.forceOn('doc', function(data) {
 		updateFiles(data);
+		if (tabsFn.updateMembers) {
+			tabsFn.updateMembers();
+		}
 	});
 
 	var updateByObj = function(obj) {
@@ -307,6 +316,7 @@ function FileTreeModel(userModel, socket) {
 		'self': selfRoot,
 		'shared': sharedRoot,
 		'rootStatus': rootStatus,
-		'closeChildren': closeChildren
+		'closeChildren': closeChildren,
+		'tabsFn': tabsFn
 	};
 }

@@ -6,8 +6,32 @@ function TabsModel(userModel, fileTreeModel, socket) {
 	var tabs = [
 			{'type': 'room', 'title': 'Dadi.cpp', 'path':["bin","das","Dadi.cpp"]}];
 	var current = null;
+	var currentMembers = [];
 
 	// Tab Services
+
+	var updateMembers = function() {
+		currentMembers.splice(0, currentMembers.length);
+		if ((!current) || ((current.type != 'doc') && (current.type != 'dir'))) {
+			return;
+		} else {
+			var i, len = current.doc.members ? current.doc.members.length : 0,
+				paths = current.doc.path.split('/');
+			if (paths.length == 2) {
+				if (paths[1] != userModel.user.name) {
+					currentMembers.push(current.doc.nodes[0].owner);
+				}
+				currentMembers.push(userModel.user);
+			} else if (current.doc.owner) {
+				currentMembers.push(current.doc.owner);
+			}
+			for (i = 0; i < len; ++i) {
+				currentMembers.push(current.doc.members[i]);
+			}
+		}
+	}
+
+	fileTreeModel.tabsFn.updateMembers = updateMembers;
 
 	var showSettings = function() {
 		var i, len;
@@ -15,12 +39,14 @@ function TabsModel(userModel, fileTreeModel, socket) {
 			if (tabs[i].type === 'setting') {
 				tabs[i].active = true;
 				current = tabs[i];
+				updateMembers();
 				return;
 			}
 		}
 		tabs.push({'type': 'setting', 'title': 'USER_SETTINGS'});
 		tabs[len].active = true;
 		current = tabs[len];
+		updateMembers();
 	}
 
 	var openFolder = function(doc) {
@@ -29,6 +55,7 @@ function TabsModel(userModel, fileTreeModel, socket) {
 			if (tabs[i].title === doc.path) {
 				tabs[i].active = true;
 				current = tabs[i];
+				updateMembers();
 				return;
 			}
 		}
@@ -37,10 +64,12 @@ function TabsModel(userModel, fileTreeModel, socket) {
 		tabs.push({'type': 'dir', 'title': doc.path, 'paths': paths, 'doc': doc});
 		tabs[len].active = true;
 		current = tabs[len];
+		updateMembers();
 	}
 
 	var setCurrent = function(index) {
 		current = tabs[index];
+		updateMembers();
 	}
 
 	var changeDoc = function(newDoc) {
@@ -50,6 +79,7 @@ function TabsModel(userModel, fileTreeModel, socket) {
 			var paths = newDoc.path.split('/');
 			paths.splice(0, 1);
 			current.paths = paths;
+			updateMembers();
 		}
 	}
 
@@ -60,6 +90,8 @@ function TabsModel(userModel, fileTreeModel, socket) {
 	return {
 		'tabs': tabs,
 		'current': current,
+		'members': currentMembers,
+		'updateMembers': updateMembers,
 		'showSettings': showSettings,
 		'addFolder': openFolder,
 		'setCurrent': setCurrent,
