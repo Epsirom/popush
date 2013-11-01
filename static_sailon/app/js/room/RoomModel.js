@@ -23,21 +23,13 @@ function checkrunanddebug(ext) {
 }
 */
 
-/*
 
-function runenabled(){
-	return (runable && !debugLock && (!issaving || runLock));
-}
-
-function debugenabled(){
-	return (debugable && !runLock && (!issaving || debugLock));
-}
-
-*/
-function docModel(socket, $location, $route, POPUSH_SETTINGS) {
+//不同的操作使用一个lock吗，比如说：语音、文字、调试的lock，
+function roomModel(socket, $location, $route, POPUSH_SETTINGS) {
 	 
-	var currentDoc = {},  //'version', 'type'
-		lock = {'run':false, 'debug':false, 'operation':false},
+	var currentDoc = {},  //'version', 'type','txt'
+		editor = CodeMirror.fromTextArea(),
+		lock = {'run':false, 'debug':false, 'operation':false, 'chat':false, 'voice':false},
 		state = 0, //editing = 0, running = 1, debugging = 2
 		saving =false; //if file is saving, then saving  = true
 
@@ -84,20 +76,65 @@ function docModel(socket, $location, $route, POPUSH_SETTINGS) {
 
 	/*Break Point*/
 
+	/* wrap */
+	/*
+	var room = {
+		'currentDoc':currentDoc,
+		'lock': lock, 
+		'state': state,
+		'runable': runable,
+		'debugable': debugable,
+		'bq': [],
+		'bps': "",
+		'runningLne': -1,
+		'saving': saving,
+		'waiting': false,
+		'oldText': "",
+		'oldBps': "",
+		'runEnabled': function(){return runable && !lock.debug && (!saving || lock.run)},
+		'debugEnabled': function(){return debugable && !lock.run && (!saving || lock.debug)},
+
+		// Console 
+		'console': false, //open = true, close = false
+		'consoleMessage' : {} //type: , msg:
+
+		// chat
+		'chat' : "", //text content
+
+		// voice 
+		'voice' : false//in use = true, close = false
+	};
+
+	return room;
+	*/
+
 	return{
+		// doc 
 		currentDoc: currentDoc,
 		lock: lock, 
 		state: state,
 		runable: runable,
 		debugable: debugable,
-		bq: []
+		q:[],
+		bq: [],
 		bps: "",
 		runningLne: -1,
-		console: false, //open = true, close = false
+		
 		saving: saving,
+		waiting: false,
 		oldText: "",
 		oldBps: "",
 		runEnabled: function(){return runable && !lock.debug && (!saving || lock.run)},
-		debugEnabled: function(){return debugable && !lock.run && (!saving || lock.debug)} 
+		debugEnabled: function(){return debugable && !lock.run && (!saving || lock.debug)},
+		
+		// Console 
+		console: false, //open = true, close = false
+		consoleMessage: [], //type: , msg:
+
+		// chat
+		chat: [], //text content
+
+		// voice 
+		voice : false//in use = true, close = false
 	}
 }
