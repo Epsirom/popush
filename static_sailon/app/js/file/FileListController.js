@@ -51,13 +51,35 @@ function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlo
 		}
 	}
 
+	$scope.operateMode = 'default';
 	$scope.creater = {
 		'type': 'none'
 	}
 
-	$scope.enterType = function(ntype) {
-		$scope.creater.type = ntype;
-	}
+	$scope.itemMode = [];
+	// item mode can be: 'rename', 'delete'
+
+	$scope.enterCreate = function(ntype) {
+		if ($scope.operateMode == 'create') {
+			if ($scope.creater.type != ntype) {
+				$scope.creater.type = ntype;
+			} else {
+				$scope.operateMode = 'default';
+			}
+		} else {
+			$scope.operateMode = 'create';
+			$scope.creater.type = ntype;
+		}
+	};
+	$scope.enterRename = function() {
+		$scope.operateMode = $scope.operateMode == 'rename' ? 'default' : 'rename';
+	};
+	$scope.enterDelete = function() {
+		$scope.operateMode = $scope.operateMode == 'delete' ? 'default' : 'delete';
+	};
+	$scope.enterShare = function() {
+		$scope.operateMode = $scope.operateMode == 'share' ? 'default' : 'share';
+	};
 	$scope.createFile = function() {
 		socket.emit('new', {
 			'type': $scope.creater.type,
@@ -65,5 +87,5 @@ function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlo
 		});
 		$scope.creater.type = 'none';
 		$scope.creater.name = '';
-	}
+	};
 }

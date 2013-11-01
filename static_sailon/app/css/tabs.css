@@ -5,3 +5,8 @@
 .setting-item {
 	cursor: pointer;
 }
+
+.nav{
+	height: 38px;
+	overflow-y: auto;
+}

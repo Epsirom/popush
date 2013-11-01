@@ -1,11 +1,11 @@
 <!-- Files -->
 <script type="text/ng-template" id="filetree_render.html">
-	<span class="name" ng-if="file.type == 'dir'">
+	<span class="name" ng-class="'filetree-' + file.viewMode" ng-if="file.type == 'dir'">
 		<i class="icon-folder-close" ng-show="file.status == 'off'" ng-click="updateFolder(file);"></i>
 		<i class="icon-folder-open" ng-show="file.status == 'off' ? 0 : 1" ng-click="updateFolder(file);"></i>
 		<span ng-click="showFolder(file);">{{file.name}}</span>
 	</span>
-	<span class="name" ng-if="file.type == 'doc'">
+	<span class="name" ng-class="'filetree-' + file.viewMode" ng-if="file.type == 'doc'">
 		<i class="icon-file"></i>
 		{{file.name}}
 	</span>
@@ -36,12 +36,12 @@
 					</li>
 					<li ng-if="tree.shared.length == 0" ng-show="tree.rootStatus.shared == 'on'" translate="EMPTY_FOLDER"></li>
 					<li class="cat-filestree-item" ng-repeat="shared in tree.shared | orderBy:['type', 'name']" ng-show="tree.rootStatus.shared == 'on'">
-						<span class="name" ng-if="shared.type == 'dir'">
+						<span class="name" ng-class="'filetree-' + shared.viewMode" ng-if="shared.type == 'dir'">
 							<i class="icon-folder-close" ng-show="shared.status == 'off'" ng-click="openFolder(shared);"></i>
 							<i class="icon-folder-open" ng-show="shared.status == 'off' ? 0 : 1" ng-click="openFolder(shared);"></i>
 							<span ng-click="showSharedFolder(shared);">{{shared.name}}</span>
 						</span>
-						<span class="name" ng-if="shared.type == 'doc'">
+						<span class="name" ng-class="'filetree-' + shared.viewMode" ng-if="shared.type == 'doc'">
 							<i class="icon-file"></i>
 							{{shared.name}}
 						</span>

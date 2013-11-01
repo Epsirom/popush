@@ -51,3 +51,22 @@
 	white-space: nowrap;
 	cursor: pointer;
 }
+.filetree-active {
+	background-color: lightblue;
+}
+.filetree-back {
+	background-color: lightgreen;
+}
+input[type="text"].filelist-input {
+	height: 28px;
+	margin: 0;
+	padding: 0;
+}
+.btn.edt-file-btn.inmode {
+	background-color: #ccff33 !important;
+}
+.btn.filelist-confirm {
+	height:32px;
+	padding-top: 6px;
+	padding-bottom: 6px;
+}

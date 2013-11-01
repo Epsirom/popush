@@ -5,4 +5,5 @@ function WorkspaceController($scope, userModel, socket, $cookies, $location, mes
 	$scope.logoutFn = userModel.logout;
 	$scope.showSettings = tabsModel.showSettings;
 	messageModel.append('loginsuccess');
+	$scope.members = tabsModel.members;
 }
