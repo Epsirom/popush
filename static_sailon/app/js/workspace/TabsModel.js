@@ -92,6 +92,12 @@ function TabsModel(userModel, fileTreeModel, socket) {
 		return current.doc.path;
 	}
 
+	var clearTabs = function() {
+		tabs.splice(0, tabs.length);
+		current = null;
+		currentMembers.splice(0, currentMembers.length);
+	}
+
 	return {
 		'tabs': tabs,
 		'current': current,
@@ -102,6 +108,7 @@ function TabsModel(userModel, fileTreeModel, socket) {
 		'setCurrent': setCurrent,
 		'changeDoc': changeDoc,
 		'getPath': getPath,
-		'getCurrent': function() {return current;}
+		'getCurrent': function() {return current;},
+		'clear': clearTabs
 	};
 }

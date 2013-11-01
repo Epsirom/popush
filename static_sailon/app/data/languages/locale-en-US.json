@@ -85,5 +85,6 @@
   "deletesuccess":          "Delete successfully!",
   "deleteErr:invalid root path":  "Delete Error: Invalid root path!",
   "ranameErr:unauthorized": "Rename Error: Unauthorized!",
-  "deleteErr:unactivated":  "Delete Error: Unauthorized!"
+  "deleteErr:unactivated":  "Delete Error: Unauthorized!",
+  "signing":                "Signing in... Please wait..."
 }

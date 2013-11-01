@@ -12,11 +12,11 @@ function MessageModel($timeout, socket) {
 		$timeout(function(){
              removeMsgByID(newId);
          }, (tout || 8000));
-	}
+	};
 
 	var removeMsg = function(msgid) {
 		msgs.splice(msgid, 1);
-	}
+	};
 
 	var removeMsgByID = function(id) {
 		var i, len;
@@ -25,11 +25,16 @@ function MessageModel($timeout, socket) {
 				return removeMsg(i);
 			}
 		}
-	}
+	};
 	
+	var clearMsg = function() {
+		msgs.splice(0, msgs.length);
+	};
+
 	return {
 		'msgs': msgs,
 		'append': appendMsg,
-		'remove': removeMsgByID
-	}
+		'remove': removeMsgByID,
+		'clear': clearMsg
+	};
 }
