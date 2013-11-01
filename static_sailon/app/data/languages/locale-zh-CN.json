@@ -13,7 +13,7 @@
   "ROOTDIR":                "根目录",
   "BACKWORD_DIR":           "返回上级目录",
   "FORWARD_DIR":            "进入下级目录",
-  "FOLDER":                 "文件夹",
+  "MYPOPUSH":               "我的POPUSH",
   "FILE":                   "文件",
   "OLD_PASSWORD":           "旧密码",
   "NEW_PASSWORD":        	"新密码",
@@ -64,6 +64,7 @@
   "EMPTY_FOLDER":           "<空目录>",
   "FILE_NAME":              "文件名",
   "FILE_STATUS":            "状态",
+  "FILE_OWNER":             "所有者",
   "FILE_MODIFIED":          "修改时间",
   "NO_FILE":                "文件夹是空的",
   "CREATE":                 "创建",
@@ -75,5 +76,14 @@
   "CONFIRM_DELE_FOLDER":    "确认删除文件夹及其所有内容: ",
   "PRIVATE_FILE":           "私有",
   "SHARED_FILE":            "共享",
-  "CHECK_HELP":             "选中后可以批量删除、共享等"
+  "CHECK_HELP":             "选中后可以批量删除、共享等",
+  "ranameErr:no sense":     "重命名前后没有变化！",
+  "renamesuccess":          "重命名成功！",
+  "ranameErr:file doesn't exists":  "重命名失败：文件不存在！",
+  "ranameErr:file exists":  "重命名失败：新文件名已存在！",
+  "createErr:file exists":  "创建失败：已存在同名文件或文件夹！",
+  "deletesuccess":          "删除成功！",
+  "deleteErr:invalid root path":  "删除失败：错误的路径，文件或文件夹可能已经被删除。",
+  "ranameErr:unauthorized": "重命名失败：您没有权限修改！",
+  "deleteErr:unactivated":  "删除失败：您没有权限删除！"
 }

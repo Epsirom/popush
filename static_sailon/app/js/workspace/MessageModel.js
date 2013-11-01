@@ -11,7 +11,7 @@ function MessageModel($timeout, socket) {
 		msgs.push({'msg': msg, 'id': newId});
 		$timeout(function(){
              removeMsgByID(newId);
-         }, (tout || 5000));
+         }, (tout || 8000));
 	}
 
 	var removeMsg = function(msgid) {

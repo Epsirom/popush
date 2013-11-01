@@ -2,7 +2,6 @@
 
 function TabsController($scope, userModel, socket, $location, tabsModel, fileTreeModel) {
 	$scope.tabMgr = tabsModel;
-    tabsModel.addFolder(fileTreeModel.select("/" + userModel.user.name));
 
     $scope.selectTab = tabsModel.setCurrent;
 

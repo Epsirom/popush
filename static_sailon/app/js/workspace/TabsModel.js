@@ -13,6 +13,7 @@ function TabsModel(userModel, fileTreeModel, socket) {
 	var updateMembers = function() {
 		currentMembers.splice(0, currentMembers.length);
 		if ((!current) || ((current.type != 'doc') && (current.type != 'dir'))) {
+			currentMembers.push(userModel.user);
 			return;
 		} else {
 			var i, len = current.doc.members ? current.doc.members.length : 0,
@@ -100,6 +101,7 @@ function TabsModel(userModel, fileTreeModel, socket) {
 		'addFolder': openFolder,
 		'setCurrent': setCurrent,
 		'changeDoc': changeDoc,
-		'getPath': getPath
+		'getPath': getPath,
+		'getCurrent': function() {return current;}
 	};
 }

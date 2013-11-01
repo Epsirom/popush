@@ -1,6 +1,6 @@
 'use strict';
 
-function SignInController($scope, userModel, socket, $location, $cookies, fileTreeModel) {
+function SignInController($scope, userModel, socket, $location, $cookies, fileTreeModel, messageModel, tabsModel) {
 	if (userModel.lock.signed) {
 		$location.path('/workspace');
 		return;
@@ -23,6 +23,8 @@ function SignInController($scope, userModel, socket, $location, $cookies, fileTr
 				fileTreeModel.update({'doc':data.user.docs});
 
 				$cookies['sid'] = data.sid;
+				messageModel.append('loginsuccess');
+				tabsModel.addFolder(fileTreeModel.select("/" + userModel.user.name));
 				userModel.lock.signed = true;
 				$location.path('/workspace');
 			}
