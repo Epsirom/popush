@@ -25,7 +25,7 @@ function checkrunanddebug(ext) {
 
 
 //不同的操作使用一个lock吗，比如说：语音、文字、调试的lock，
-function roomModel(socket, $location, $route, POPUSH_SETTINGS) {
+function RoomModel(socket, $location, $route, POPUSH_SETTINGS) {
 	 
 	var currentDoc = {},  //'version', 'type','txt'
 		editor = CodeMirror.fromTextArea(),
