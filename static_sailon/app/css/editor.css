@@ -22,10 +22,7 @@
 .tab-content {
     overflow: hidden;
 }
-.table td
-{
-    padding:0px;
-}
+
 .edt-file-btn,.edt-editor-btn
 {
     margin:5px 10px 5px 10px;
@@ -48,19 +45,15 @@
 {
     width: 40px;
 }
-.edt-col2 
-{
-    width: 40px;
-}
-.edt-col3
+.edt-col2
 {
     vertical-align: middle !important;
 }
-.edt-ol4 
+.edt-col3
 {
-    width: 40px;
+    width: 70px;
 }
-.edt-col5 
+.edt-col4 
 {
     width: 155px;
 }

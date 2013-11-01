@@ -33,7 +33,7 @@ function RunController($scope, roomModel, socket, $location, $cookies){
 				expressionlist.setValue(k, data.exprs[k]);
 			}
 			//绑定调试按钮－－》解除禁用属性
-		}
+		},
 
 		'exit': function (data){
 			roomModel.lock.operation = false;
@@ -99,7 +99,7 @@ function RunController($scope, roomModel, socket, $location, $cookies){
 		},
 
 		'stdin': function (data){
-			roomModel.consoleMessage.push({type:'stdin', data.data});
+			roomModel.consoleMessage.push({type:'stdin', msg: data.data});
 		},
 
 		'stdout': function (data) {
@@ -131,7 +131,7 @@ function RunController($scope, roomModel, socket, $location, $cookies){
 			if (roomModel.bq.length > 0){
 				socket.emit('bps', bq[0]);
 			}
-		}
+		},
 
 		'bpsok': function (data) {
 			var chg = roomModel.bq.shift();

@@ -58,6 +58,10 @@ function TabsModel(userModel, fileTreeModel, socket) {
 		setCurrent(len);
 	}
 
+	var openRoom = function(doc) {
+		
+	}
+
 	var setCurrent = function(index) {
 		if (current && current.doc && (current.doc.viewMode == 'active')) {
 			current.doc.viewMode = 'back';
