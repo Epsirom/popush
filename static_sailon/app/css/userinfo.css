@@ -35,27 +35,24 @@
 .userinfo-btn{
 	padding-left: 30px;	
 }
-.userinfo-switch{
-	width: 128px;
-}
 .userinfo-icon{
 	font-size: 20px;
 	float: left;
 	cursor:pointer;
 }
 .userinfo-lateralbar{
-
+	min-width: 120px;
 	background: none repeat scroll 0% 0% rgb(225, 225, 225);
-	overflow-y: auto;
 }
 .userinfo-height{
-	min-height: 560px;
+	min-width: 185px;
+	min-height: 300px;
 }
 .userinfo-lateralbar .userinfo-title{
     padding-top: 25px;
     padding-right: 10px;
     padding-left: 10px;
-    font-size: 30px;
+    font-size: 20px;
     color: rgb(187, 187, 187);
 }
 .userinfo-lateralbar .userinfo-icon{
@@ -76,7 +73,8 @@
 	line-height:35px;
 }
 .userinfo-lateralbar .userinfo-menu .menu li a:not(.btn){
-	color:#555;font-weight:200;
+	color:#555;
+	font-weight:200;
 	line-height:2em;
 	padding-left:10px;
 	border-left:4px solid #e5e5e5;
@@ -85,7 +83,8 @@
 	border-color:#e1e1e1;
 }
 .userinfo-lateralbar .userinfo-menu .menu li.active>a:not(.btn){
-	color:#333;font-weight:normal;
+	color:#333;
+	font-weight:normal;
 	border-color:#50bf82;
 }
 .userinfo-lateralpanel .userinfo-menu .menu li .menu{
@@ -100,4 +99,7 @@
 	margin-top:8px;
 	margin-bottom:8px;
 	border:none;
+}
+.userinfo-infoblock{
+	margin-left: 15px !important;
 }
