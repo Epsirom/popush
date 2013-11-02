@@ -218,6 +218,8 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
         if ($scope.current.lock.run){
             socket.emit('kill');
         } else {
+            $scope.current.consoleOutput = [];
+            $scope.consoleState = "<running>";
             socket.emit('run',$scope.current.data);
         }
 
