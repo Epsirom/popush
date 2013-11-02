@@ -1,6 +1,10 @@
 'use strict';
 
 function RoomController($scope, userModel, socket, $location, tabsModel, roomGlobal, roomModel) {
+    $scope.current = roomModel.getCurrentDoc();
+    $scope.$on('$destroy', function() {
+        roomModel.leaveRoom($scope.current);
+    })
 
     socket.onScope($scope, {
         'run': function (data){

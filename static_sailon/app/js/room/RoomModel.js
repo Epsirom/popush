@@ -5,11 +5,23 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 	var docList = [];
 	var currentDoc = {};
 	
+	var leaveRoom = function(room) {
+		var i, len = docList.length;
+		for (i = 0; i < len; ++i) {
+			if (docList[i].doc.path == room.doc.path) {
+				docList.splice(i, 1);
+				break;
+			}
+		}
+		socket.emit('leave', {});
+	}
+
 	socket.forceOn('set', function (data) {
 		//check if the doc is opening
-		var existed = false;
-		for (var i = 0; i < docList.length; i ++)
-			if (docList[i].doc.path == tabsModel.getDestDoc().path)
+		var existed = false, curPath = tabsModel.getDestDoc().path;
+		var i, len = docList.length;
+		for (i = 0; i < len; ++i)
+			if (docList[i].doc.path == curPath)
 			{
 				currentDoc = docList[i];
 				existed = true;
@@ -93,10 +105,11 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				'voiceOn' : false//in use = true, close = false
 			}
 			docList.push(currentDoc);
-			tabsModel.enterRoom(tabsModel.getDestDoc());
+			tabsModel.runCreateRoomCallback();
 		}
    	});
 	return {
-		'getCurrentDoc': function() {return currentDoc;}
+		'getCurrentDoc': function() {return currentDoc;},
+		'leaveRoom': leaveRoom
 	};
 }
