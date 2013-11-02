@@ -39,3 +39,4 @@ angular.module('roomModule', ['userModule', 'socketModule', 'workspaceModule',
 		}
 	}).
 	controller('RoomController', ['$scope', 'userModel', 'socket', '$location', 'tabsModel', 'roomGlobal', RoomController]);
+
