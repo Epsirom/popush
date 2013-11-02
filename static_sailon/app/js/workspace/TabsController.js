@@ -16,6 +16,5 @@ function TabsController($scope, userModel, socket, $location, tabsModel, fileTre
                 tmpObj.status = 'off';
     		}
     	}
-        	
     }
 }
