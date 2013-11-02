@@ -2,7 +2,7 @@
 
 
 // Declare app level module which depends on filters, and services
-var app = angular.module('popush', ['popushFilters', 'popushDirectives', 'socketModule', 'userModule', 'workspaceModule', 'fileModule','roomModule', 'pascalprecht.translate', 'ngCookies','ui.router','ui.codemirror']).
+var app = angular.module('popush', ['popushFilters', 'popushDirectives', 'socketModule', 'userModule', 'workspaceModule','fileModule','roomModule', 'pascalprecht.translate', 'ngCookies','ui.router','ui.codemirror']).
   config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/");
     $stateProvider

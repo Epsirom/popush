@@ -1,0 +1,23 @@
+.room-status {
+	display: none;
+	width: 16px;
+	height: 16px;
+}
+
+.room-status.done {
+	display: inline-block;
+	background: url("../img/process/done.png");
+	background-position: -8px -8px;
+}
+
+.room-status.doing {
+	display: inline-block;
+	background: url("../img/process/doing.png");
+	background-position: -8px -8px;
+}
+
+.room-status.fail {
+	display: inline-block;
+	background: url("../img/process/fail.png");
+	background-position: -8px -8px;
+}
