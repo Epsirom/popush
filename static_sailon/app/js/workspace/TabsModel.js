@@ -7,12 +7,14 @@ function TabsModel(userModel, fileTreeModel, socket) {
 			{'type': 'room', 'title': 'Dadi.cpp', 'path':["bin","das","Dadi.cpp"]}];
 	var current = null;
 	var currentMembers = [];
+	var destDoc = null;
 
 	// Tab Services
 
 	var updateMembers = function() {
 		currentMembers.splice(0, currentMembers.length);
 		if ((!current) || ((current.type != 'doc') && (current.type != 'dir'))) {
+			currentMembers.push(userModel.user);
 			return;
 		} else {
 			var i, len = current.doc.members ? current.doc.members.length : 0,
@@ -36,7 +38,7 @@ function TabsModel(userModel, fileTreeModel, socket) {
 	var showSettings = function() {
 		var i, len;
 		for (i = 0, len = tabs.length; i < len; ++i) {
-			if (tabs[i].type === 'setting') {
+			if (tabs[i].type == 'setting') {
 				return setCurrent(i);
 			}
 		}
@@ -47,7 +49,7 @@ function TabsModel(userModel, fileTreeModel, socket) {
 	var openFolder = function(doc) {
 		var i, len;
 		for (i = 0, len = tabs.length; i < len; ++i) {
-			if (tabs[i].title === doc.path) {
+			if (tabs[i].title == doc.path) {
 				setCurrent(i);
 				return;
 			}
@@ -56,6 +58,34 @@ function TabsModel(userModel, fileTreeModel, socket) {
 		paths.splice(0, 1);
 		tabs.push({'type': 'dir', 'title': doc.path, 'paths': paths, 'doc': doc});
 		setCurrent(len);
+	}
+
+	var openRoom = function(doc) {
+		var i, len;
+		for (i = 0, len = tabs.length; i < len; ++i) {
+			if (tabs[i].title == doc.path) {
+				setCurrent(i);
+				return;
+			}
+		}
+		var paths = doc.path.split("/");
+		paths.splice(0, 1);
+		tabs.push({'type': 'room', 'title': doc.path, 'paths': paths, 'doc': doc});
+		setCurrent(len);
+	}
+
+	var enterRoom = function(newDoc) {
+		if (current.type == 'dir') {
+			current.doc.viewMode = 'off';
+			current.doc = newDoc;
+			current.type = 'room';
+			current.title = newDoc.path;
+			var paths = newDoc.path.split('/');
+			paths.splice(0, 1);
+			current.paths = paths;
+			current.doc.viewMode = 'active';
+			updateMembers();
+		}
 	}
 
 	var setCurrent = function(index) {
@@ -74,6 +104,7 @@ function TabsModel(userModel, fileTreeModel, socket) {
 		if ((current.type == 'dir') || (current.type == 'room')) {
 			current.doc.viewMode = 'off';
 			current.doc = newDoc;
+			current.type = 'dir';
 			current.title = newDoc.path;
 			var paths = newDoc.path.split('/');
 			paths.splice(0, 1);
@@ -87,6 +118,24 @@ function TabsModel(userModel, fileTreeModel, socket) {
 		return current.doc.path;
 	}
 
+	var clearTabs = function() {
+		tabs.splice(0, tabs.length);
+		current = null;
+		currentMembers.splice(0, currentMembers.length);
+	}
+
+	var changePath = function(tab, index) {
+		var newPath = tab.doc.path.split('/').slice(0, index + 2).join('/'),
+			obj = fileTreeModel.select(newPath);
+		fileTreeModel.closeChildren(obj);
+		if (index == 0) {
+			fileTreeModel.updateRoot();
+		} else {
+			fileTreeModel.updateByObj(obj);
+		}
+		changeDoc(obj);
+	}
+
 	return {
 		'tabs': tabs,
 		'current': current,
@@ -96,6 +145,13 @@ function TabsModel(userModel, fileTreeModel, socket) {
 		'addFolder': openFolder,
 		'setCurrent': setCurrent,
 		'changeDoc': changeDoc,
-		'getPath': getPath
+		'getPath': getPath,
+		'getCurrent': function() {return current;},
+		'clear': clearTabs,
+		'openRoom': openRoom,
+		'enterRoom': enterRoom,
+		'getDestDoc': function() {return destDoc;},
+		'setDestDoc': function(doc) {destDoc = doc;},
+		'changePath': changePath
 	};
 }

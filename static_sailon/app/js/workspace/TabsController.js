@@ -2,7 +2,6 @@
 
 function TabsController($scope, userModel, socket, $location, tabsModel, fileTreeModel) {
 	$scope.tabMgr = tabsModel;
-    tabsModel.addFolder(fileTreeModel.select("/" + userModel.user.name));
 
     $scope.selectTab = tabsModel.setCurrent;
 
@@ -13,9 +12,9 @@ function TabsController($scope, userModel, socket, $location, tabsModel, fileTre
     		tabsModel.tabs.splice(index, 1);
     		if (tmpObj) {
     			tmpObj.viewMode = 'off';
+                fileTreeModel.closeChildren(tmpObj);
+                tmpObj.status = 'off';
     		}
-    		fileTreeModel.closeChildren(tmpObj);
-    		tmpObj.status = 'off';
     	}
         	
     }

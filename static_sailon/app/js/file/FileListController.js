@@ -1,6 +1,6 @@
 'use strict';
 
-function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlobal, socket, messageModel) {
+function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlobal, socket, messageModel, roomModel) {
 	socket.onScope($scope, {
 		'new': function(data) {
 			if (data.err) {
@@ -15,25 +15,47 @@ function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlo
 					'path': tabsModel.getPath()
 				});
 			}
+		},
+		'move': function(data) {
+			if (data.err) {
+				messageModel.append('ranameErr:' + data.err);
+			} else {
+				messageModel.append('renamesuccess');
+				socket.emit('doc', {
+					'path': tabsModel.getPath()
+				});
+			}
+		},
+		'delete': function(data) {
+			if (data.err) {
+				messageModel.append('deleteErr:' + data.err);
+			} else {
+				messageModel.append('deletesuccess');
+			}
+			socket.emit('doc', {
+				'path': tabsModel.getPath()
+			});
 		}
-	})
-	$scope.changePath = function(tab, index) {
-		var newPath = tab.doc.path.split('/').slice(0, index + 2).join('/'),
-			obj = fileTreeModel.select(newPath);
-		fileTreeModel.closeChildren(obj);
-		if (index == 0) {
-			fileTreeModel.updateRoot();
+	});
+
+	$scope.isMyself = function(path) {
+		if (path.split('/')[1] == userModel.user.name) {
+			return true;
 		} else {
-			fileTreeModel.updateByObj(obj);
+			return false;
 		}
-		tabsModel.changeDoc(obj);
 	}
+
+	$scope.changePath = tabsModel.changePath;
 
 	$scope.nextPath = function(tab, obj) {
 		if (obj.type == 'doc') {
-
+			tabsModel.setDestDoc(obj);
+			socket.emit('join', {
+				'path': obj.path
+			});
 		} else if (obj.type == 'dir') {
-			var obj = fileTreeModel.select(tab.doc.path + '/' + obj.name);
+			//var nextobj = fileTreeModel.select(tab.doc.path + '/' + obj.name);
 			fileTreeModel.updateByObj(obj);
 			tabsModel.changeDoc(obj);
 		}
@@ -51,19 +73,59 @@ function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlo
 		}
 	}
 
+	$scope.operateMode = 'default';
 	$scope.creater = {
 		'type': 'none'
 	}
 
-	$scope.enterType = function(ntype) {
-		$scope.creater.type = ntype;
-	}
+	$scope.itemMode = [];
+	// item mode can be: 'rename', 'delete'
+	$scope.tmpName = [];
+
+	$scope.enterCreate = function(ntype) {
+		if ($scope.operateMode == 'create') {
+			if ($scope.creater.type != ntype) {
+				$scope.creater.type = ntype;
+			} else {
+				$scope.operateMode = 'default';
+			}
+		} else {
+			$scope.operateMode = 'create';
+			$scope.creater.type = ntype;
+		}
+	};
+	$scope.enterRename = function() {
+		$scope.operateMode = $scope.operateMode == 'rename' ? 'default' : 'rename';
+	};
+	$scope.enterDelete = function() {
+		$scope.operateMode = $scope.operateMode == 'delete' ? 'default' : 'delete';
+	};
+	$scope.enterShare = function() {
+		$scope.operateMode = $scope.operateMode == 'share' ? 'default' : 'share';
+	};
 	$scope.createFile = function() {
-		socket.emit('new', {
-			'type': $scope.creater.type,
-			'path': tabsModel.getPath() + "/" + $scope.creater.name
+		if (!$scope.creater.name) {
+			
+		} else {
+			socket.emit('new', {
+				'type': $scope.creater.type,
+				'path': tabsModel.getPath() + "/" + $scope.creater.name
+			});
+			$scope.creater.name = '';
+			$scope.operateMode = 'default';
+		}
+	};
+	$scope.renameFile = function(index, name) {
+		socket.emit('move', {
+			'path': tabsModel.getPath() + "/" + name,
+			'newPath': tabsModel.getPath() + "/" + $scope.tmpName[index]
 		});
-		$scope.creater.type = 'none';
-		$scope.creater.name = '';
+		$scope.itemMode[index] = '';
+	};
+	$scope.deleteFile = function(index, obj) {
+		socket.emit('delete', {
+			'path': obj.path
+		});
+		$scope.itemMode[index] = '';
 	}
 }
