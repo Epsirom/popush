@@ -12,7 +12,7 @@
 					<i ng-class="current.lock.run?'icon-stop':'icon-play'" ></i>
 				</button>
 
-				<button class="btn btn-primary edt-editor-btn" title="{{'DEBUG' | translate }}">
+				<button class="btn btn-primary edt-editor-btn" title="{{'DEBUG' | translate }}" ng-click = "debugFn()">
 					<i class="icon-eye-open"></i>
 				</button>
 				<button class="btn btn-primary edt-editor-btn" title="{{'CONSOLE' | translate }}" 			ng-click="toggleConsole()">
@@ -48,16 +48,16 @@
 				<div class="edt-varlist">
 					<div class="well well-top">
 						<div class="btn-group">
-							<button class="btn disabled debug-btn" type="button">
+							<button class="btn disabled debug-btn" type="button"  ng-click = "debugStepFn()">
 								<i class="icon-arrow-down"></i>
 							</button>
-							<button class="btn disabled debug-btn" type="button">
+							<button class="btn disabled debug-btn" type="button" ng-click = "debugNextFn()">
 								<i class="icon-arrow-right"></i>
 							</button>
-							<button class="btn disabled debug-btn" type="button">
+							<button class="btn disabled debug-btn" type="button" ng-click = "debugFinishFn()">
 								<i class="icon-share-alt"></i>
 							</button>
-							<button class="btn disabled debug-btn" type="button">
+							<button class="btn disabled debug-btn" type="button" ng-click = "debugContinueFn()">
 								<i class="icon-play"></i>
 							</button>
 						</div>
