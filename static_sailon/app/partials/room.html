@@ -31,8 +31,11 @@
 		<div class="row-fluid" ng-show="show_console">
 			<div class="edt-under-editor">
 				<div class="span8 edt-console">
-					<div class="edt-console-title well well-top">控制台</div>
-					<div class="edt-console-inner">1231</div>
+					<div class="edt-console-title well well-top">控制台
+					</div>
+					<div class="edt-console-inner" ng-bind-html="consoleContent">
+
+					</div>
 					<input class="edt-console-input" type="text"/>
 				</div>
 				<div class="edt-varlist">
@@ -83,12 +86,8 @@
 		</div>
 		<input ng-model="inputMessage" class="edt-input-msg" type="text" />
 		<div class="edt-chat-btn">
-			<button class="btn" type="button" ng-click="sendChatMessage()">
-				<i class="icon-comment"></i>
-			</button>
-			<button class="btn active" type="button" id="voice-on">
-				<i class="icon-volume-up"></i>
-			</button>
+			<button class="btn" type="button" ng-click="sendChatMessage()"><i class="icon-comment"></i></button>
+			<button class="btn active" type="button" id="voice-on"><i class="icon-volume-up"></i></button>
 		</div>
 	</div>
 </div>
