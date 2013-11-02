@@ -2,7 +2,7 @@
 	<div ng-class="editor_width">
 		<div class="row-fluid edt-editor-toolbar">
 			<div class="edt-filepath">
-				<span ng-repeat="p in currentTab.path"> / <a class="btn-link">{{ p }}</a></span>
+				<span ng-repeat="p in tab.paths track by $index"> / <a class="btn-link">{{ p }}</a></span>
 			</div>
 			<div class="edt-editor-btns">
 				<button class="btn btn-primary edt-editor-btn" title="{{'RUN' | translate }}"> <i class="icon-play"></i>

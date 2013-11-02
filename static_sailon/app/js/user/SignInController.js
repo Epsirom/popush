@@ -25,7 +25,7 @@ function SignInController($scope, userModel, socket, $location, $cookies, fileTr
 				$cookies['sid'] = data.sid;
 				messageModel.clear();
 				messageModel.append('loginsuccess');
-				//tabsModel.clear();
+				tabsModel.clear();
 				tabsModel.addFolder(fileTreeModel.select("/" + userModel.user.name));
 				userModel.lock.signed = true;
 				$location.path('/workspace');

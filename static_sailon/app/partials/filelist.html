@@ -1,6 +1,6 @@
 <div class="row-fluid edt-file-toolbar">
 	<div class="edt-filepath">
-		<span ng-repeat="p in tab.paths"> / <a class="btn-link" ng-click="changePath(tab, $index);">{{p}}</a></span>
+		<span ng-repeat="p in tab.paths track by $index"> / <a class="btn-link" ng-click="changePath(tab, $index);">{{p}}</a></span>
 	</div>
 	<div class="edt-file-btns" ng-if="isMyself(tab.doc.path)">
 		<button class="btn btn-primary edt-file-btn" ng-class="{inmode: ((operateMode == 'create') && (creater.type == 'doc'))}" tooltip="{{((operateMode == 'create') && (creater.type == 'doc')) ? 'NEW_FILE_LEAVE' : 'NEW_FILE' | translate}}" tooltip-trigger="mouseenter" tooltip-placement="top" ng-click="enterCreate('doc');">

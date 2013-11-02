@@ -60,9 +60,9 @@ function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlo
 
 	$scope.nextPath = function(tab, obj) {
 		if (obj.type == 'doc') {
-
+			tabsModel.enterRoom(obj);
 		} else if (obj.type == 'dir') {
-			var obj = fileTreeModel.select(tab.doc.path + '/' + obj.name);
+			//var nextobj = fileTreeModel.select(tab.doc.path + '/' + obj.name);
 			fileTreeModel.updateByObj(obj);
 			tabsModel.changeDoc(obj);
 		}
@@ -111,12 +111,16 @@ function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlo
 		$scope.operateMode = $scope.operateMode == 'share' ? 'default' : 'share';
 	};
 	$scope.createFile = function() {
-		socket.emit('new', {
-			'type': $scope.creater.type,
-			'path': tabsModel.getPath() + "/" + $scope.creater.name
-		});
-		$scope.creater.name = '';
-		$scope.operateMode = 'default';
+		if (!$scope.creater.name) {
+			
+		} else {
+			socket.emit('new', {
+				'type': $scope.creater.type,
+				'path': tabsModel.getPath() + "/" + $scope.creater.name
+			});
+			$scope.creater.name = '';
+			$scope.operateMode = 'default';
+		}
 	};
 	$scope.renameFile = function(index, name) {
 		socket.emit('move', {

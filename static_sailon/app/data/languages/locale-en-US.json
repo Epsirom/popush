@@ -86,5 +86,6 @@
   "deleteErr:invalid root path":  "Delete Error: Invalid root path!",
   "ranameErr:unauthorized": "Rename Error: Unauthorized!",
   "deleteErr:unactivated":  "Delete Error: Unauthorized!",
-  "signing":                "Signing in... Please wait..."
+  "signing":                "Signing in... Please wait...",
+  "createErr:illegal file name":  "Create Error: Illegal file name!"
 }
