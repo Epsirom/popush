@@ -36,6 +36,17 @@ angular.module('popushDirectives', []).
 	                };
 	            };
 
+	            scope.langSize = function() {
+	            	var tmp = newValue.w - 200;
+	            	if(newValue.w < 800){
+	            		tmp  =650;
+	            	}
+
+            		return {
+            			'margin-left': tmp + 'px'
+            		}
+	            }
+
 	            scope.footerSize = function(){
 	                var tmp = (newValue.h - 161);
 	                if (450 > tmp) 
@@ -69,7 +80,7 @@ angular.module('popushDirectives', []).
 	            		tmp = 500;
 	            	return{
 	            		'width': tmp + 'px',
-	            	}	            	
+	            	}	            
 	            };
 
 	            scope.codeResize = function(){
