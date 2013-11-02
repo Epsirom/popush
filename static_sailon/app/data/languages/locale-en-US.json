@@ -87,5 +87,6 @@
   "ranameErr:unauthorized": "Rename Error: Unauthorized!",
   "deleteErr:unactivated":  "Delete Error: Unauthorized!",
   "signing":                "Signing in... Please wait...",
-  "createErr:illegal file name":  "Create Error: Illegal file name!"
+  "createErr:illegal file name":  "Create Error: Illegal file name!",
+  "ADD_WATCH":              "Add watch"
 }

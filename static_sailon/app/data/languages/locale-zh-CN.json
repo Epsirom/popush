@@ -87,5 +87,6 @@
   "ranameErr:unauthorized": "重命名失败：您没有权限修改！",
   "deleteErr:unactivated":  "删除失败：您没有权限删除！",
   "signing":                "正在登录，请耐心等待...",
-  "createErr:illegal file name":  "创建失败：文件或文件夹名非法！"
+  "createErr:illegal file name":  "创建失败：文件或文件夹名非法！",
+  "ADD_WATCH":              "添加监视"
 }

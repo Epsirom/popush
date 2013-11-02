@@ -22,10 +22,10 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
 				    cm.setOption("mode", "javascript");
    					CodeMirror.autoLoadMode(cm, "javascript");
 
-   					$scope.editor.refresh();
 				    // Events
-				    cm.on("beforeChange", function(){ });
-				    cm.on("change", function(){ });
+				    cm.on("gutterClick", function(cm, n) {
+                        gutterclick(cm, n);
+                    });
 				},
         extraKeys: {
             "Esc": function(cm) {
@@ -35,10 +35,11 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
         },
 		gutters: ["runat", "CodeMirror-linenumbers", "breakpoints"],
     };
+
     $scope.chat_show = false;
     $scope.editor_width = 'span12'; 
-    $scope.show_tooltip = false;
     $scope.show_console = false;
+
     $scope.toggleConsole = function()
     {
     	if($scope.show_console == false)
@@ -51,9 +52,11 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
     	}
         $scope.show_console = !$scope.show_console;
     }
+
     $scope.toggleChat = function()
     {
         $scope.chat_show = !$scope.chat_show;
+        $scope.editor.refresh();
         if($scope.editor_width=='span12')
         {
             $scope.editor_width = 'span9';
@@ -63,19 +66,22 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
             $scope.editor_width = 'span12';
         }
     }
+    
+    var temp;
     $scope.setFullScreen = function(full)
     {
         var wrap = $scope.editor.getWrapperElement();
         if (full) 
         {
             wrap.className += " CodeMirror-fullscreen";
+            temp = wrap.style.height;
             wrap.style.height = roomGlobal.winHeight() + "px";
             document.documentElement.style.overflow = "hidden";
         }
         else
         {
             wrap.className = wrap.className.replace(" CodeMirror-fullscreen", "");
-            wrap.style.height = "";
+            wrap.style.height = temp;
             document.documentElement.style.overflow = "";
         }
         $scope.editor.refresh();
@@ -97,6 +103,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
             'content':'Will you marry me?'
         },
     ];
+
     $scope.inputMessage="123";
     $scope.sendChatMessage = function()
     {   
