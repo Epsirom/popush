@@ -11,8 +11,9 @@
     left:210px;
     position: absolute;
 }
-.ws-userinfo{
-	padding: 10px;
+.row.ws-userinfo{
+	padding: 10px 0 5px 0;
+	margin: 0;
 }
 .ws-catalogue{
 	min-width: 200px;
