@@ -8,8 +8,10 @@
 				</span>
 			</div>
 			<div class="edt-editor-btns">
-				<button class="btn btn-primary edt-editor-btn" title="{{'RUN' | translate }}"> <i class="icon-play"></i>
+				<button class="btn btn-primary edt-editor-btn" ng-class="current.runable?enabled:disabled" title="{{'RUN' | translate }}" ng-click = "runFn()"> 
+					<i ng-class="current.lock.run?'icon-stop':'icon-play'" ></i>
 				</button>
+
 				<button class="btn btn-primary edt-editor-btn" title="{{'DEBUG' | translate }}">
 					<i class="icon-eye-open"></i>
 				</button>
@@ -31,12 +33,17 @@
 		<div class="row-fluid" ng-show="show_console">
 			<div class="edt-under-editor">
 				<div class="span8 edt-console">
-					<div class="edt-console-title well well-top">控制台
+					<div class="edt-console-title well well-top">
+						控制台
+						<span ng-bind="consoleState"></span>
 					</div>
 					<div class="edt-console-inner">
-
+						<span ng-repeat="x in current.consoleOutput">
+							{{x.content}}
+							<br /> 
+						</span>
 					</div>
-					<input class="edt-console-input" type="text"/>
+					<input class="edt-console-input" type="text" ng-model = "consoleInput" ng-enter="consoleInputFn()" />
 				</div>
 				<div class="edt-varlist">
 					<div class="well well-top">
@@ -80,17 +87,22 @@
 			</div>
 		</div>
 	</div>
-	<div class="span3 chat-window" ng-show="chat_show">
+	<div class="span3 chat-window" ng-show="chat_show" ng-controller = "ChatController">
 		<div class="edt-chat">
 			<div class="edt-chat-inner">
-				<p ng-repeat="chatmessage in chatmessages">
-					<span class="edt-chat-name self">{{chatmessage.name}}&nbsp;&nbsp;{{chatmessage.time}}</span>
-					<br>{{chatmessage.content}}</p>
+				<p ng-repeat="chatmessage in current.chat">
+					<span class="edt-chat-name">
+						{{chatmessage.name}}&nbsp;&nbsp;{{chatmessage.time}}
+					</span><br />
+					{{chatmessage.content}}
+				</p>
 			</div>
 		</div>
-		<input ng-model="inputMessage" class="edt-input-msg" type="text" />
+		<input ng-model="chatInput" class="edt-input-msg" type="text"  ng-enter="sendChatMessage()" />
 		<div class="edt-chat-btn">
-			<button class="btn" type="button" ng-click="sendChatMessage()"><i class="icon-comment"></i></button>
+			<button class="btn" type="button" ng-click="sendChatMessage()">
+				<i class="icon-comment"></i>
+			</button>
 			<button class="btn active" type="button" id="voice-on"><i class="icon-volume-up"></i></button>
 		</div>
 	</div>
