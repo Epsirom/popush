@@ -30,7 +30,7 @@
 				<div class="span8 edt-console">
 					<div class="edt-console-title well well-top">控制台
 					</div>
-					<div class="edt-console-inner" ng-bind-html="consoleContent">
+					<div class="edt-console-inner">
 
 					</div>
 					<input class="edt-console-input" type="text"/>
@@ -53,8 +53,10 @@
 						</div>
 					</div>
 					<div id="varlistreal">
-						<table class="table table-hover table-bordered" id="varlist-table">
+						<table class="table table-hover" id="varlist-table">
 							<tr ng-repeat="var in vars">
+								<td class="col1">
+								</td>
 								<td class="col2">
 									<span ng-show="var.showVar" ng-click="rename($index)">{{var.name}}</span>
 									<input ng-blur="submitVar($index)" ng-enter="submitVar($index)" class="edt-varlist-input" type="text" ng-model="var.name" ng-hide="var.showVar" focus="var.focus" />
@@ -63,6 +65,8 @@
 								</td>
 							</tr>
 							<tr>
+								<td class="col1">
+								</td>
 								<td class="col2" title="{{'ADD_WATCH' | translate }}" ng-click="addVar()">
 									<i class="icon-plus"></i>
 								</td>

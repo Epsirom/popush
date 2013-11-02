@@ -1,5 +1,6 @@
 'use strict';
 
+
 function RoomController($scope, userModel, socket, $location, tabsModel, roomGlobal, roomModel) {
     $scope.changePath = tabsModel.changePath;
 //	$scope.currentTab = {'path': ["bin","das","Dadi.cpp"]};
@@ -24,7 +25,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
 
 				    // Events
 				    cm.on("gutterClick", function(cm, n) {
-                        gutterclick(cm, n);
+                        $scope.gutterclick(cm, n);
                     });
 				},
         extraKeys: {
@@ -44,11 +45,11 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
     {
     	if($scope.show_console == false)
     	{
-    		$scope.editor.setSize('',370);
+    		$scope.editor.setSize('',560-165);
     	}
     	else
     	{
-    		$scope.editor.setSize('',545);
+    		$scope.editor.setSize('',560);
     	}
         $scope.show_console = !$scope.show_console;
     }
@@ -56,7 +57,6 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
     $scope.toggleChat = function()
     {
         $scope.chat_show = !$scope.chat_show;
-        $scope.editor.refresh();
         if($scope.editor_width=='span12')
         {
             $scope.editor_width = 'span9';
@@ -88,6 +88,19 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
         $scope.editor.focus();
     }
     
+    $scope.gutterclick = function(cm, n)
+    {
+        var info = cm.lineInfo(n);
+        if (info.gutterMarkers && info.gutterMarkers["breakpoints"]) 
+        {
+            cm.setGutterMarker(n, 'breakpoints', null);
+        }
+        else
+        {
+            var element = angular.element('<div><img src="img/breakpoint.png" /></div>')[0];
+            cm.setGutterMarker(n, 'breakpoints', element);
+        }
+    }
 
 
     // chat-window
@@ -127,7 +140,6 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
     $scope.vars = [{'name':'n','showVar':true,'focus':false,'value':'12'},
                 {'name':'m','showVar':true,'focus':false,'value':'12'}];
 
-    $scope.consoleContent = "213\ndsa+123 sad";
     $scope.rename  = function(n)
     {
         $scope.vars[n].showVar = false;
@@ -148,5 +160,6 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
     {
         $scope.vars.push({'name':'','showVar':false,'focus':true,'value':'Dadi'});
     }
+
 
 }
