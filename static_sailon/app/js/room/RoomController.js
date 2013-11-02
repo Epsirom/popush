@@ -1,12 +1,16 @@
 'use strict';
-function RoomController($scope, userModel, socket, $location, tabsModel, roomGlobal) {
-	$scope.currentTab = {'path': ["bin","das","Dadi.cpp"]};
+
+function RoomController($scope, userModel, socket, $location, tabsModel, roomGlobal, roomModel) {
+    $scope.changePath = tabsModel.changePath;
+//	$scope.currentTab = {'path': ["bin","das","Dadi.cpp"]};
+    //$scope.currentTab = roomModel.currentDoc.doc.path;
 	$scope.editorOptions = {
         lineWrapping : true,
         lineNumbers: true,
         indentUnit: 4,
 		indentWithTabs: true,
-		value: "function test()\n{\n\tvar Huarong = 'Dadi', Yanglei = 'Nanshen';\n}",
+		//value: "function test()\n{\n\tvar Huarong = 'Dadi', Yanglei = 'Nanshen';\n}",
+        value: roomModel.getCurrentDoc().data.text,
         onLoad : function(cm){
 				    // Editor part
 				    $scope.editor = cm;

@@ -1,21 +1,21 @@
 <div class="row-fluid edt-file-toolbar">
 	<div class="edt-filepath">
-		<span ng-repeat="p in tab.paths"> / <a class="btn-link" ng-click="changePath(tab, $index);">{{p}}</a></span>
+		<span ng-repeat="p in tab.paths track by $index"> / <a class="btn-link" ng-click="changePath(tab, $index);">{{p}}</a></span>
 	</div>
-	<div class="edt-file-btns">
-		<button class="btn btn-primary edt-file-btn" title="{{'NEW_FILE' | translate }}" ng-click="enterType('doc');">
+	<div class="edt-file-btns" ng-if="isMyself(tab.doc.path)">
+		<button class="btn btn-primary edt-file-btn" ng-class="{inmode: ((operateMode == 'create') && (creater.type == 'doc'))}" tooltip="{{((operateMode == 'create') && (creater.type == 'doc')) ? 'NEW_FILE_LEAVE' : 'NEW_FILE' | translate}}" tooltip-trigger="mouseenter" tooltip-placement="top" ng-click="enterCreate('doc');">
 			<i class="icon-file"></i>
 		</button>
-		<button class="btn btn-primary edt-file-btn" title="{{'NEW_FOLDER' | translate }}" ng-click="enterType('dir');">
+		<button class="btn btn-primary edt-file-btn" ng-class="{inmode: ((operateMode == 'create') && (creater.type == 'dir'))}" tooltip="{{((operateMode == 'create') && (creater.type == 'dir')) ? 'NEW_FOLDER_LEAVE' : 'NEW_FOLDER' | translate}}" tooltip-trigger="mouseenter" tooltip-placement="top" ng-click="enterCreate('dir');">
 			<i class="icon-folder-close"></i>
 		</button>
-		<button class="btn btn-primary edt-file-btn" title="{{'RENAME' | translate }}">
+		<button class="btn btn-primary edt-file-btn" ng-class="{inmode: operateMode == 'rename'}" tooltip="{{operateMode == 'rename' ? 'RENAME_LEAVE' : 'RENAME' | translate}}" tooltip-trigger="mouseenter" tooltip-placement="top" ng-click="enterRename();">
 			<i class="icon-pencil"></i>
 		</button>
-		<button class="btn btn-primary edt-file-btn" title="{{'DELETE' | translate }}">
+		<button class="btn btn-primary edt-file-btn" ng-class="{inmode: operateMode == 'delete'}" tooltip="{{operateMode == 'delete' ? 'DELETE_LEAVE' : 'DELETE' | translate}}" tooltip-trigger="mouseenter" tooltip-placement="top" ng-click="enterDelete();">
 			<i class="icon-trash"></i>
 		</button>
-		<button class="btn btn-primary edt-file-btn" title="{{'SHARE' | translate }}">
+		<button class="btn btn-primary edt-file-btn" ng-class="{inmode: operateMode == 'share'}" tooltip="{{operateMode == 'share' ? 'SHARE_LEAVE' : 'SHARE' | translate}}" tooltip-trigger="mouseenter" tooltip-placement="top" ng-click="enterShare();">
 			<i class="icon-share"></i>
 		</button>
 	</div>
@@ -24,10 +24,9 @@
 	<tbody>
 		<tr>
 			<th class="edt-col1">&nbsp;</th>
-			<th class="edt-col2">&nbsp;</th>
-			<th class="edt-col3" translate="FILE_NAME"></th>
-			<th class="edt-col4" translate="FILE_STATUS"></th>
-			<th class="edt-col5" translate="FILE_MODIFIED"></th>
+			<th class="edt-col2" translate="FILE_NAME"></th>
+			<th class="edt-col3">{{isMyself(tab.doc.path)?'FILE_STATUS':'FILE_OWNER'|translate}}</th>
+			<th class="edt-col4" translate="FILE_MODIFIED"></th>
 		</tr>
 		<tr ng-if="tab.doc.status=='loading'">
 			<td></td>
@@ -36,15 +35,29 @@
 			<td></td>
 			<td></td>
 		</tr>
-		<tr ng-show="creater.type!='none'" ng-if="tab.doc.status!='loading'">
-			<td class='btn-link'><i class='icon-remove' ng-click="enterType('none');"></i></td>
-			<td><img src='img/ext/file.png' ng-if="creater.type == 'doc'"/><img src='img/ext/dict.png' ng-if="creater.type == 'dir'"/></td>
-			<td><input type='text' tooltip="here is the tip" tooltip-trigger="focus" tooltip-placement="top" ng-model='creater.name'/><button class='btn-link' translate='CREATE' ng-click="createFile()"></button></td>
+		<tr ng-if="(operateMode=='create')&&(tab.doc.status!='loading')">
+			<td>
+				<img src='img/ext/file.png' ng-if="creater.type == 'doc'"/>
+				<img src='img/ext/dict.png' ng-if="creater.type == 'dir'"/>
+			</td>
+			<td ng-if="creater.type == 'doc'">
+				<a class='btn-link'>
+					<i class='icon-remove' ng-click="enterCreate(creater.type);" tooltip="{{'CANCEL' | translate}}" tooltip-trigger="mouseenter" tooltip-placement="top"></i>
+				</a>
+				<input class='filelist-input' type='text' tooltip="here is the tip" tooltip-trigger="focus" tooltip-placement="top" ng-model='creater.name' focus="true" ng-enter="createFile()"/>
+				<button class='btn-link' translate='CREATE' ng-click="createFile()"></button>
+			</td>
+			<td ng-if="creater.type == 'dir'">
+				<a class='btn-link'>
+					<i class='icon-remove' ng-click="enterCreate(creater.type);" tooltip="{{'CANCEL' | translate}}" tooltip-trigger="mouseenter" tooltip-placement="top"></i>
+				</a>
+				<input class='filelist-input' type='text' tooltip="here is the tip" tooltip-trigger="focus" tooltip-placement="top" ng-model='creater.name' focus="true" ng-enter="createFile()"/>
+				<button class='btn-link' translate='CREATE' ng-click="createFile()"></button>
+			</td>
 			<td></td>
 			<td></td>
 		</tr>
-		<tr ng-if="tab.doc.nodes.length < 1" ng-show="tab.doc.status!='loading'">
-			<td></td>
+		<tr ng-if="tab.doc.nodes.length<1" ng-show="tab.doc.status!='loading'">
 			<td></td>
 			<td translate="NO_FILE"></td>
 			<td></td>
@@ -52,15 +65,37 @@
 		</tr>
 		<tr ng-repeat="node in tab.doc.nodes | orderBy:['type', 'name']" ng-show="tab.doc.status!='loading'">
 			<td class="edt-col1">
-				<input type="checkbox"/>
-			</td>
-			<td class="edt-col2">
 				<img class="edt-file-icon" src="img/ext/{{getExt(node)}}.png"></td>
-			<td class="edt-col3">
-				<a class="btn-link" ng-click="nextPath(tab, node)">{{node.name}}</a>
+			<td class="edt-col2">
+				<a class="btn-link" ng-if="(operateMode!='rename')||(itemMode[$index]!='rename')" ng-click="nextPath(tab, node)">{{node.name}}</a>
+				<input type='text' ng-if="(operateMode=='rename')&&(itemMode[$index]=='rename')" class='filelist-input' ng-model="tmpName[$index]" focus="true" ng-init="tmpName[$index]=node.name;" ng-enter="renameFile($index, node.name);"/>
+				&nbsp;
+
+				<a class="btn-link" ng-hide="itemMode[$index]=='rename'" ng-if="operateMode=='rename'" tooltip="{{'RENAME_HELP'|translate}}" tooltip-trigger="mouseenter" tooltip-placement="top" ng-click="itemMode[$index]='rename';"><i class="icon-pencil"></i></a>
+				<div class="btn-group" ng-show="itemMode[$index]=='rename'" ng-if="operateMode=='rename'">
+				  <button class="btn btn-primary filelist-confirm" translate="CANCEL" ng-click="itemMode[$index]=''"></button>
+				  <button class="btn btn-danger filelist-confirm" translate="RENAME_NOW" ng-click="renameFile($index, node.name);"></button>
+				</div>
+
+				<a class="btn-link" ng-hide="itemMode[$index]=='delete'" ng-if="operateMode=='delete'" tooltip="{{'DELETE_HELP'|translate}}" tooltip-trigger="mouseenter" tooltip-placement="top" ng-click="itemMode[$index]='delete'"><i class="icon-trash"></i></a>
+				<div class="btn-group" ng-show="itemMode[$index]=='delete'" ng-if="operateMode=='delete'">
+				  	<button class="btn btn-primary filelist-confirm" translate="CANCEL" ng-click="itemMode[$index]=''"></button>
+				  	<button class="btn btn-danger filelist-confirm" translate="DELETE_NOW" ng-click="deleteFile($index, node);"></button>
+				</div>
 			</td>
-			<td class="edt-col4">{{node.permission | translate}}</td>
-			<td class="edt-col5">{{node.modifyTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+			<td class="edt-col3" ng-if="((!node.members)||(node.members.length == 0)) && isMyself(tab.doc.path)">
+				{{'PRIVATE_FILE'|translate}}
+				<a class="btn-link" ng-if="operateMode=='share'" tooltip="{{'SHARE_HELP'|translate}}" tooltip-trigger="mouseenter" tooltip-placement="top"><i class="icon-share"></i></a>
+			</td>
+			<td class="edt-col3" ng-if="(node.members.length > 0) && isMyself(tab.doc.path)">
+				{{'SHARED_FILE'|translate}}
+				<a class="btn-link" ng-if="operateMode=='share'" tooltip="{{'SHARE_HELP'|translate}}" tooltip-trigger="mouseenter" tooltip-placement="top"><i class="icon-share"></i></a>
+			</td>
+			<td class="edt-col3" ng-if="!isMyself(tab.doc.path)">
+				<img class='cr-item' height='32' width='32' ng-src="{{node.owner?node.owner.avatar:tab.doc.owner.avatar}}"/>
+				{{node.owner?node.owner.name:tab.doc.owner.name}}
+			</td>
+			<td class="edt-col4">{{node.modifyTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 		</tr>
 	</tbody>
 </table>

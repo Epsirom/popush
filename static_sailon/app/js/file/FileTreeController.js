@@ -24,12 +24,13 @@ function FileTreeController($scope, userModel, fileTreeModel, socket, tabsModel)
 		}
 	}
 	$scope.showFolder = function(doc) {
-		$scope.updateFolder(doc);
+		fileTreeModel.updateByObj(doc);
 		tabsModel.addFolder(doc);
 	}
 	$scope.showSharedFolder = function(doc) {
-		$scope.openFolder(doc);
+		doc.status = 'on';
 		tabsModel.addFolder(doc);
 	}
+	$scope.openRoom = tabsModel.openRoom;
 	fileTreeModel.closeChildren({'nodes': fileTreeModel.shared});
 }
