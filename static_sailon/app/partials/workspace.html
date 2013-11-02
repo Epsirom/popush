@@ -2,11 +2,10 @@
   <div class="row-fluid ws-mainbody">
   	<div class="span2 ws-catalogue">
       <!--userinfo-->
-  		<div class="row offset1 ws-userinfo">
+  		<div class="row ws-userinfo">
         <a class="btn-link" ng-click="showSettings();" ><img height="32" width="32" ng-src="{{user.avatar}}" /></a>
         <span ng-bind="user.name"></span>
-        <span class="offset1"></span>
-        <a class="btn-link" translate="LOG_OUT" ng-click="logoutFn()"></a>
+        <br/><a class="btn-link" translate="LOG_OUT" ng-click="logoutFn()"></a>
   		</div>
       <!--catalogue-->
       <div class="cat-folder"><a class='btn-link' translate="MYPOPUSH" ng-click="openRoot();"></a></div>

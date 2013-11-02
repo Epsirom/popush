@@ -1,15 +1,27 @@
 'use strict';
 
-function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTreeModel) {
+function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTreeModel, roomGlobal, userModel) {
 
 	var docList = [];
 	var currentDoc = {};
 	
+	var leaveRoom = function(room) {
+		var i, len = docList.length;
+		for (i = 0; i < len; ++i) {
+			if (docList[i].doc.path == room.doc.path) {
+				docList.splice(i, 1);
+				break;
+			}
+		}
+		socket.emit('leave', {});
+	}
+
 	socket.forceOn('set', function (data) {
 		//check if the doc is opening
-		var existed = false;
-		for (var i = 0; i < docList.length; i ++)
-			if (docList[i].doc.path == tabsModel.getCurrent().doc.path)
+		var existed = false, curPath = tabsModel.getDestDoc().path;
+		var i, len = docList.length;
+		for (i = 0; i < len; ++i)
+			if (docList[i].doc.path == curPath)
 			{
 				currentDoc = docList[i];
 				existed = true;
@@ -17,19 +29,17 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			}
 
 		if (! existed)
-		{
-			var doc = data;
-			var ext = function(){ //get the extension of the file
-				var filepart = doc.name.split('.');
-				filepart[filepart.length - 1];
-				doc.type = ext; 
-			}
+		{			
+			var pathapart = tabsModel.getDestDoc().path.split('/');
+			var filepart = pathapart[pathapart.length - 1].split('.');
+			var ext = filepart[filepart.length - 1];
+			data.type = ext;
 
 			var runable = function (ext){
 				if (! POPUSH_SETTINGS.ENABLE_RUN)
 					return false;
-				for (var i = 0; i < runableext.length; i ++){
-					if (runableext[i] == ext)
+				for (var i = 0; i < roomGlobal.runableext.length; i ++){
+					if (roomGlobal.runableext[i] == ext)
 						return true;
 				}
 				return false;
@@ -39,20 +49,31 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				if (! POPUSH_SETTINGS.ENABLE_DEBUG)
 					return false;
 
-				for( var i = 0; i < debugableext.length; i++) {
-					if (debugableext[i] == ext)
+				for( var i = 0; i < roomGlobal.debugableext.length; i++) {
+					if (roomGlobal.debugableext[i] == ext)
 						return true;
 				}
 				return false;
 			}
-			var editor;
+
+			var editor, 
+				saving = false,
+				lock = {
+				//run & debug lock
+				'run':false, 
+				'debug':false, 
+				'operation':false, 
+				'chat':false, 
+				'voice':false
+				};
+
 			currentDoc = {
 				'doc': tabsModel.getDestDoc(),
 				'data': data,
 				'editor' : editor,
-				'lock': {'run':false, 'debug':false, 'operation':false, 'chat':false, 'voice':false},
 				'state': 0, //editing = 0, running = 1, debugging = 2
 				'saving': false, //if file is saving, then saving  = true
+				'lock': lock,
 
 				'runable': runable,
 				'debugable': debugable,
@@ -66,24 +87,29 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				'oldText': "",
 				'oldBps': "",
 				
-				'runEnabled': function(){return runable && !lock.debug && (!saving || lock.run)},
-				'debugEnabled': function(){return debugable && !lock.run && (!saving || lock.debug)},
+				'runEnabled': function(){
+					return runable && ! lock.debug && (!saving || lock.run)
+				},
+				'debugEnabled': function(){
+					return debugable && !lock.run && (!saving || lock.debug)
+				},
 				
 				// Console 
 				'consoleOpen': false, //open = true, close = false
-				'consoleMessage': [], //type: , msg:
+				'consoleOutput': [], //type: , content:
 
 				// chat
-				'chat': [], //text content
+				'chat': [], //name, type, time, content
 
 				// voice 
 				'voiceOn' : false//in use = true, close = false
 			}
 			docList.push(currentDoc);
-			tabsModel.enterRoom(tabsModel.getDestDoc());
+			tabsModel.runCreateRoomCallback();
 		}
    	});
 	return {
-		'getCurrentDoc': function() {return currentDoc;}
+		'getCurrentDoc': function() {return currentDoc;},
+		'leaveRoom': leaveRoom
 	};
 }

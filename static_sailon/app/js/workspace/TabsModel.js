@@ -8,6 +8,7 @@ function TabsModel(userModel, fileTreeModel, socket) {
 	var current = null;
 	var currentMembers = [];
 	var destDoc = null;
+	var createRoomCallback = null;
 
 	// Tab Services
 
@@ -61,6 +62,12 @@ function TabsModel(userModel, fileTreeModel, socket) {
 	}
 
 	var openRoom = function(doc) {
+		if (!doc) {
+			doc = destDoc;
+			if (!doc) {
+				return;
+			}
+		}
 		var i, len;
 		for (i = 0, len = tabs.length; i < len; ++i) {
 			if (tabs[i].title == doc.path) {
@@ -71,13 +78,22 @@ function TabsModel(userModel, fileTreeModel, socket) {
 		var paths = doc.path.split("/");
 		paths.splice(0, 1);
 		tabs.push({'type': 'room', 'title': doc.path, 'paths': paths, 'doc': doc});
+		doc.saving = 'done';
 		setCurrent(len);
 	}
 
 	var enterRoom = function(newDoc) {
+		if (!newDoc) {
+			newDoc = destDoc;
+			if (!newDoc) {
+				return;
+			}
+		}
 		if (current.type == 'dir') {
 			current.doc.viewMode = 'off';
+			current.doc.saving = 'fail';
 			current.doc = newDoc;
+			newDoc.saving = 'done';
 			current.type = 'room';
 			current.title = newDoc.path;
 			var paths = newDoc.path.split('/');
@@ -136,6 +152,14 @@ function TabsModel(userModel, fileTreeModel, socket) {
 		changeDoc(obj);
 	}
 
+	var createRoom = function(obj, callback) {
+		destDoc = obj;
+		createRoomCallback = callback;
+		socket.emit('join', {
+			'path': obj.path
+		});
+	}
+
 	return {
 		'tabs': tabs,
 		'current': current,
@@ -152,6 +176,8 @@ function TabsModel(userModel, fileTreeModel, socket) {
 		'enterRoom': enterRoom,
 		'getDestDoc': function() {return destDoc;},
 		'setDestDoc': function(doc) {destDoc = doc;},
-		'changePath': changePath
+		'changePath': changePath,
+		'runCreateRoomCallback': function() {return createRoomCallback();},
+		'createRoom': createRoom
 	};
 }

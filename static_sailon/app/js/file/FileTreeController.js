@@ -31,6 +31,8 @@ function FileTreeController($scope, userModel, fileTreeModel, socket, tabsModel)
 		doc.status = 'on';
 		tabsModel.addFolder(doc);
 	}
-	$scope.openRoom = tabsModel.openRoom;
+	$scope.openRoom = function(obj) {
+		tabsModel.createRoom(obj, tabsModel.openRoom);
+	}
 	fileTreeModel.closeChildren({'nodes': fileTreeModel.shared});
 }

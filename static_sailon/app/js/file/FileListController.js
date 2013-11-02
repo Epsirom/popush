@@ -50,10 +50,7 @@ function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlo
 
 	$scope.nextPath = function(tab, obj) {
 		if (obj.type == 'doc') {
-			tabsModel.setDestDoc(obj);
-			socket.emit('join', {
-				'path': obj.path
-			});
+			tabsModel.createRoom(obj, tabsModel.enterRoom);
 		} else if (obj.type == 'dir') {
 			//var nextobj = fileTreeModel.select(tab.doc.path + '/' + obj.name);
 			fileTreeModel.updateByObj(obj);
@@ -75,12 +72,14 @@ function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlo
 
 	$scope.operateMode = 'default';
 	$scope.creater = {
-		'type': 'none'
+		'type': 'none',
+		'name': ''
 	}
 
 	$scope.itemMode = [];
 	// item mode can be: 'rename', 'delete'
 	$scope.tmpName = [];
+	$scope.invalid = '';
 
 	$scope.enterCreate = function(ntype) {
 		if ($scope.operateMode == 'create') {
@@ -94,6 +93,21 @@ function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlo
 			$scope.creater.type = ntype;
 		}
 	};
+
+	$scope.$watch('creater.name',function(){
+		console.log($scope.invalid);
+		if(/\/|\\|@/.test($scope.creater.name)) {
+			$scope.invalid = 'INVALID_FILENAME';
+			console.log($scope.invalid);
+			return;
+		}
+		if($scope.creater.name.length > 32) {
+			$scope.invalid = 'FILE_SIZE';
+			return;
+		}
+		$scope.invalid = '';
+	});
+
 	$scope.enterRename = function() {
 		$scope.operateMode = $scope.operateMode == 'rename' ? 'default' : 'rename';
 	};

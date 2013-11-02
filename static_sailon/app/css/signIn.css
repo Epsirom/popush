@@ -37,7 +37,7 @@ h1{
 }
 .switch-btn{
     float: right;
-    margin-right: -100px;
+    margin-right: -125px;
     margin-top: 10px;
 }
 .form-horizontal{
@@ -69,6 +69,8 @@ h1{
     float: right;
     margin-right: 5%;
     width:100px;
+    top: 180px;
+    position: absolute;
 }
 .footer {
     color: rgb(153, 153, 153);
