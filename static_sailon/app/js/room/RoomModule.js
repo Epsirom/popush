@@ -69,8 +69,8 @@ angular.module('roomModule', ['userModule', 'socketModule', 'workspaceModule',
 		'debugableext': ['c', 'cpp']
 	}).
 	factory('roomModel', ['socket', '$location', '$route', 'POPUSH_SETTINGS', 'tabsModel', 'fileTreeModel', 'userModel',RoomModel]).
-	controller('RoomController', ['$scope', 'userModel', 'socket', '$location', 'tabsModel', 'roomGlobal', 'roomModel', RoomController]).
+	controller('RoomController', ['$scope','userModel', 'socket', '$location', 'tabsModel', 'roomGlobal', 'roomModel', RoomController]).
 	controller('RunController', ['$scope', 'roomModel', 'socket', '$location', '$cookies', RunController]).
-	controller('ChatController', ['$scope', 'userModel', 'roomModel', 'socket', '$location', '$cookies', ChatController]).
+	controller('ChatController', ['$scope','userModel', 'roomModel', 'socket', '$location', '$cookies', ChatController]).
 	controller('ConsoleController', ['$scope', 'roomModel', 'socket', '$location', '$cookies', ConsoleController]).
 	controller('VoiceController', ['$scope', 'roomModel', 'socket', '$location', '$cookies', VoiceController]);

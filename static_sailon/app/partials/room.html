@@ -5,9 +5,10 @@
 				<i class="room-status" ng-class="tab.doc.saving"></i><span ng-repeat="p in tab.paths track by $index"> / <a class="btn-link" ng-click="changePath(tab, $index);">{{ p }}</a></span>
 			</div>
 			<div class="edt-editor-btns">
-				<button class="btn btn-primary edt-editor-btn" title="{{'RUN' | translate }}" ng-click = "runFn()"> 
-					<i class="icon-play"></i>
+				<button class="btn btn-primary edt-editor-btn" ng-class="current.runable?enabled:disabled" title="{{'RUN' | translate }}" ng-click = "runFn()"> 
+					<i ng-class="current.lock.run?'icon-stop':'icon-play'" ></i>
 				</button>
+
 				<button class="btn btn-primary edt-editor-btn" title="{{'DEBUG' | translate }}">
 					<i class="icon-eye-open"></i>
 				</button>
@@ -29,12 +30,17 @@
 		<div class="row-fluid" ng-show="show_console">
 			<div class="edt-under-editor">
 				<div class="span8 edt-console">
-					<div class="edt-console-title well well-top">控制台
+					<div class="edt-console-title well well-top">
+						控制台
+						<span ng-bind="consoleState"></span>
 					</div>
-					<div class="edt-console-inner">1231
-
+					<div class="edt-console-inner">
+						<span ng-repeat="x in current.consoleOutput">
+							{{x.content}}
+							<br /> 
+						</span>
 					</div>
-					<input class="edt-console-input" type="text"/>
+					<input class="edt-console-input" type="text" ng-model = "consoleInput" ng-enter="consoleInputFn()" />
 				</div>
 				<div class="edt-varlist">
 					<div class="well well-top">
@@ -79,10 +85,10 @@
 	<div class="span3 chat-window" ng-show="chat_show" ng-controller = "ChatController">
 		<div class="edt-chat">
 			<div class="edt-chat-inner">
-				<p ng-repeat="chatmessage in chatMessage">
-					<span class="edt-chat-name self">
+				<p ng-repeat="chatmessage in current.chat">
+					<span class="edt-chat-name">
 						{{chatmessage.name}}&nbsp;&nbsp;{{chatmessage.time}}
-					</span><br>
+					</span><br />
 					{{chatmessage.content}}
 				</p>
 			</div>

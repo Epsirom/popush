@@ -96,10 +96,10 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				
 				// Console 
 				'consoleOpen': false, //open = true, close = false
-				'consoleMessage': [], //type: , msg:
+				'consoleOutput': [], //type: , content:
 
 				// chat
-				'chat': [], //text content
+				'chat': [], //name, type, time, content
 
 				// voice 
 				'voiceOn' : false//in use = true, close = false

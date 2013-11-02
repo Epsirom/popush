@@ -203,5 +203,9 @@
 }
 .self
 {
-    color: #0a0;
+    color: green;
+}
+.system
+{
+    color: red;
 }
