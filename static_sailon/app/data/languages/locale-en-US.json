@@ -49,9 +49,11 @@
   "DELETE_NOW":             "Delete",
   "SHARE":                  "Enter share mode",
   "SHARE_LEAVE":            "Cancel sharement",
+  "SHARE_CANCEL":           "Cancel",
   "SAVE":                   "Save",
   "SHARED_USERS":           "Shared users",
   "SHARED_FILES":           "Shared files",
+  "SHARED_MGT":             "Shared Maganement",
   "unauthorized":           "Your username and password didn't match. Please try again.",
   "needrelogin":            "Need to re-login.",
   "loginsuccess":          "Login successfully!",
@@ -75,5 +77,13 @@
   "CONFIRM_DELE_FOLDER":    "Confirm to delete folder and all its content",
   "PRIVATE_FILE":           "Private",
   "SHARED_FILE":            "Shared",
-  "CHECK_HELP":             "You can batch remove or share using these checkboxes."
+  "CHECK_HELP":             "You can batch remove or share using these checkboxes.",
+  "ADD":                    "Add",
+  "INVALID_FILENAME":       "File name cannot include / \" @",
+  "INVALID_FOLDER":         "Folder name cannot include / \" @",
+  "FILE_SIZE":              "File length should be less than 32",
+  "ADDCOLSUCCESS":          "Add colloborators successfully",
+  "DELETECOLSUCCESS":       "Delete colloborators successfully",
+  "ADDCOLFAIL":             "Failed to delete colloborators",
+  "DELETECOLAIL":           "Failed to add colloborators" 
 }
