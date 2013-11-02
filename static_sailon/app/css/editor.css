@@ -3,7 +3,7 @@
 }
 .CodeMirror {
     line-height: 1.5;
-    height: 545px;
+    height: 560px;
     border: 1px solid rgb(204, 204, 204);
     border-radius: 4px 4px 4px 4px;
     overflow: hidden;
@@ -19,6 +19,7 @@
     z-index:9999;
     background:#fff;
 }
+.breakpoints {width:16px;}
 
 .tab-content {
     overflow: hidden;
@@ -110,8 +111,8 @@
     margin-left: 0 !important;
     display: block;
     float: left;
-    width: 100%;
-    min-height: 30px;
+    height: 152px;
+    overflow: auto;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -127,22 +128,28 @@
 .edt-console-title
 {
     border-bottom:1px solid #ddd;
-    padding:4px 0 4px 10px;
+    padding:4px 0 5px 10px;
 }
 .edt-console-inner
 {
-    height:83px;
+    height:83px !important;
     overflow:auto;
-    padding:4px 8px;
+    padding:4px 8px !important;
 }
 .edt-console-input
 {
-    padding: 4px !important;
+    padding: 4px 0px !important;
     height: 20px !important;
     text-indent: 4px !important;
     margin-bottom: 0px !important;
     border-radius: 4px !important;
-    width:98.4%;
+    width:99.5%;
+}
+.edt-console-inner .stdin {
+    color:blue;
+}
+.edt-console-inner .stderr {
+    color:red;
 }
 .edt-varlist-input
 {
@@ -154,6 +161,10 @@
     border-radius: 4px !important;
     width:75px;
 }
+#varlistreal
+{
+    overflow: auto;
+}
 #varlist-table 
 {
     margin:0;
@@ -162,7 +173,7 @@
 }
 #varlist-table td 
 {
-    padding-left:10px;
+    padding:0px 0px 0px 0px;
 }
 #varlist-table .col1
 {
@@ -170,11 +181,14 @@
 }
 #varlist-table .col2 span 
 {
+    color:blue;
     display:block;
 }
 #varlist-table .col3 
 {
     padding-left:4px;
+    border-left:1px solid #ddd;
+    color:red;
     width:66%;
 }
 .debug-btn

@@ -1,8 +1,11 @@
 <div class="row-fluid" ng-controller="RoomController">
 	<div ng-class="editor_width">
 		<div class="row-fluid edt-editor-toolbar">
-			<div class="edt-filepath">
-				<i class="room-status" ng-class="tab.doc.saving"></i><span ng-repeat="p in tab.paths track by $index"> / <a class="btn-link" ng-click="changePath(tab, $index);">{{ p }}</a></span>
+			<div class="edt-filepath"> <i class="room-status" ng-class="tab.doc.saving" tooltip="{{(tab.doc.saving=='done')?'room-saved':((tab.doc.saving=='doing')?'room-saving':'room-failed')|translate}}" tooltip-trigger="mouseenter" tooltip-placement="top"></i>
+				<span ng-repeat="p in tab.paths track by $index">
+					/
+					<a class="btn-link" ng-click="changePath(tab, $index);">{{ p }}</a>
+				</span>
 			</div>
 			<div class="edt-editor-btns">
 				<button class="btn btn-primary edt-editor-btn" ng-class="current.runable?enabled:disabled" title="{{'RUN' | translate }}" ng-click = "runFn()"> 
@@ -60,21 +63,23 @@
 						</div>
 					</div>
 					<div id="varlistreal">
-						<table class="table table-hover table-bordered" id="varlist-table">
+						<table class="table table-hover" id="varlist-table">
 							<tr ng-repeat="var in vars">
+								<td class="col1">
+								</td>
 								<td class="col2">
 									<span ng-show="var.showVar" ng-click="rename($index)">{{var.name}}</span>
 									<input ng-blur="submitVar($index)" ng-enter="submitVar($index)" class="edt-varlist-input" type="text" ng-model="var.name" ng-hide="var.showVar" focus="var.focus" />
 								</td>
-								<td class="col3">{{var.value}}
-								</td>
+								<td class="col3">{{var.value}}</td>
 							</tr>
 							<tr>
+								<td class="col1">
+								</td>
 								<td class="col2" title="{{'ADD_WATCH' | translate }}" ng-click="addVar()">
 									<i class="icon-plus"></i>
 								</td>
-								<td class="col3">
-								</td>
+								<td class="col3"></td>
 							</tr>
 						</table>
 					</div>
