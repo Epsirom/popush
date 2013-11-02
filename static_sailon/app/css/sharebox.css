@@ -1,0 +1,29 @@
+.user-share-box{
+	height: 220px;
+	width: 100%;
+	margin: 10px 0;
+	overflow: auto;
+	border: 1px solid #ccc;
+}
+.user-share-list{
+	margin-left: 0;
+}
+.user-share-list li{
+	margin-top: 5px;
+	list-style: none;
+	cursor: pointer;
+}
+.user-share-list a{
+	text-decoration:none;
+}
+.user-share-img {
+	margin-right: 10px;
+	min-height: 32px;
+	min-width: 32px;
+}
+.file-selected{
+	color: red;
+}
+.useractive{
+	background-color: lightblue;
+}

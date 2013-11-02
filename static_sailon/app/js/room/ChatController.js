@@ -1,26 +1,25 @@
 'use strict';
 
 function ChatController($scope, userModel, roomModel, socket, $location, $cookies){
+	$scope.current = roomModel.getCurrentDoc();
+    $scope.$on('$destroy', function() {
+        roomModel.leaveRoom($scope.current);
+    });
+
 	socket.onScope($scope, {
 		'chat': function (data){
+			var time = new Date(data.time);
 			var msg = {
 				'name': data.name,
-				'type': function (){
-					if (data.name == userModel.user.name)
-						return 'self';
-					return '';
-				},
+				'type': data.name == userModel.user.name?'self':'',
 				'content': data.text,
-				'time': function(){
-					var time = new Date(data.time);
-					return time.toTimeString().substr(0, 8);
-				}
+				'time':time.toTimeString().substr(0, 8)
 			}
-			roomModel.currentDoc.chat.push(msg);
+			$scope.current.chat.push(msg);
 		}
 	});
 
-	function sendChatMessage () {
+	$scope.sendChatMessage = function() {
 		if ($scope.chatInput == '')
 			return;
 		socket.emit('chat', {
