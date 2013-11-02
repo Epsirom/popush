@@ -1,6 +1,11 @@
 'use strict';
 
 function RoomController($scope, userModel, socket, $location, tabsModel, roomGlobal, roomModel) {
+    $scope.current = roomModel.getCurrentDoc();
+    $scope.$on('$destroy', function() {
+        roomModel.leaveRoom($scope.current);
+    })
+
     $scope.changePath = tabsModel.changePath;
 //	$scope.currentTab = {'path': ["bin","das","Dadi.cpp"]};
     //$scope.currentTab = roomModel.currentDoc.doc.path;

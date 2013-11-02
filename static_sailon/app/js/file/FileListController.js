@@ -50,10 +50,7 @@ function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlo
 
 	$scope.nextPath = function(tab, obj) {
 		if (obj.type == 'doc') {
-			tabsModel.setDestDoc(obj);
-			socket.emit('join', {
-				'path': obj.path
-			});
+			tabsModel.createRoom(obj, tabsModel.enterRoom);
 		} else if (obj.type == 'dir') {
 			//var nextobj = fileTreeModel.select(tab.doc.path + '/' + obj.name);
 			fileTreeModel.updateByObj(obj);
