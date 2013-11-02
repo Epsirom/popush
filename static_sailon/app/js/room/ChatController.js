@@ -1,30 +1,31 @@
 'use strict';
 
-//appendtochatbox($.wraplocale('<span />', 'systemmessage'), 'system', data.name + '&nbsp;&nbsp;' + $.wraplocale('<span />', 'runsaprogram'), new Date(data.time));
-
-function ChatController($scope, roomModel, socket, $location, $cookies){
+function ChatController($scope, userModel, roomModel, socket, $location, $cookies){
 	socket.onScope($scope, {
 		'chat': function (data){
-			
+			var msg = {
+				'name': data.name,
+				'type': function (){
+					if (data.name == userModel.user.name)
+						return 'self';
+					return '';
+				},
+				'content': data.text,
+				'time': function(){
+					var time = new Date(data.time);
+					return time.toTimeString().substr(0, 8);
+				}
+			}
+			roomModel.currentDoc.chat.push(msg);
 		}
+	});
 
-	//感觉不需要把聊天内容再放到Model里面去了？因为不需要保存聊天纪录
-	function sendFn () {
+	function sendChatMessage () {
 		if ($scope.chatInput == '')
 			return;
 		socket.emit('chat', {
-			text: $scope.chatInput});
+			text: $scope.chatInput
+		});
 		$scope.chatInput = '';
-	}
-
-	function show (name, type, content, time) {
-		/*
-		$('#chat-show-inner').append(
-		'<p class="chat-element"><span class="chat-name ' + type +
-		'">' + name + '&nbsp;&nbsp;' + time.toTimeString().substr(0, 8) + '</span><br />' + content + '</p>'
-		);
-		var o = $('#chat-show').get(0);
-		o.scrollTop = o.scrollHeight;
-		*/
 	}
 }

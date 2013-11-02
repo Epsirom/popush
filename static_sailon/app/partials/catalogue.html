@@ -5,7 +5,7 @@
 		<i class="icon-folder-open" ng-show="file.status == 'off' ? 0 : 1" ng-click="updateFolder(file);"></i>
 		<span ng-click="showFolder(file);">{{file.name}}</span>
 	</span>
-	<span class="name" ng-class="'filetree-' + file.viewMode" ng-if="file.type == 'doc'">
+	<span class="name" ng-class="'filetree-' + file.viewMode" ng-if="file.type == 'doc'" ng-click="openRoom(file);">
 		<i class="icon-file"></i>
 		{{file.name}}
 	</span>
@@ -41,7 +41,7 @@
 							<i class="icon-folder-open" ng-show="shared.status == 'off' ? 0 : 1" ng-click="openFolder(shared);"></i>
 							<span ng-click="showSharedFolder(shared);">{{shared.name}}</span>
 						</span>
-						<span class="name" ng-class="'filetree-' + shared.viewMode" ng-if="shared.type == 'doc'">
+						<span class="name" ng-class="'filetree-' + shared.viewMode" ng-if="shared.type == 'doc'" ng-click="openRoom(shared);">
 							<i class="icon-file"></i>
 							{{shared.name}}
 						</span>

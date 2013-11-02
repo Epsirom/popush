@@ -12,9 +12,9 @@ function TabsController($scope, userModel, socket, $location, tabsModel, fileTre
     		tabsModel.tabs.splice(index, 1);
     		if (tmpObj) {
     			tmpObj.viewMode = 'off';
+                fileTreeModel.closeChildren(tmpObj);
+                tmpObj.status = 'off';
     		}
-    		fileTreeModel.closeChildren(tmpObj);
-    		tmpObj.status = 'off';
     	}
         	
     }
