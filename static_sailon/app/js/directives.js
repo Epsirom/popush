@@ -41,7 +41,6 @@ angular.module('popushDirectives', []).
 	            	if(newValue.w < 800){
 	            		tmp  =650;
 	            	}
-
             		return {
             			'margin-left': tmp + 'px'
             		}
@@ -84,13 +83,22 @@ angular.module('popushDirectives', []).
 	            };
 
 	            scope.codeResize = function(){
-	                var tmp = newValue.h - 100;
-	                if(tmp < 500)
-	                    tmp = 500;
+	                var tmp = newValue.h - 500;
+	                if(tmp < 360)
+	                    tmp = 360;
 	                return{
 	                    'height': tmp + 'px',
 	                }
-	            }
+	            };
+
+	            scope.filelistSize = function(){
+	            	var tmp = newValue.h - 120;
+	            	if(tmp < 360)
+	            		tmp = 360;
+	                return{
+	                    'height': tmp + 'px',
+	                }
+	            };
 	            
 	        }, true);
 	    
@@ -133,5 +141,27 @@ angular.module('popushDirectives', []).
           });
         }
       };
-    })
+    }).
+	directive('scroll', function () {
+	    return function (scope, element) {
+	        var w = element;
+	        scope.getScrollHeight = function () {
+	            return { 'h': w[0].scrollHeight };
+	        };
+	        scope.$watch(scope.getScrollHeight, function (newValue, oldValue) {
+	            scope.scrollHeight = newValue.h;
+	            w[0].scrollTop = w[0].scrollHeight;
+	            scope.bottomscroll = function () {
+	                return { 
+	                    'scrollTop': newValue.h + 'px' 
+	                };
+	            };
+	            
+	        }, true);
+	    
+	        w.bind('scroll', function () {
+	            scope.$apply();
+	        });
+	        }
+	    })
     ;

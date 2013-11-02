@@ -16,7 +16,7 @@
     top:0;
     left:0;
     width:100%;
-    z-index:9999;
+    z-index:999;
     background:#fff;
 }
 .breakpoints {width:16px;}
@@ -210,16 +210,20 @@
 {
     float:right;
 }
-.edt-chat-name
+.edtchatname
 {
     color: #00a;
     font-size: 12px;
 }
-.self
+.selfchatname
 {
-    color: green;
+    color: #0a0;
+    font-size: 12px;
 }
-.system
-{
-    color: red;
+.syschatname{
+    color: #a00;
+    font-size: 12px;
+}
+p:hover{
+    background-color: beige;
 }

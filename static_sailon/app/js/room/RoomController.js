@@ -67,7 +67,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
                 var msg = {
                     'name': 'system',
                     'type': 'system',
-                    'content': 'programfinish ' + data.err.code,
+                    'content': 'program finish ' + data.err.code,
                     'time': time.toTimeString().substr(0, 8) 
                 }
                 $scope.current.chat.push(msg);
@@ -78,7 +78,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
                 var msg = {
                     'name': 'system',
                     'type': 'system',
-                    'content': 'programkilledby '+ data.err.signal,
+                    'content': 'program killed by '+ data.err.signal,
                     'time': time.toTimeString().substr(0, 8) 
                 }
 
@@ -242,7 +242,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
             $scope.editor_width = 'span12';
         }
     }
-    
+
     var temp;
     $scope.setFullScreen = function(full)
     {
@@ -252,12 +252,15 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
             wrap.className += " CodeMirror-fullscreen";
             temp = wrap.style.height;
             wrap.style.height = roomGlobal.winHeight() + "px";
+            wrap.style.width = roomGlobal.winWidth() + "px";
+            wrap.style.margin = "0px 0px 0px -240px";
             document.documentElement.style.overflow = "hidden";
         }
         else
         {
             wrap.className = wrap.className.replace(" CodeMirror-fullscreen", "");
             wrap.style.height = temp;
+            wrap.style.margin = "0px";
             document.documentElement.style.overflow = "";
         }
         $scope.editor.refresh();

@@ -21,3 +21,15 @@
 	background: url("../img/process/fail.png");
 	background-position: -8px -8px;
 }
+.tb-file-list{
+	overflow: auto;
+}
+.consolestdin {
+	color:blue;
+}
+.consolestderr {
+	color:red;
+}
+.consolemessage {
+	color:#0a0;
+}
