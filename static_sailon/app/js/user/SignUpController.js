@@ -1,6 +1,6 @@
 'use strict';
 
-function SignUpController($scope, userModel, socket, $location, $cookies) {
+function SignUpController($scope, userModel, socket, $location, messageModel) {
 	
 	socket.onScope($scope, {
 		'register':function(data){
@@ -10,9 +10,10 @@ function SignUpController($scope, userModel, socket, $location, $cookies) {
 				$scope.alerts = [{type:'error', msg:data.err}];
 
 			} else{
-				$scope.alerts = [{type:'success', msg:'SignupSucceed'}];
+				$scope.alerts = [{type:'success', msg:'registersuccess'}];
 				//emit succeed, but onScope.login can't receive anything
 				userModel.signed = true;
+				messageModel.append('registersuccess');
 				socket.emit('login', $scope.registeruser);
 				//
 			}

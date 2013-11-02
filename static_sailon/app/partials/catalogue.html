@@ -16,7 +16,7 @@
 			</li>
 		</ul>
 		<ul class="cat-filetree" ng-show="file.status == 'on'">
-			<li ng-show="file.nodes.length == 0" translate="EMPTY_FOLDER"></li>
+			<li class="empty-folder" ng-show="file.nodes.length == 0" translate="EMPTY_FOLDER"></li>
 			<li ng-repeat="file in file.nodes | orderBy:['type', 'name']" ng-include="'filetree_render.html'"></li>
 		</ul>
 	</div>
@@ -47,7 +47,7 @@
 						</span>
 						<div class="file" ng-if="shared.type == 'dir'" ng-show="shared.status == 'off' ? 0 : 1">
 							<ul class="cat-filetree">
-								<li ng-show="shared.nodes.length == 0" translate="EMPTY_FOLDER"></li>
+								<li class="empty-folder" ng-show="shared.nodes.length == 0" translate="EMPTY_FOLDER"></li>
 								<li ng-show="shared.status == 'loading'">
 									<span class="name"><img src="img/init.gif" />{{'IS_LOADING' | translate}}</span>
 								</li>

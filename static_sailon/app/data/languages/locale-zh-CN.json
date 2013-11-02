@@ -55,6 +55,7 @@
   "unauthorized":           "用户名和密码不匹配",
   "needrelogin":            "需要重新登录",
   "loginsuccess":           "登录成功！",
+  "registersuccess":        "注册成功！",
   "USER_SETTINGS":          "用户设置",
   "FILENAME":               "文件名",
   "STATE":                  "状态",

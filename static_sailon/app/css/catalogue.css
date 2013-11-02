@@ -51,6 +51,9 @@
 	white-space: nowrap;
 	cursor: pointer;
 }
+.empty-folder {
+	white-space: nowrap;
+}
 .filetree-active {
 	background-color: lightblue;
 }
