@@ -25,6 +25,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			{
 				currentDoc = docList[i];
 				existed = true;
+				currentDoc.data = data;
 				break;
 			}
 
@@ -57,6 +58,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			}
 
 			var editor, 
+				expressionList = {},
 				saving = false,
 				lock = {
 				//run & debug lock
@@ -69,6 +71,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 
 			currentDoc = {
 				'doc': tabsModel.getDestDoc(),
+				'expressionList': expressionList,
 				'data': data,
 				'id': data.id,
 				'type': ext,
@@ -133,7 +136,33 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			}
 			docList.push(currentDoc);
 			tabsModel.runCreateRoomCallback();
+
+			//初始化editor
+			//初始化expression list
 		}
+
+		//reset lock 
+		currentDoc.lock.operation = false;
+		currentDoc.lock.run = data.running;
+		if (data.debugging){
+			currentDoc.lock.debug = true;
+			currentDoc.oldText = data.text;
+			currentDoc.oldBps = data.bps;
+			if (data.state == 'waiting'){
+				currentDoc.waiting = true;
+				runToLine(data.line - 1);
+				/*
+				if(data.line !== null)
+					$('#console-title').setlocale('console|waiting');
+				else
+					$('#console-title').setlocale('console|waiting|nosource');
+				*/
+
+			}
+		}		
+		delete data.running;
+		delete data.debugging;
+		delete data.state;
    	});
 	
 	function setsaving(room) {
@@ -162,6 +191,20 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			room.saving = 'done';
 		}
 	}
+
+	function runToLine(n) {
+        if(currentDoc.runningLine >= 0) {
+            currentDoc.editor.removeLineClass(currentDoc.runningLine, '*', 'running');
+            currentDoc.editor.setGutterMarker(currentDoc.runningLine, 'runat', null);
+        }
+        if(n >= 0) {
+            currentDoc.editor.addLineClass(n, '*', 'running');
+            currentDoc.editor.setGutterMarker(n, 'runat', 
+                angular.element('<div><img src="images/arrow.png" width="16" height="16" style="min-width:16px;min-width:16px;" /></div>')[0]);
+            currentDoc.editor.scrollIntoView({line:n, ch:0});
+        }
+        currentDoc.runningLine = n;
+    }
 
 	socket.forceOn('ok', function(data){
 		var q = currentDoc.q, 
