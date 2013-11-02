@@ -1,7 +1,7 @@
 <div class="row-fluid" ng-controller="RoomController">
 	<div ng-class="editor_width">
 		<div class="row-fluid edt-editor-toolbar">
-			<div class="edt-filepath"> <i class="room-status" ng-class="tab.doc.saving" tooltip="{{(tab.doc.saving=='done')?'room-saved':((tab.doc.saving=='doing')?'room-saving':'room-failed')|translate}}" tooltip-trigger="mouseenter" tooltip-placement="top"></i>
+			<div class="edt-filepath"> <i class="room-status" ng-class="current.saving" tooltip="{{(current.saving=='done')?'room-saved':((current.saving=='doing')?'room-saving':'room-failed')|translate}}" tooltip-trigger="mouseenter" tooltip-placement="top"></i>
 				<span ng-repeat="p in tab.paths track by $index">
 					/
 					<a class="btn-link" ng-click="changePath(tab, $index);">{{ p }}</a>

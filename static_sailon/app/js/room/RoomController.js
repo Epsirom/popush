@@ -9,7 +9,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
 
     socket.onScope($scope, {
         'run': function (data){
-            $scope.current.lock.run = true;
+            $scope.current.locks.run = true;
 
             //open the console and chat-windowl(need?)
             if (! $scope.show_console)
@@ -29,13 +29,13 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
             }
             $scope.current.chat.push(msg);
 
-            $scope.current.lock.operation = false;
+            $scope.current.locks.operation = false;
 
             
         },
 
         'running': function (data) {
-            if (! $scope.current.lock.debug)
+            if (! $scope.current.locks.debug)
                 return;
             $scope.current.waiting = false;
             $scope.runToLine(-1);
@@ -43,7 +43,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
 
         },
         'waiting': function (data) {
-            if (! $scope.current.lock.debug)
+            if (! $scope.current.locks.debug)
                 return;
             $scope.current.waiting = true;
             if (typeof data.line == 'number'){
@@ -61,7 +61,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
         },
 
         'exit': function (data){
-            $scope.current.lock.operation = false;
+            $scope.current.locks.operation = false;
             if(data.err.code !== undefined){
                 var time = new Date();
                 var msg = {
@@ -87,10 +87,10 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
             }
 
             //editor-run 激活一个小图标 icon-play
-            if ($scope.current.lock.run)
-                $scope.current.lock.run = false;
+            if ($scope.current.locks.run)
+                $scope.current.locks.run = false;
 
-            if ($scope.current.lock.debug){  
+            if ($scope.current.locks.debug){  
 
                 $scope.current.editor.setValue($scope.current.oldText);
                 $scope.removeAllBreakpoints();
@@ -112,12 +112,12 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
                     expressionlist.setValue(expressionlist.elements[k].expression, null);
                 }
                 */
-                $scope.current.lock.debug = false;
+                $scope.current.locks.debug = false;
             }
         },
 
         'debug': function (data){
-            $scope.current.lock.debug = true;
+            $scope.current.locks.debug = true;
 
             $scope.editor.setOption('readOnly', true);
         
@@ -136,7 +136,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
             var hist = $scope.current.editor.getDoc().getHistory();
             hist.done.pop();
             $scope.current.editor.getDoc().setHistory(hist);
-            $scope.current.lock.operation = false;
+            $scope.current.locks.operation = false;
 
         },
 
@@ -168,16 +168,17 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
 		//value: "function test()\n{\n\tvar Huarong = 'Dadi', Yanglei = 'Nanshen';\n}",
         value: $scope.current.data.text,
         onLoad : function(cm){
-				    // Editor part
+			// Editor part
+		    $scope.current.editor = cm;
+            $scope.editor = cm;
+            roomModel.registerEditorEvent($scope.current);
+		    var _doc = cm.getDoc();
 
-                    $scope.current.editor = cm;
-				    $scope.editor = cm;
-				    var _doc = cm.getDoc();
+		    cm.focus();
 
-				    cm.focus();
+		    // Options
+		    CodeMirror.modeURL = "/lib/codemirror/mode/%N/%N.js";
 
-				    // Options
-				    CodeMirror.modeURL = "/lib/codemirror/mode/%N/%N.js";
         
                     if (roomGlobal.languagemap[$scope.current.data.type]){
                         if (roomGlobal.modemap[$scope.current.data.type])
@@ -309,7 +310,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
     }
 
     $scope.consoleInputFn = function() {
-        if ($scope.current.lock.debug || $scope.current.lock.run){
+        if ($scope.current.locks.debug || $scope.current.locks.run){
             socket.emit('stdin', {
                 data: $scope.consoleInput + "\n"
             })
