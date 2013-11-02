@@ -5,7 +5,8 @@
 				<span ng-repeat="p in tab.paths track by $index"> / <a class="btn-link" ng-click="changePath(tab, $index);">{{ p }}</a></span>
 			</div>
 			<div class="edt-editor-btns">
-				<button class="btn btn-primary edt-editor-btn" title="{{'RUN' | translate }}"> <i class="icon-play"></i>
+				<button class="btn btn-primary edt-editor-btn" title="{{'RUN' | translate }}" ng-click = "runFn()"> 
+					<i class="icon-play"></i>
 				</button>
 				<button class="btn btn-primary edt-editor-btn" title="{{'DEBUG' | translate }}">
 					<i class="icon-eye-open"></i>
@@ -75,10 +76,10 @@
 			</div>
 		</div>
 	</div>
-	<div class="span3 chat-window" ng-show="chat_show">
+	<div class="span3 chat-window" ng-show="chat_show" ng-controller = "ChatController">
 		<div class="edt-chat">
 			<div class="edt-chat-inner">
-				<p ng-repeat="chatmessage in chatmessages">
+				<p ng-repeat="chatmessage in chatMessage">
 					<span class="edt-chat-name self">
 						{{chatmessage.name}}&nbsp;&nbsp;{{chatmessage.time}}
 					</span><br>
@@ -86,9 +87,11 @@
 				</p>
 			</div>
 		</div>
-		<input ng-model="inputMessage" class="edt-input-msg" type="text" />
+		<input ng-model="chatInput" class="edt-input-msg" type="text"  ng-enter="sendChatMessage()" />
 		<div class="edt-chat-btn">
-			<button class="btn" type="button" ng-click="sendChatMessage()"><i class="icon-comment"></i></button>
+			<button class="btn" type="button" ng-click="sendChatMessage()">
+				<i class="icon-comment"></i>
+			</button>
 			<button class="btn active" type="button" id="voice-on"><i class="icon-volume-up"></i></button>
 		</div>
 	</div>
