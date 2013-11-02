@@ -27,20 +27,20 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
             }
             $scope.current.chat.push(msg);
 
-            $scope.current.lock.operation = false;
+            $scope.current.locks.operation = false;
 
-            $scope.current.lock.run = true;
+            $scope.current.locks.run = true;
         },
 
         'running': function (data) {
-            if (! $scope.current.lock.debug)
+            if (! $scope.current.locks.debug)
                 return;
             $scope.current.waiting = false;
             //runtoline(-1);
 
         },
         'waiting': function (data) {
-            if (! $scope.current.lock.debug)
+            if (! $scope.current.locks.debug)
                 return;
             $scope.current.waiting = true;
             if (typeof data.line == 'number'){
@@ -57,7 +57,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
         },
 
         'exit': function (data){
-            $scope.current.lock.operation = false;
+            $scope.current.locks.operation = false;
             if(data.err.code !== undefined){
                 var time = new Date();
                 var msg = {
@@ -83,10 +83,10 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
             }
 
             //editor-run 激活一个小图标 icon-play
-            if ($scope.current.lock.run)
-                $scope.current.lock.run = false;
+            if ($scope.current.locks.run)
+                $scope.current.locks.run = false;
 
-            if ($scope.current.lock.debug){  
+            if ($scope.current.locks.debug){  
 
                 $scope.current.editor.setValue($scope.current.oldText);
                 removeAllBreakpoints();
@@ -108,7 +108,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
                     expressionlist.setValue(expressionlist.elements[k].expression, null);
                 }
                 */
-                $scope.current.lock.debug = false;
+                $scope.current.locks.debug = false;
             }
         },
 
@@ -132,14 +132,14 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
             editordoc.setHistory(hist);
             */
             $scope.current.oldText = $scope.current.editor.getValue();
-            $scope.current.oldBps = r$scope.current.bps;
+            $scope.current.oldBps = $scope.current.bps;
             $scope.current.editor.setValue(data.text);
             removeAllBreakpoints();
             initBreakpoints(data.bps);
             var hist = $scope.current.editor.getDoc().getHistory();
             hist.done.pop();
             $scope.current.editor.getDoc().setHistory(hist);
-            $scope.current.lock.operation = false;
+            $scope.current.locks.operation = false;
 
         },
 
@@ -168,34 +168,35 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
 		//value: "function test()\n{\n\tvar Huarong = 'Dadi', Yanglei = 'Nanshen';\n}",
         value: $scope.current.data.text,
         onLoad : function(cm){
-				    // Editor part
+			// Editor part
+		    $scope.current.editor = cm;
+            $scope.editor = cm;
+            roomModel.registerEditorEvent($scope.current);
+		    var _doc = cm.getDoc();
 
-				    $scope.editor = cm;
-				    var _doc = cm.getDoc();
+		    cm.focus();
 
-				    cm.focus();
+		    // Options
+		    CodeMirror.modeURL = "/lib/codemirror/mode/%N/%N.js";
 
-				    // Options
-				    CodeMirror.modeURL = "/lib/codemirror/mode/%N/%N.js";
-        
-                    if (roomGlobal.languagemap[$scope.current.data.type]){
-                        if (roomGlobal.modemap[$scope.current.data.type])
-                            $scope.editor.setOption('mode', roomGlobal.modemap[$scope.current.data.type]);
-                        else
-                            $scope.editor.setOption('mode', roomGlobal.languagemap[$scope.current.data.type]);
+            if (roomGlobal.languagemap[$scope.current.data.type]){
+                if (roomGlobal.modemap[$scope.current.data.type])
+                    $scope.editor.setOption('mode', roomGlobal.modemap[$scope.current.data.type]);
+                else
+                    $scope.editor.setOption('mode', roomGlobal.languagemap[$scope.current.data.type]);
 
-                        CodeMirror.autoLoadMode(cm, roomGlobal.languagemap[$scope.current.data.type]);
-                    } else{
-                        $scope.editor.setOption('mode', 'text/plain');
-                        CodeMirror.autoLoadMode($scope.editor, '');
-                    }
-   					//
+                CodeMirror.autoLoadMode(cm, roomGlobal.languagemap[$scope.current.data.type]);
+            } else{
+                $scope.editor.setOption('mode', 'text/plain');
+                CodeMirror.autoLoadMode($scope.editor, '');
+            }
+				//
 
-				    // Events
-				    cm.on("gutterClick", function(cm, n) {
-                        $scope.gutterclick(cm, n);
-                    });
-				},
+		    // Events
+		    cm.on("gutterClick", function(cm, n) {
+                $scope.gutterclick(cm, n);
+            });
+		},
         extraKeys: {
             "Esc": function(cm) {
                 if (roomGlobal.isFullScreen(cm)) $scope.setFullScreen(false);
@@ -211,12 +212,12 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
 
     $scope.runFn = function (){
 
-        if (! $scope.current.runEnabled() || $scope.current.lock.operation) 
+        if (! $scope.current.runEnabled() || $scope.current.locks.operation) 
            return;
         
-        $scope.current.lock.operation = true;
+        $scope.current.locks.operation = true;
 
-        if ($scope.current.lock.run){
+        if ($scope.current.locks.run){
             socket.emit('kill');
         } else {
             socket.emit('run',$scope.current.data);
@@ -333,7 +334,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
     }
 
     $scope.consoleInputFn = function() {
-        if ($scope.current.lock.debug || $scope.current.lock.run){
+        if ($scope.current.locks.debug || $scope.current.locks.run){
             socket.emit('stdin', {
                 data: $scope.consoleInput + "\n"
             })
