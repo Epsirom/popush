@@ -261,6 +261,7 @@ function RunController($scope, roomModel, socket, $location, $cookies){
 	});
 
 	//绑定按键f5 是否能增加快捷键的设置？
+	/*
 	function runFn(){
 		if (! roomModel.currentDoc.unEnabled || ! roomModel.currentDoc.lock.operation) 
 			return;
@@ -273,7 +274,7 @@ function RunController($scope, roomModel, socket, $location, $cookies){
 			socket.emit('run',roomModel.currentDoc.doc);
 		}
 	}
-
+	*/
 	function debugFn(){
 		if (! roomModel.currentDoc.debugEnabled || roomModel.currentDoc.lock.operation )
 			return;

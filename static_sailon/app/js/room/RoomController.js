@@ -6,6 +6,16 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
         roomModel.leaveRoom($scope.current);
     })
 
+    socket.onScope($scope, {
+        'run': function (data){
+            //聊天窗口显示系统消息
+            //...
+            //setrun：
+            //打开console
+            roomModel.getCurrentDoc().lock.operation = false;
+        },
+    });
+       
     $scope.changePath = tabsModel.changePath;
 //	$scope.currentTab = {'path': ["bin","das","Dadi.cpp"]};
     //$scope.currentTab = roomModel.currentDoc.doc.path;
@@ -18,14 +28,27 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
         value: roomModel.getCurrentDoc().data.text,
         onLoad : function(cm){
 				    // Editor part
+
 				    $scope.editor = cm;
 				    var _doc = cm.getDoc();
+
 				    cm.focus();
 
 				    // Options
 				    CodeMirror.modeURL = "/lib/codemirror/mode/%N/%N.js";
-				    cm.setOption("mode", "javascript");
-   					CodeMirror.autoLoadMode(cm, "javascript");
+        
+                    if (roomGlobal.languagemap[roomModel.getCurrentDoc().data.type]){
+                        if (roomGlobal.modemap[roomModel.getCurrentDoc().data.type])
+                            $scope.editor.setOption('mode', roomGlobal.modemap[roomModel.getCurrentDoc().data.type]);
+                        else
+                            $scope.editor.setOption('mode', roomGlobal.languagemap[roomModel.getCurrentDoc().data.type]);
+
+                        CodeMirror.autoLoadMode(cm, roomGlobal.languagemap[roomModel.getCurrentDoc().data.type]);
+                    } else{
+                        $scope.editor.setOption('mode', 'text/plain');
+                        CodeMirror.autoLoadMode($scope.editor, '');
+                    }
+   					//
 
 				    // Events
 				    cm.on("gutterClick", function(cm, n) {
@@ -44,6 +67,22 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
     $scope.chat_show = false;
     $scope.editor_width = 'span12'; 
     $scope.show_console = false;
+
+    $scope.runFn = function (){
+
+        console.log('run');
+
+        if (! roomModel.getCurrentDoc().runEnabled() || ! roomModel.getCurrentDoc().lock.operation) 
+            return;
+        
+        roomModel.getCurrentDoc().lock.operation = true;
+
+        if (! roomModel.getCurrentDoc().lock.run){
+            socket.emit('kill');
+        } else {
+            socket.emit('run',roomModel.getCurrentDoc().data);
+        }
+    }
 
     $scope.toggleConsole = function()
     {
@@ -109,11 +148,13 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
         },
     ];
 
+
+    /*
     $scope.inputMessage="123";
     $scope.sendChatMessage = function()
     {   
         $scope.inputMessage = "";
-    	/*
+    	
         if($scope.inputMessage != "")
         {   
             $scope.newMsg.content = $scope.inputMessage;
@@ -124,9 +165,9 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
             $scope.chatmessages.time.push($scope.newMsg);
             $scope.inputMessage = "";
         }
-        */
+        
     }
-
+*/
 
     //console
     $scope.vars = [{'name':'n','showVar':true,'focus':false,'value':'12'},
@@ -151,5 +192,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
     {
         $scope.vars.push({'name':'','showVar':false,'focus':true,'value':'Dadi'});
     }
+
+
 
 }
