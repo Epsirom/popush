@@ -131,9 +131,9 @@
 }
 .edt-console-inner
 {
-    height:83px;
+    height:83px !important;
     overflow:auto;
-    padding:4px 8px;
+    padding:4px 8px !important;
 }
 .edt-console-input
 {

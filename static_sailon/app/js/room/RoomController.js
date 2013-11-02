@@ -126,6 +126,8 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
     //console
     $scope.vars = [{'name':'n','showVar':true,'focus':false,'value':'12'},
                 {'name':'m','showVar':true,'focus':false,'value':'12'}];
+
+    $scope.consoleContent = "213\ndsa+123 sad";
     $scope.rename  = function(n)
     {
         $scope.vars[n].showVar = false;
