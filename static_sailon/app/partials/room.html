@@ -5,12 +5,13 @@
 				<span ng-repeat="p in currentTab.path"> / <a class="btn-link">{{ p }}</a></span>
 			</div>
 			<div class="edt-editor-btns">
-				<button class="btn btn-primary edt-editor-btn" title="{{'RUN' | translate }}"> <i class="icon-play"></i>
+				<button class="btn btn-primary edt-editor-btn" ng-class="roomModel.currentDoc.runable? enabled:disabled"  title="{{'RUN' | translate }}"> 
+					<i ng-class="roomModel.currentDoc.lock.run? icon-stop:icon-play" ></i>
 				</button>
-				<button class="btn btn-primary edt-editor-btn" title="{{'DEBUG' | translate }}">
-					<i class="icon-eye-open"></i>
+				<button class="btn btn-primary edt-editor-btn" ng-class="roomModel.currentDoc.debugable? enabled:disabled" title="{{'DEBUG' | translate }}">
+					<i ng-class="roomModel.currentDoc.lock.debug? icon-eye-close:icon-eye-open"></i>
 				</button>
-				<button class="btn btn-primary edt-editor-btn" title="{{'CONSOLE' | translate }}" 			ng-click="toggleConsole()">
+				<button class="btn btn-primary edt-editor-btn" ng-class="roomModel.currentDoc.console?active" title="{{'CONSOLE' | translate }}" ng-click="toggleConsole()">
 					<i class="icon-share"></i>
 				</button>
 				<button class="btn btn-primary edt-editor-btn" ng-click="setFullScreen(true)" title="{{'FULL_SCREEN' | translate }}">
@@ -25,7 +26,7 @@
 			</div>
 		</div>
 		<textarea ui-codemirror="editorOptions" ng-model="model" ui-refresh="true"></textarea>
-		<div class="row-fluid" ng-show="show_console">
+		<div class="row-fluid" ng-show="show_console" ng-contorller="ConsoleController">
 			<div class="edt-under-editor">
 				<div class="span8 edt-console">
 					<div class="edt-console-title well well-top">控制台
@@ -75,18 +76,20 @@
 			</div>
 		</div>
 	</div>
-	<div class="span3 chat-window" ng-show="chat_show">
+	<div class="span3 chat-window" ng-show="chat_show" ng-controller = "ChatController">
 		<div class="edt-chat">
 			<div class="edt-chat-inner">
-				<p ng-repeat="chatmessage in chatmessages">
-					<span class="edt-chat-name self">
+				<!--<p ng-repeat="chatmessage in chatmessages">-->
+				<p ng-repeat="chatmessage in roomModel.currentDoc.chat"></p>
+					<!--<span class="edt-chat-name self">-->
+					<span class="edt-chat-name" ng-class="chatmessage.type == 'self'?self"></span>
 						{{chatmessage.name}}&nbsp;&nbsp;{{chatmessage.time}}
 					</span><br>
 					{{chatmessage.content}}
 				</p>
 			</div>
 		</div>
-		<input ng-model="inputMessage" class="edt-input-msg" type="text" />
+		<input ng-model="chatInput" class="edt-input-msg" type="text" />
 		<div class="edt-chat-btn">
 			<button class="btn" type="button" ng-click="sendChatMessage()"><i class="icon-comment"></i></button>
 			<button class="btn active" type="button" id="voice-on"><i class="icon-volume-up"></i></button>

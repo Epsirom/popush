@@ -1,6 +1,6 @@
 'use strict';
 
-function ChatController($scope, roomModel, socket, $location, $cookies){
+function VoiceController($scope, roomModel, socket, $location, $cookies){
 
 	function leaveVoiceRoom() {
 		
