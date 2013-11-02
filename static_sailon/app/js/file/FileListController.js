@@ -1,6 +1,6 @@
 'use strict';
 
-function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlobal, socket, messageModel) {
+function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlobal, socket, messageModel, roomModel) {
 	socket.onScope($scope, {
 		'new': function(data) {
 			if (data.err) {
@@ -46,21 +46,14 @@ function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlo
 		}
 	}
 
-	$scope.changePath = function(tab, index) {
-		var newPath = tab.doc.path.split('/').slice(0, index + 2).join('/'),
-			obj = fileTreeModel.select(newPath);
-		fileTreeModel.closeChildren(obj);
-		if (index == 0) {
-			fileTreeModel.updateRoot();
-		} else {
-			fileTreeModel.updateByObj(obj);
-		}
-		tabsModel.changeDoc(obj);
-	}
+	$scope.changePath = tabsModel.changePath;
 
 	$scope.nextPath = function(tab, obj) {
 		if (obj.type == 'doc') {
-			tabsModel.enterRoom(obj);
+			tabsModel.setDestDoc(obj);
+			socket.emit('join', {
+				'path': obj.path
+			});
 		} else if (obj.type == 'dir') {
 			//var nextobj = fileTreeModel.select(tab.doc.path + '/' + obj.name);
 			fileTreeModel.updateByObj(obj);

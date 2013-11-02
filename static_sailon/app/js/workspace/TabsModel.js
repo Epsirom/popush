@@ -7,6 +7,7 @@ function TabsModel(userModel, fileTreeModel, socket) {
 			{'type': 'room', 'title': 'Dadi.cpp', 'path':["bin","das","Dadi.cpp"]}];
 	var current = null;
 	var currentMembers = [];
+	var destDoc = null;
 
 	// Tab Services
 
@@ -123,6 +124,18 @@ function TabsModel(userModel, fileTreeModel, socket) {
 		currentMembers.splice(0, currentMembers.length);
 	}
 
+	var changePath = function(tab, index) {
+		var newPath = tab.doc.path.split('/').slice(0, index + 2).join('/'),
+			obj = fileTreeModel.select(newPath);
+		fileTreeModel.closeChildren(obj);
+		if (index == 0) {
+			fileTreeModel.updateRoot();
+		} else {
+			fileTreeModel.updateByObj(obj);
+		}
+		changeDoc(obj);
+	}
+
 	return {
 		'tabs': tabs,
 		'current': current,
@@ -136,6 +149,9 @@ function TabsModel(userModel, fileTreeModel, socket) {
 		'getCurrent': function() {return current;},
 		'clear': clearTabs,
 		'openRoom': openRoom,
-		'enterRoom': enterRoom
+		'enterRoom': enterRoom,
+		'getDestDoc': function() {return destDoc;},
+		'setDestDoc': function(doc) {destDoc = doc;},
+		'changePath': changePath
 	};
 }
