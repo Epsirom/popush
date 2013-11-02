@@ -89,5 +89,8 @@
   "deleteErr:unactivated":  "Delete Error: Unauthorized!",
   "signing":                "Signing in... Please wait...",
   "createErr:illegal file name":  "Create Error: Illegal file name!",
-  "ADD_WATCH":              "Add watch"
+  "ADD_WATCH":              "Add watch",
+  "room-saved":             "Saved",
+  "room-saving":            "Saving...",
+  "room-failed":            "Disconnected"
 }

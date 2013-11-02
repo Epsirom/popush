@@ -89,5 +89,8 @@
   "deleteErr:unactivated":  "删除失败：您没有权限删除！",
   "signing":                "正在登录，请耐心等待...",
   "createErr:illegal file name":  "创建失败：文件或文件夹名非法！",
-  "ADD_WATCH":              "添加监视"
+  "ADD_WATCH":              "添加监视",
+  "room-saved":             "已保存",
+  "room-saving":            "正在保存...",
+  "room-failed":            "可能已经断开连接"
 }
