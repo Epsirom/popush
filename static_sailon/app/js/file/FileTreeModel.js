@@ -8,6 +8,13 @@ function FileTreeModel(userModel, socket) {
 		rootStatus = {'self': 'on', 'shared': 'on'};
 	var tabsFn = {};
 
+	userModel.logoutCallbacks.push(function() {
+		deleteRoot({'nodes': selfRoot});
+		deleteRoot({'nodes': sharedRoot});
+		selfRoot.splice(0, selfRoot.length);
+		sharedRoot.splice(0, sharedRoot.length);
+	});
+
 	// File Services
 
 	var getNameByPath = function(path) {

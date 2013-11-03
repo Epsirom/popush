@@ -37,7 +37,7 @@
 			<div class="edt-under-editor">
 				<div class="span8 edt-console">
 					<div class="edt-console-title well well-top" translate="CONSOLE">
-						<span ng-bind="current.room.consoleState"></span>
+						<span translate="{{current.room.consoleState}}"></span>
 					</div>
 					<div class="edt-console-inner" ng-style="bottomscroll()" scroll>
 						<span ng-repeat="x in current.room.consoleOutput">

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('roomModule', ['userModule', 'socketModule', 'workspaceModule', 
-	'ngCookies', 'ui.bootstrap', 'pascalprecht.translate']).
+	'ngCookies', 'ui.bootstrap', 'pascalprecht.translate', 'ngSanitize']).
 	value('roomGlobal', {
 		'languagemap': { 
 			'c':		'clike',

@@ -109,8 +109,8 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 
 				'timer': null,
 
-				'runable': runable,
-				'debugable': debugable,
+				'runable': runable(ext),
+				'debugable': debugable(ext),
 
 				'q':[],
 				'bq': [],
