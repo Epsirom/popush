@@ -2,39 +2,43 @@
 
 function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTreeModel, roomGlobal, userModel, $timeout) {
 
-	var docList = [];
-	var currentDoc = {};
+	var roomList = {};
 	
 	var leaveRoom = function(room) {
-		var i, len = docList.length;
-		for (i = 0; i < len; ++i) {
-			if (docList[i].doc.path == room.doc.path) {
-				docList.splice(i, 1);
-				break;
+		if (!roomList[room.id]) {
+			return;
+		}
+		delete roomList[room.id];
+		socket.emit('leave', {});
+	}
+
+	var updateObj(src, dest) {
+		if (dest === undefined) {
+			return;
+		}
+		var i, len = arguments.length;
+		for (i = 2; i < len; ++i) {
+			if (src[arguments[i]]) {
+				dest[arguments[i]] = src[arguments[i]];
 			}
 		}
-		socket.emit('leave', {});
+	}
+
+	var updateRoom = function(room, data) {
+		return updateObj(data, room, 'users', 'version', 'text', 'bps', 'exprs');
 	}
 
 	socket.forceOn('set', function (data) {
 		//check if the doc is opening
 		var existed = false, curPath = tabsModel.getDestDoc().path;
-		var i, len = docList.length;
-		for (i = 0; i < len; ++i)
-			if (docList[i].doc.path == curPath)
-			{
-				currentDoc = docList[i];
-				existed = true;
-				currentDoc.data = data;
-				break;
-			}
-
-		if (! existed)
-		{			
+		if (roomList[data.id]) {
+			updateRoom(roomList[data.id], data);
+		} else {			
 			var pathapart = tabsModel.getDestDoc().path.split('/');
 			var filepart = pathapart[pathapart.length - 1].split('.');
 			var ext = filepart[filepart.length - 1];
 			data.type = ext;
+			data.roomid = data.id;
 
 			var runable = function (ext){
 				if (! POPUSH_SETTINGS.ENABLE_RUN)
@@ -59,7 +63,6 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 
 			var editor, 
 				expressionList = {},
-				saving = false,
 				lock = {
 				//run & debug lock
 				'run':false, 
@@ -69,7 +72,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				'voice':false
 				};
 
-			currentDoc = {
+			var currentDoc = {
 				'doc': tabsModel.getDestDoc(),
 				'expressionList': expressionList,
 				'data': data,
@@ -77,7 +80,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				'type': ext,
 				'editor' : editor,
 				'state': 0, //editing = 0, running = 1, debugging = 2
-				'saving': 'done', //if file is saving, then saving  = true
+				'saving': false, //if file is saving, then saving  = true
 				'lock': false,
 				'locks': lock,
 
@@ -134,13 +137,15 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				}
 				return r;
 			}
-			docList.push(currentDoc);
-			tabsModel.runCreateRoomCallback();
+			roomList[data.id] = currentDoc;
 
 			//初始化editor
 			//初始化expression list
 		}
 
+		//tabsModel.runCreateRoomCallback();
+
+		var currentDoc = roomList[data.id];
 		//reset lock 
 		currentDoc.locks.operation = false;
 		currentDoc.locks.run = data.running;
@@ -169,7 +174,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		if (!room) {
 			room = currentDoc;
 		}
-		room.saving = 'doing';
+		room.saving = true;
 		room.savetimestamp = 0;
 	}
 
@@ -188,7 +193,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			room = currentDoc;
 		}
 		if(room.savetimestamp == timestamp) {
-			room.saving = 'done';
+			room.saving = false;
 		}
 	}
 
@@ -599,7 +604,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				doc = room.data;
 			if (bufferfrom != -1) {
 				if (bufferto == -1){
-					var req = {version:doc.version, from:bufferfrom, to:bufferfrom, text:buffertext};
+					var req = {roomid:room.id, version:doc.version, from:bufferfrom, to:bufferfrom, text:buffertext};
 					if(q.length == 0){
 						socket.emit('change', req);
 					}
@@ -608,7 +613,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 					bufferfrom = -1;
 				}
 				else {
-					var req = {version:doc.version, from:bufferfrom, to:bufferto, text:buffertext};
+					var req = {roomid:room.id, version:doc.version, from:bufferfrom, to:bufferto, text:buffertext};
 					if(q.length == 0){
 						socket.emit('change', req);
 					}
@@ -635,7 +640,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		function sendbreak(from, to, text){
 			var doc = room.data,
 				bq = room.bq;
-			var req = {version:doc.version, from:from, to:to, text:text};
+			var req = {roomid:room.id, version:doc.version, from:from, to:to, text:text};
 			if(bq.length == 0){
 				socket.emit('bps', req);
 			}
@@ -725,7 +730,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 
 			if (chg.text.length != (bto-bfrom+1)){
 				sendbuffer();
-				var req = {version:doc.version, from:cfrom, to:cto, text:cattext};
+				var req = {roomid: room.id, version:doc.version, from:cfrom, to:cto, text:cattext};
 				if(q.length == 0){
 					socket.emit('change', req);
 				}
@@ -809,7 +814,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			}
 			else if (bufferfrom != -1) {
 				if (bufferto == -1){
-					var req = {version:doc.version, from:bufferfrom, to:bufferfrom, text:buffertext};
+					var req = {roomid:room.id, version:doc.version, from:bufferfrom, to:bufferfrom, text:buffertext};
 					if(q.length == 0){
 						socket.emit('change', req);
 					}
@@ -818,7 +823,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 					bufferfrom = -1;
 				}
 				else {
-					var req = {version:doc.version, from:bufferfrom, to:bufferto, text:buffertext};
+					var req = {roomid:room.id, version:doc.version, from:bufferfrom, to:bufferto, text:buffertext};
 					if(q.length == 0){
 						socket.emit('change', req);
 					}
@@ -828,7 +833,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				}
 			}
 			
-			var req = {version:doc.version, from:cfrom, to:cto, text:cattext};
+			var req = {roomid:room.id, version:doc.version, from:cfrom, to:cto, text:cattext};
 			if(q.length == 0){
 				socket.emit('change', req);
 			}

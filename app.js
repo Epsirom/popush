@@ -123,7 +123,7 @@ io.sockets.on('connection', function(socket){
 
 	socket.on('disconnect', function(){
 		if(socket.session){
-			_leave();
+			_leaveAll();
 		}
 	});
 
@@ -198,7 +198,7 @@ io.sockets.on('connection', function(socket){
 
 	socket.on('logout', function(){
 		if(socket.session){
-			_leave();
+			_leaveAll();
 			delete session[socket.session.sid];
 			delete users[socket.session.user.name];
 			delete socket.session;
@@ -393,12 +393,25 @@ io.sockets.on('connection', function(socket){
 		});
 	});
 
-	function _leave(){
+	function _leaveAll() {
+		if (socket.session && socket.session.rooms) {
+			var i;
+			for (i in socket.session.rooms) {
+				_leave(socket.session.rooms[i]);
+			}
+		}
+	}
+
+	function _leave(roomid){
 		if(socket.session && socket.session.room){
 			var user = socket.session.user;
-			var room = socket.session.room;
+			var room = socket.session.rooms[roomid];
+			if (!room) {
+				return;
+			}
 			socket.leave(room.id);
-			delete socket.session.room;
+			//delete socket.session.room;
+			delete socket.session.rooms[roomid];
 			_broadcast(room.id, 'leave', {name:user.name, time:new Date().getTime()});
 			delete room.users[user.name];
 			room.count--;
@@ -423,7 +436,7 @@ io.sockets.on('connection', function(socket){
 			return socket.emit('unauthorized');
 		}
 		var user = socket.session.user;
-		_leave();
+		//_leave();
 		docDAO.getRevision(user._id, data.path, 0, function(err, revision){
 			if(err){
 				return socket.emit('join', {err:err});
@@ -436,7 +449,11 @@ io.sockets.on('connection', function(socket){
 			}
 			room.users[user.name] = true;
 			room.count++;
-			socket.session.room = room;
+			if (!socket.session.rooms) {
+				socket.session.rooms = {};
+			}
+			socket.session.rooms[room.id] = room;
+			//socket.session.room = room;
 			socket.join(room.id);
 			var r = {id:room.id, users:room.users, version:room.version, text:room.buffer.toString(), bps:room.bps, exprs:room.exprs};
 			if(room.runner){
@@ -456,18 +473,19 @@ io.sockets.on('connection', function(socket){
 		if(!socket.session){
 			return socket.emit('unauthorized');
 		}
-		_leave();
+		_leave(data.path);
+		//_leave();
 	});
 
 	socket.on('change', function(data){ // version, from, to, text
-		if(!check(data, 'version', 'from', 'to', 'text')){
+		if(!check(data, 'roomid', 'version', 'from', 'to', 'text')){
 			return;
 		}
 		if(!socket.session){
 			return socket.emit('unauthorized');
 		}
 		var user = socket.session.user;
-		var room = socket.session.room;
+		var room = socket.session.rooms[data.roomid];
 		if(room && room.version == data.version && !room.dbger){
 			room.version = (room.version + 1) % 65536;
 			room.buffer.update(data.from, data.to, data.text, function(err){
@@ -481,14 +499,14 @@ io.sockets.on('connection', function(socket){
 	});
 
 	socket.on('bps', function(data){ // version, from, to, text
-		if(!check(data, 'version', 'from', 'to', 'text')){
+		if(!check(data, 'roomid', 'version', 'from', 'to', 'text')){
 			return;
 		}
 		if(!socket.session){
 			return socket.emit('unauthorized');
 		}
 		var user = socket.session.user;
-		var room = socket.session.room;
+		var room = socket.session.rooms[data.roomid];
 		if(room && room.version == data.version && data.from <= data.to && data.from >= 0){
 			room.version = (room.version + 1) % 65536;
 			while(room.bps.length < data.to){
@@ -532,14 +550,14 @@ io.sockets.on('connection', function(socket){
 	});
 
 	socket.on('chat', function(data){ // text
-		if(!check(data, 'text')){
+		if(!check(data, 'roomid', 'text')){
 			return;
 		}
 		if(!socket.session){
 			return socket.emit('unauthorized');
 		}
 		var user = socket.session.user;
-		var room = socket.session.room;
+		var room = socket.session.rooms[data.roomid];
 		if(room){
 			data.name = user.name;
 			data.time = new Date().getTime();
@@ -548,14 +566,14 @@ io.sockets.on('connection', function(socket){
 	});
 
 	socket.on('run', function(data){ // type, version
-		if(!check(data, 'type', 'version')){
+		if(!check(data, 'roomid', 'type', 'version')){
 			return;
 		}
 		if(!socket.session){
 			return socket.emit('unauthorized');
 		}
 		var user = socket.session.user;
-		var room = socket.session.room;
+		var room = socket.session.rooms[data.roomid];
 		if(room && !room.runner && !room.dbger && room.version == data.version){
 			var runner = new Runner(room.path.substr(room.path.lastIndexOf('/') + 1), data.type, room.buffer.toString());
 			if(runner.ready()){
@@ -579,12 +597,15 @@ io.sockets.on('connection', function(socket){
 		}
 	});
 
-	socket.on('kill', function(){
+	socket.on('kill', function(data){
+		if (!check(data, 'roomid')) {
+			return;
+		}
 		if(!socket.session){
 			return socket.emit('unauthorized');
 		}
 		var user = socket.session.user;
-		var room = socket.session.room;
+		var room = socket.session.rooms[data.roomid];
 		if(room){
 			if(room.runner){
 				room.runner.kill();
@@ -595,14 +616,14 @@ io.sockets.on('connection', function(socket){
 	});
 
 	socket.on('stdin', function(data){ // data
-		if(!check(data, 'data')){
+		if(!check(data, 'roomid', 'data')){
 			return;
 		}
 		if(!socket.session){
 			return socket.emit('unauthorized');
 		}
 		var user = socket.session.user;
-		var room = socket.session.room;
+		var room = socket.session.rooms[data.roomid];
 		if(room){
 			var t;
 			if(room.runner){
@@ -622,14 +643,14 @@ io.sockets.on('connection', function(socket){
 	});
 
 	socket.on('debug', function(data){ // type, version
-		if(!check(data, 'type', 'version')){
+		if(!check(data, 'roomid', 'type', 'version')){
 			return;
 		}
 		if(!socket.session){
 			return socket.emit('unauthorized');
 		}
 		var user = socket.session.user;
-		var room = socket.session.room;
+		var room = socket.session.rooms[data.roomid];
 		if(room && !room.runner && !room.dbger && room.version == data.version){
 			var dbger = new Debugger(room.path.substr(room.path.lastIndexOf('/') + 1), data.type, room.buffer.toString());
 			if(dbger.ready()){
@@ -694,59 +715,71 @@ io.sockets.on('connection', function(socket){
 		}
 	});
 
-	socket.on('step', function(){
-		if(!socket.session){
-			return socket.emit('unauthorized');
-		}
-		var user = socket.session.user;
-		var room = socket.session.room;
-		if(room && room.dbger){
-			return room.dbger.step();
-		}
-	});
-
-	socket.on('next', function(){
-		if(!socket.session){
-			return socket.emit('unauthorized');
-		}
-		var user = socket.session.user;
-		var room = socket.session.room;
-		if(room && room.dbger){
-			return room.dbger.next();
-		}
-	});
-
-	socket.on('resume', function(){
-		if(!socket.session){
-			return socket.emit('unauthorized');
-		}
-		var user = socket.session.user;
-		var room = socket.session.room;
-		if(room && room.dbger){
-			return room.dbger.resume();
-		}
-	});
-
-	socket.on('finish', function(){
-		if(!socket.session){
-			return socket.emit('unauthorized');
-		}
-		var user = socket.session.user;
-		var room = socket.session.room;
-		if(room && room.dbger){
-			return room.dbger.finish();
-		}
-	});
-
-	socket.on('add-expr', function(data){ // expr
-		if(!check(data, 'expr')){
+	socket.on('step', function(data){
+		if (!check(data, 'roomid')) {
 			return;
 		}
 		if(!socket.session){
 			return socket.emit('unauthorized');
 		}
 		var user = socket.session.user;
-		var room = socket.session.room;
+		var room = socket.session.rooms[data.roomid];
+		if(room && room.dbger){
+			return room.dbger.step();
+		}
+	});
+
+	socket.on('next', function(data){
+		if (!check(data, 'roomid')) {
+			return;
+		}
+		if(!socket.session){
+			return socket.emit('unauthorized');
+		}
+		var user = socket.session.user;
+		var room = socket.session.rooms[data.roomid];
+		if(room && room.dbger){
+			return room.dbger.next();
+		}
+	});
+
+	socket.on('resume', function(data){
+		if (!check(data, 'roomid')) {
+			return;
+		}
+		if(!socket.session){
+			return socket.emit('unauthorized');
+		}
+		var user = socket.session.user;
+		var room = socket.session.rooms[data.roomid];
+		if(room && room.dbger){
+			return room.dbger.resume();
+		}
+	});
+
+	socket.on('finish', function(data){
+		if (!check(data, 'roomid')) {
+			return;
+		}
+		if(!socket.session){
+			return socket.emit('unauthorized');
+		}
+		var user = socket.session.user;
+		var room = socket.session.rooms[data.roomid];
+		if(room && room.dbger){
+			return room.dbger.finish();
+		}
+	});
+
+	socket.on('add-expr', function(data){ // expr
+		if(!check(data, 'roomid', 'expr')){
+			return;
+		}
+		if(!socket.session){
+			return socket.emit('unauthorized');
+		}
+		var user = socket.session.user;
+		var room = socket.session.rooms[data.roomid];
 		if(room && !room.exprs.hasOwnProperty(data.expr) && data.expr != ''){
 			room.exprs[data.expr] = null;
 			if(room.dbger && room.dbger.state == 'waiting'){
@@ -764,14 +797,14 @@ io.sockets.on('connection', function(socket){
 	});
 
 	socket.on('rm-expr', function(data){ // expr
-		if(!check(data, 'expr')){
+		if(!check(data, 'roomid', 'expr')){
 			return;
 		}
 		if(!socket.session){
 			return socket.emit('unauthorized');
 		}
 		var user = socket.session.user;
-		var room = socket.session.room;
+		var room = socket.session.rooms[data.roomid];
 		if(room && room.exprs.hasOwnProperty(data.expr)){
 			delete room.exprs[data.expr];
 			return _broadcast(room.id, 'rm-expr', {expr:data.expr});
