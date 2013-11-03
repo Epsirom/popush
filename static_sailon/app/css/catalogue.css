@@ -73,3 +73,7 @@ input[type="text"].filelist-input {
 	padding-top: 6px;
 	padding-bottom: 6px;
 }
+.fileinput-red
+{
+	border-color: red !important;
+}

@@ -45,14 +45,15 @@
 				<a class='btn-link'>
 					<i class='icon-remove' ng-click="enterCreate(creater.type);" tooltip="{{'CANCEL' | translate}}" tooltip-trigger="mouseenter" tooltip-placement="top"></i>
 				</a>
-				<input class='filelist-input' type='text' tooltip="{{ invalid | translate}}" tooltip-trigger="focus" tooltip-placement="top" ng-model='creater.name' focus="true" ng-enter="createFile()" ng-maxlength="32"/>
+				<input class='filelist-input' type='text' ng-class="name_valid" ng-model='creater.name' focus="true" ng-enter="createFile()" />
 				<button class='btn-link' translate='CREATE' ng-click="createFile()"></button>
 			</td>
 			<td ng-if="creater.type == 'dir'">
 				<a class='btn-link'>
 					<i class='icon-remove' ng-click="enterCreate(creater.type);" tooltip="{{'CANCEL' | translate}}" tooltip-trigger="mouseenter" tooltip-placement="top"></i>
 				</a>
-				<input class='filelist-input' ng-if="invalid==true" type='text' tooltip="{{ 'INVALID_FILENAME' | translate}}" tooltip-trigger="focus" tooltip-placement="top" ng-model='creater.name' focus="true" ng-enter="createFile()" ng-maxlength="32"/>
+				<input class='filelist-input'  type='text' ng-class="name_valid"
+				ng-model='creater.name' focus="true" ng-enter="createFile()"/>
 				<button class='btn-link' translate='CREATE' ng-click="createFile()"></button>
 			</td>
 			<td></td>
