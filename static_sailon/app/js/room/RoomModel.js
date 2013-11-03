@@ -391,6 +391,45 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			}
 	});
 
+	socket.forceOn('join', function(data) {
+		if(data.err) {
+            //message('openeditor', data.err);
+        } 
+        else {
+        	var room = roomList[data.roomid];
+        	if (!room) {
+        		return;
+        	}
+            //update online user list
+
+            //send system message to chat box
+            //create cursor
+            var cursor = newcursor(userModel.user.name);
+            if(room.cursors[data.name] && room.cursors[data.name].element)
+            {
+                var element = room.cursors[data.name].element;
+                element.parentNode.removeChild(element);
+            }
+            room.cursors[data.name] = { element:cursor, pos:0 };
+        }
+	});
+
+	socket.forceOn('leave', function(data) {
+		var room = roomList[data.roomid];
+		if (!room) {
+			return;
+		}
+		if(room.cursors[data.name]) {
+            //console.log($scope.current.cursors[data.name].element);
+            if(room.cursors[data.name].element)
+            {
+                var element = room.cursors[data.name].element;
+                element.parentNode.removeChild(element);
+            }
+            delete room.cursors[data.name];
+        }
+	});
+	
 	//能改到RoomController.js里面么？
 	function toggleConsole(room){
 

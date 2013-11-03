@@ -184,42 +184,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
             if (i < 0)
                 return;
             $scope.current.expressionList.splice(n, 1);  
-            */
-        'join':function(data) {
-            if(data.err) {
-                message('openeditor', data.err);
-            } 
-            else {
-                //update online user list
-
-                //send system message to chat box
-                //create cursor
-                var cursor = roomModel.newcursor(userModel.user.name);
-                if($scope.current.cursors[data.name] && $scope.current.cursors[data.name].element)
-                {
-                    var element = $scope.current.cursors[data.name].element;
-                    element.parentNode.removeChild(element);
-                }
-                $scope.current.cursors[data.name] = { element:cursor, pos:0 };
-            }
-        },
-        'leave':function(data) {
-            //update online user list
-            //send system message to chat box: name, time
-            //remove the 
-            alert(data.name);
-            alert(data.time);
-            if($scope.current.cursors[data.name]) {
-                console.log($scope.current.cursors[data.name].element);
-                if($scope.current.cursors[data.name].element)
-                {
-                    var element = $scope.current.cursors[data.name].element;
-                    element.parentNode.removeChild(element);
-                }
-                delete cursors[data.name];
-            }
-        }    
-    });
+    });*/
 
 
 
