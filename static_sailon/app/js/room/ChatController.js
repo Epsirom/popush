@@ -23,6 +23,7 @@ function ChatController($scope, userModel, roomModel, socket, $location, $cookie
 		if ($scope.chatInput == '')
 			return;
 		socket.emit('chat', {
+			roomid: $scope.current.data.id,
 			text: $scope.chatInput
 		});
 		$scope.chatInput = '';

@@ -1,6 +1,6 @@
 <div class="row-fluid" ng-controller="RoomController">
 	<!--<div ng-class="editor_width" >-->
-	<div ng-class="current.room.chatOpen?span9:span12" >
+	<div ng-class="current.room.chatOpen?'span9':'span12'" >
 		<div class="row-fluid edt-editor-toolbar">
 			<div class="edt-filepath"> 
 				<i class="room-status" ng-class="{'doing': current.room.saving, 'done': !current.room.saving}" tooltip="{{(current.room.saving?'room-saving':'room-saved')|translate}}" tooltip-trigger="mouseenter" tooltip-placement="top"></i>
@@ -27,7 +27,7 @@
 				<button class="btn btn-primary edt-editor-btn" ng-hide="current.room.chatOpen" ng-click="current.room.chatOpen = !current.room.chatOpen" title="{{'SHOW_CHAT_WINDOW' | translate }}">
 					<i class="icon-backward"></i>
 				</button>
-				<button class="btn btn-primary edt-editor-btn" ng-show="current.room.chatOpen" ng-click="toggleChat()" title="{{'HIDE_CHAT_WINDOW' | translate }}">
+				<button class="btn btn-primary edt-editor-btn" ng-show="current.room.chatOpen" ng-click="current.room.chatOpen = !current.room.chatOpen" title="{{'HIDE_CHAT_WINDOW' | translate }}">
 					<i class="icon-forward"></i>
 				</button>
 			</div>
@@ -40,7 +40,7 @@
 						<span ng-bind="current.room.consoleState"></span>
 					</div>
 					<div class="edt-console-inner" ng-style="bottomscroll()" scroll>
-						<span ng-repeat="x in current.consoleOutput">
+						<span ng-repeat="x in current.room.consoleOutput">
 							<p ng-class="{consolestderr: (x.type == 'stderr'), consolestdin: (x.type == 'stdin'), consolestdout: (x.type == 'stdout') }" >{{x.content}}</p>
 						</span>
 					</div>	
@@ -66,7 +66,7 @@
 					<div class="edt-varlist" ng-style="bottomscroll()" scroll>
 						<table class="table table-hover" id="varlist-table">
 							<!--<tr ng-repeat="var in vars">-->
-							<tr ng-repeat="var in current.expressionList">	
+							<tr ng-repeat="var in current.room.expressionList">	
 								<td class="col1">
 								</td>
 								<td class="col2">
@@ -90,7 +90,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="span3 chat-window" ng-show="current.room.chatOpen" ng-controller = "ChatController">
+	<div class="span3 chat-window" ng-show="current.chatOpen" ng-controller = "ChatController">
 		<div class="edt-chat" ng-style="bottomscroll()" scroll>
 			<div class="edt-chat-inner">
 				<p ng-repeat="chatmessage in current.chat">
