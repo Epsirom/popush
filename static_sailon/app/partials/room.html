@@ -1,6 +1,6 @@
 <div class="row-fluid" ng-controller="RoomController">
 	<!--<div ng-class="editor_width" >-->
-	<div ng-class="current.room.chatOpen?span9:span12" >
+	<div ng-class="current.room.chatOpen?'span9':'span12'" >
 		<div class="row-fluid edt-editor-toolbar">
 			<div class="edt-filepath"> 
 				<i class="room-status" ng-class="{'doing': current.room.saving, 'done': !current.room.saving}" tooltip="{{(current.room.saving?'room-saving':'room-saved')|translate}}" tooltip-trigger="mouseenter" tooltip-placement="top"></i>
@@ -17,17 +17,17 @@
 				<button class="btn btn-primary edt-editor-btn" ng-class="current.room.debugable? 'enabled':'disabled'"  title="{{'DEBUG' | translate }}" ng-click = "debugFn()">
 					<i ng-class="current.room.locks.debug?'icon-eye-close':'icon-eye-open' "></i>
 				</button>
-				<button class="btn btn-primary edt-editor-btn" title="{{'CONSOLE' | translate }}" ng-click="current.room.toggleConsole(current.room.id)">
+				<button class="btn btn-primary edt-editor-btn" title="{{'CONSOLE' | translate }}" ng-click="toggleConsole(current.room)">
 					<i class="icon-share"></i>
 				</button>
 				<button class="btn btn-primary edt-editor-btn" ng-click="setFullScreen(true)" title="{{'FULL_SCREEN' | translate }}">
 					<i class="icon-fullscreen"></i>
 				</button>
-				<!--<button class="btn btn-primary edt-editor-btn" ng-hide="current.room.chatOpen" ng-click="toggleChat()" title="{{'SHOW_CHAT_WINDOW' | translate }}">-->
+
 				<button class="btn btn-primary edt-editor-btn" ng-hide="current.room.chatOpen" ng-click="current.room.chatOpen = !current.room.chatOpen" title="{{'SHOW_CHAT_WINDOW' | translate }}">
 					<i class="icon-backward"></i>
 				</button>
-				<button class="btn btn-primary edt-editor-btn" ng-show="current.room.chatOpen" ng-click="toggleChat()" title="{{'HIDE_CHAT_WINDOW' | translate }}">
+				<button class="btn btn-primary edt-editor-btn" ng-show="current.room.chatOpen" ng-click="current.room.chatOpen = !current.room.chatOpen" title="{{'HIDE_CHAT_WINDOW' | translate }}">
 					<i class="icon-forward"></i>
 				</button>
 			</div>
@@ -40,25 +40,25 @@
 						<span ng-bind="current.room.consoleState"></span>
 					</div>
 					<div class="edt-console-inner" ng-style="bottomscroll()" scroll>
-						<span ng-repeat="x in current.consoleOutput">
+						<span ng-repeat="x in current.room.consoleOutput">
 							<p ng-class="{consolestderr: (x.type == 'stderr'), consolestdin: (x.type == 'stdin'), consolestdout: (x.type == 'stdout') }" >{{x.content}}</p>
 						</span>
 					</div>	
 					<input class="edt-console-input" type="text" ng-model = "consoleInput" ng-enter="consoleInputFn()" focus="true" />
 				</div>
-				<div >
+				<div class="row-fluid">
 					<div class="well well-top">
 						<div class="btn-group">
-							<button class="btn disabled debug-btn" type="button"  ng-click = "debugStepFn()">
+							<button class="btn debug-btn" ng-class="current.room.locks.debug?'enabled':'disabled'" type="button"  ng-click = "debugStepFn()">
 								<i class="icon-arrow-down"></i>
 							</button>
-							<button class="btn disabled debug-btn" type="button" ng-click = "debugNextFn()">
+							<button class="btn debug-btn" ng-class="current.room.locks.debug?'enabled':'disabled'" type="button" ng-click = "debugNextFn()">
 								<i class="icon-arrow-right"></i>
 							</button>
-							<button class="btn disabled debug-btn" type="button" ng-click = "debugFinishFn()">
+							<button class="btn debug-btn" ng-class="current.room.locks.debug?'enabled':'disabled'" type="button" ng-click = "debugFinishFn()">
 								<i class="icon-share-alt"></i>
 							</button>
-							<button class="btn disabled debug-btn" type="button" ng-click = "debugContinueFn()">
+							<button class="btn debug-btn" ng-class="current.room.locks.debug?'enabled':'disabled'" type="button" ng-click = "debugContinueFn()">
 								<i class="icon-play"></i>
 							</button>
 						</div>
@@ -66,7 +66,7 @@
 					<div class="edt-varlist" ng-style="bottomscroll()" scroll>
 						<table class="table table-hover" id="varlist-table">
 							<!--<tr ng-repeat="var in vars">-->
-							<tr ng-repeat="var in current.expressionList">	
+							<tr ng-repeat="var in current.room.expressionList">	
 								<td class="col1">
 								</td>
 								<td class="col2">
@@ -90,7 +90,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="span3 chat-window" ng-show="current.room.chatOpen" ng-controller = "ChatController">
+	<div class="span3 chat-window" ng-show="current.chatOpen" ng-controller = "ChatController">
 		<div class="edt-chat" ng-style="bottomscroll()" scroll>
 			<div class="edt-chat-inner">
 				<p class="edt-chat-block" ng-repeat="chatmessage in current.chat">
