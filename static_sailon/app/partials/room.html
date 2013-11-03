@@ -101,7 +101,7 @@
 			<button class="btn" type="button" ng-click="sendChatMessage()">
 				<i class="icon-comment"></i>
 			</button>
-			<button class="btn active" type="button" id="voice-on"><i class="icon-volume-up"></i></button>
+			<button class="btn" ng-class="btn_active" type="button" ng-click="enterVoiceRoom()" popover="{{'NO_VOICE' | translate }}" popover-placement="left" popover-trigger="show_popover"><i class="icon-volume-up"></i></button>
 		</div>
 	</div>
 </div>

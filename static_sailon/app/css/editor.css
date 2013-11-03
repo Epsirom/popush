@@ -16,7 +16,7 @@
     top:0;
     left:0;
     width:100%;
-    z-index:999;
+    z-index:9999;
     background:#fff;
 }
 .breakpoints {width:16px;}
@@ -111,7 +111,7 @@
     margin-left: 0 !important;
     display: block;
     float: left;
-    height: 125px;
+    height: 152px;
     overflow: auto;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -145,7 +145,7 @@
     height: 20px !important;
     text-indent: 4px !important;
     margin-bottom: 0px !important;
-    border-radius: 4px !important;
+    border-radius: 0px !important;
     width:99.5%;
 }
 .edt-console-inner .stdin {
@@ -229,4 +229,14 @@
 }
 p:hover{
     background-color: beige;
+}
+
+.system
+{
+    color: red;
+}
+
+.green-border
+{
+    border:1px solid green;;
 }
