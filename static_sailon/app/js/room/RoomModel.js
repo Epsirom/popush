@@ -186,6 +186,8 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
         if (! roomList[data.roomid].consoleOpen)
             toggleConsole(roomList[data.roomid]);
 
+       	roomList[data.roomid].chatOpen = true;
+
      	//chat系统消息 日期
         //某某 运行程序
         var time = new Date();
@@ -201,13 +203,26 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 	});
 
 
-	socket.forceOn('debug', function(data){
+	socket.forceOn('debug', function (data){
 		roomList[data.roomid].locks.debug = true;
+
 		roomList[data.roomid].editor.setOption('readOnly', true);
 
 		 //open the console and chat-windowl
         if (! roomList[data.roomid].consoleOpen)
             toggleConsole(roomList[data.roomid]);
+        roomList[data.roomid].chatOpen = true;
+
+        //chat系统消息 日期
+        //某某 运行程序
+        var time = new Date();
+        var msg = {
+            'name': 'system',
+            'type': 'system',
+            'content': userModel.user.name + ' debugs the program', //加翻译
+            'time': time.toTimeString().substr(0, 8)
+        }
+        roomList[data.roomid].chat.push(msg);
 
         roomList[data.roomid].oldText = roomList[data.roomid].editor.getValue();
         roomList[data.roomid].oldBps = roomList[data.roomid].bps;
@@ -217,6 +232,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
         var hist = roomList[data.roomid].editor.getDoc().getHistory();
         hist.done.pop();
         roomList[data.roomid].editor.getDoc().setHistory(hist);
+
         roomList[data.roomid].locks.operation = false;	
 	});
 
@@ -350,6 +366,8 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 
 	//能改到RoomController.js里面么？
 	function toggleConsole(room){
+
+		console.log('console toggle');
 
     	if(room.consoleOpen == false)
     		room.editor.setSize('',560-165);
@@ -1099,6 +1117,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		'initbreakpoints': initbreakpoints,
 		'removebreakpointat': removebreakpointat,
 		'addbreakpointat': addbreakpointat,
-		'runtoline': runtoline
+		'runtoline': runtoline,
+		'toggleConsole': toggleConsole
 	};
 }
