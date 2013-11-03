@@ -164,7 +164,6 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			tRoom.oldBps = data.bps;
 			if (data.state == 'waiting'){
 				tRoom.waiting = true;
-				runtoline(tRoom, data.line - 1);
 				/*
 				if(data.line !== null)
 					$('#console-title').setlocale('console|waiting');
@@ -241,7 +240,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		for (var i = 0; i < roomList[data.roomid].expressionList.length; i ++){
 			var expr = roomList[data.roomid].expressionList[i].expr;
 			if (expr in data.exprs){
-				roomList[data.roomid].expressionList[i].value = data.exprs[k];
+				roomList[data.roomid].expressionList[i].value = data.exprs[expr];
 			} else{
 				roomList[data.roomid].expressionList[i].type = 'err';
 				roomList[data.roomid].expressionList[i].value = 'undefined';
@@ -284,7 +283,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 
                 roomList[data.roomid].editor.setValue(roomList[data.roomid].oldText);
                 removeallbreakpoints(roomList[data.roomid], roomList[data.roomid].data.id);
-                initbreakpoints(roomList[data.roomid], roomList[data.roomid].oldText);
+                initbreakpoints(roomList[data.roomid], roomList[data.roomid].oldBps);
 
                 var editordoc = roomList[data.roomid].editor.getDoc();
                 var hist = editordoc.getHistory();
@@ -446,7 +445,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			sendbreak(room, n, n+1, "1");
 		}
 
-		var element = angular.element('<div><img src="images/breakpoint.png" /></div>')[0];
+		var element = angular.element('<div><img src="../img/breakpoint.png" /></div>')[0];
 		cm.setGutterMarker(n, 'breakpoints', element);
 	}
 
@@ -476,7 +475,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		}
 		if(n >= 0) {
 			room.editor.addLineClass(n, '*', 'running');
-			var e = anugular.element('<div><img src="images/arrow.png" width="16" height="16" style="min-width:16px;min-width:16px;" /></div>')[0];
+			var e = angular.element('<div><img src="../img/arrow.png" width="16" height="16" style="min-width:16px;min-width:16px;" /></div>')[0];
 			room.editor.setGutterMarker(n, 'runat', e);
 			room.editor.scrollIntoView({line:n, ch:0});
 		}
@@ -655,7 +654,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		}
 		if (data.to == data.from + 1){
 			if (data.text == "1"){
-				var element = angular.element('<div><img src="images/breakpoint.png" /></div>')[0];
+				var element = angular.element('<div><img src="../img/breakpoint.png" /></div>')[0];
 				editor.setGutterMarker(data.from, 'breakpoints', element);
 			}
 			else if (data.text == "0"){
@@ -1097,6 +1096,9 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		'leaveRoom': leaveRoom,
 		'registerEditorEvent': registereditorevent,
 		'saveevent': saveevent,
-		'initbreakpoints': initbreakpoints
+		'initbreakpoints': initbreakpoints,
+		'removebreakpointat': removebreakpointat,
+		'addbreakpointat': addbreakpointat,
+		'runtoline': runtoline
 	};
 }

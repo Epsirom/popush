@@ -241,6 +241,8 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
 				    cm.on("gutterClick", function(cm, n) {
                         $scope.gutterclick(cm, n);
                     });
+
+                    roomModel.runtoline($scope.current.room, $scope.current.room.data.line - 1);
 				},
 		gutters: ["runat", "CodeMirror-linenumbers", "breakpoints"],
     };
@@ -458,6 +460,17 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
     */
     $scope.gutterclick = function(cm, n)
     {
+        var room = $scope.current.room;
+        if (!room.debugable) {
+            return;
+        }
+        if (room.locks.debug && !room.waiting) {
+            return;
+        }
+        if (!roomModel.removebreakpointat(room, cm, n)) {
+            roomModel.addbreakpointat(room, cm, n);
+        }
+        /*
         var info = cm.lineInfo(n);
         if (info.gutterMarkers && info.gutterMarkers["breakpoints"]) 
         {
@@ -468,6 +481,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
             var element = angular.element('<div><img src="img/breakpoint.png" /></div>')[0];
             cm.setGutterMarker(n, 'breakpoints', element);
         }
+        */
     }
 
     //expression list
