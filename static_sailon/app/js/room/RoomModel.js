@@ -142,10 +142,10 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		}
 
 		//reset lock 
-		currentDoc.lock.operation = false;
-		currentDoc.lock.run = data.running;
+		currentDoc.locks.operation = false;
+		currentDoc.locks.run = data.running;
 		if (data.debugging){
-			currentDoc.lock.debug = true;
+			currentDoc.locks.debug = true;
 			currentDoc.oldText = data.text;
 			currentDoc.oldBps = data.bps;
 			if (data.state == 'waiting'){
