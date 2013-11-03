@@ -91,9 +91,7 @@ function TabsModel(userModel, fileTreeModel, socket) {
 		}
 		if (current.type == 'dir') {
 			current.doc.viewMode = 'off';
-			current.doc.saving = 'fail';
 			current.doc = newDoc;
-			newDoc.saving = 'done';
 			current.type = 'room';
 			current.title = newDoc.path;
 			var paths = newDoc.path.split('/');
@@ -107,6 +105,12 @@ function TabsModel(userModel, fileTreeModel, socket) {
 	var setCurrent = function(index) {
 		if (current && current.doc && (current.doc.viewMode == 'active')) {
 			current.doc.viewMode = 'back';
+		}
+		if (current && (current.type == 'room') && (current.doc.path != tabs[index].doc.path) && (tabs[index].type == 'room')) {
+			//socket.emit('leave', {});
+			socket.emit('join', {
+				'path': tabs[index].doc.path
+			});
 		}
 		current = tabs[index];
 		current.active = true;

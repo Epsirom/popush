@@ -95,10 +95,8 @@ function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlo
 	};
 
 	$scope.$watch('creater.name',function(){
-		console.log($scope.invalid);
 		if(/\/|\\|@/.test($scope.creater.name)) {
 			$scope.invalid = 'INVALID_FILENAME';
-			console.log($scope.invalid);
 			return;
 		}
 		if($scope.creater.name.length > 32) {

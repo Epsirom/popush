@@ -34,6 +34,9 @@ angular.module('roomModule', ['userModule', 'socketModule', 'workspaceModule',
 		'winHeight': function() {
 			return window.innerHeight || (document.documentElement || document.body).clientHeight;
 		},
+		'winWidth': function() {
+			return window.innerWidth || (document.documentElement || document.body).clientWidth;
+		},
 		'isFullScreen': function(cm) {
 			return /\bCodeMirror-fullscreen\b/.test(cm.getWrapperElement().className);
 		},
@@ -68,7 +71,7 @@ angular.module('roomModule', ['userModule', 'socketModule', 'workspaceModule',
 		'runableext': ['c', 'cpp', 'js', 'py', 'pl', 'rb', 'lua', 'java'],
 		'debugableext': ['c', 'cpp']
 	}).
-	factory('roomModel', ['socket', '$location', '$route', 'POPUSH_SETTINGS', 'tabsModel', 'fileTreeModel', 'userModel',RoomModel]).
+	factory('roomModel', ['socket', '$location', '$route', 'POPUSH_SETTINGS', 'tabsModel', 'fileTreeModel', 'roomGlobal', 'userModel', '$timeout', RoomModel]).
 	controller('RoomController', ['$scope','userModel', 'socket', '$location', 'tabsModel', 'roomGlobal', 'roomModel', RoomController]).
 	controller('RunController', ['$scope', 'roomModel', 'socket', '$location', '$cookies', RunController]).
 	controller('ChatController', ['$scope','userModel', 'roomModel', 'socket', '$location', '$cookies', ChatController]).

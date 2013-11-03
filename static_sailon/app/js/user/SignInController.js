@@ -13,6 +13,8 @@ function SignInController($scope, userModel, socket, $location, $cookies, fileTr
 		} else if(data.err){
 			if(data.err == 'expired') {
 				delete $cookies['sid'];
+				$location.path('/');
+				return;
 			} else {
 				$scope.alerts = [{type:'error', msg:data.err}];
 			}
