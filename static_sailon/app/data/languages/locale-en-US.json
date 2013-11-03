@@ -49,6 +49,7 @@
   "DELETE_NOW":             "Delete",
   "SHARE":                  "Enter share mode",
   "SHARE_LEAVE":            "Cancel sharement",
+  "SHARE_HELP":             "Share",
   "SHARE_CANCEL":           "Cancel",
   "SAVE":                   "Save",
   "SHARED_USERS":           "Shared users",
