@@ -7,7 +7,7 @@ function TabsModel(userModel, fileTreeModel, socket) {
 	var current = null;
 	var currentMembers = [];
 	var destDoc = null;
-	var createRoomCallback = null;
+	var roomSetCallback = null;
 
 	// Tab Services
 
@@ -60,45 +60,37 @@ function TabsModel(userModel, fileTreeModel, socket) {
 		setCurrent(len);
 	}
 
-	var openRoom = function(doc) {
-		if (!doc) {
-			doc = destDoc;
-			if (!doc) {
-				return;
-			}
+	var closeTab = function(tab) {
+		if (!tab) {
+			return;
 		}
 		var i, len;
 		for (i = 0, len = tabs.length; i < len; ++i) {
-			if (tabs[i].title == doc.path) {
-				setCurrent(i);
-				return;
+			if (tabs[i].title == tab.title) {
+				return tabs.splice(i, 1);
 			}
 		}
-		var paths = doc.path.split("/");
-		paths.splice(0, 1);
-		tabs.push({'type': 'room', 'title': doc.path, 'paths': paths, 'doc': doc});
-		doc.saving = 'done';
-		setCurrent(len);
 	}
 
-	var enterRoom = function(newDoc) {
-		if (!newDoc) {
-			newDoc = destDoc;
-			if (!newDoc) {
-				return;
+	var enterRoom = function(doc, tabToClose) {
+		var i, len;
+		for (i = 0, len = tabs.length; i < len; ++i) {
+			if (tabs[i].title == doc.path) {
+				return setCurrent(i);
 			}
 		}
-		if (current.type == 'dir') {
-			current.doc.viewMode = 'off';
-			current.doc = newDoc;
-			current.type = 'room';
-			current.title = newDoc.path;
-			var paths = newDoc.path.split('/');
+		destDoc = doc;
+		roomSetCallback = function(room) {
+			var paths = doc.path.split("/");
 			paths.splice(0, 1);
-			current.paths = paths;
-			current.doc.viewMode = 'active';
-			updateMembers();
+			var tab = {'type': 'room', 'title': doc.path, 'paths': paths, 'doc': doc, 'room': room};
+			closeTab(tabToClose);
+			tabs.push(tab);
+			setCurrent(len - ((tabToClose == undefined) ? 0 : 1));
 		}
+		socket.emit('join', {
+			'path': doc.path
+		});
 	}
 
 	var setCurrent = function(index) {
@@ -138,7 +130,11 @@ function TabsModel(userModel, fileTreeModel, socket) {
 	}
 
 	var changePath = function(tab, index) {
-		var newPath = tab.doc.path.split('/').slice(0, index + 2).join('/'),
+		var paths = tab.doc.path.split('/');
+		if (index + 2 >= paths.length) {
+			return;
+		}
+		var newPath = paths.slice(0, index + 2).join('/'),
 			obj = fileTreeModel.select(newPath);
 		fileTreeModel.closeChildren(obj);
 		if (index == 0) {
@@ -147,14 +143,6 @@ function TabsModel(userModel, fileTreeModel, socket) {
 			fileTreeModel.updateByObj(obj);
 		}
 		changeDoc(obj);
-	}
-
-	var createRoom = function(obj, callback) {
-		destDoc = obj;
-		createRoomCallback = callback;
-		socket.emit('join', {
-			'path': obj.path
-		});
 	}
 
 	return {
@@ -169,12 +157,10 @@ function TabsModel(userModel, fileTreeModel, socket) {
 		'getPath': getPath,
 		'getCurrent': function() {return current;},
 		'clear': clearTabs,
-		'openRoom': openRoom,
 		'enterRoom': enterRoom,
 		'getDestDoc': function() {return destDoc;},
 		'setDestDoc': function(doc) {destDoc = doc;},
 		'changePath': changePath,
-		'runCreateRoomCallback': function() {return createRoomCallback();},
-		'createRoom': createRoom
+		'runRoomSetCallback': function(room) {return roomSetCallback(room);}
 	};
 }

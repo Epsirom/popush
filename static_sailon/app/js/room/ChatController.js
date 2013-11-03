@@ -1,5 +1,5 @@
-function ChatController($scope, userModel, roomModel, socket, $location, $cookies){
-	$scope.current = roomModel.getCurrentDoc();
+function ChatController($scope, userModel, roomModel, socket, $location, $cookies, tabsModel){
+	$scope.current = tabsModel.getCurrent().room;
 	$scope.show_popover = false;          //show popover tip or not
 
     $scope.$on('$destroy', function() {

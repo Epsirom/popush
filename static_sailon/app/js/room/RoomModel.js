@@ -9,11 +9,13 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 	}
 
 	var leaveRoom = function(room) {
-		if (!roomList[room.id]) {
+		if (!room) {
 			return;
 		}
-		delete roomList[room.id];
-		socket.emit('leave', {});
+		if (roomList[room.id]) {
+			delete roomList[room.id];
+		}
+		socket.emit('leave', {roomid: room.id});
 	}
 
 	var updateObj = function(src, dest) {
@@ -66,7 +68,6 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			}
 
 			var editor, 
-				expressionList = {},
 				lock = {
 				//run & debug lock
 				'run':false, 
@@ -75,6 +76,31 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				'chat':false, 
 				'voice':false
 				};
+			/*
+			var elements = [], //name, value
+				editingelem = null,
+				elemid = 1,
+				expressionList = {
+					'elements': elements,
+					'clear': function(){
+						elements = [];
+					},
+					'addExpression': function(expression){
+						if (! currentDoc.lock.debug || currentDoc.waiting){
+							socket.emit('add-expr', {
+								expr: expression
+							});
+						}
+					},
+
+					'removeExression':function(expression){
+						socket.emit('rm-expr', {
+							expr: expression
+						});
+					}
+				};
+			*/
+			var expressionList = [];
 
 			var currentDoc = {
 				'doc': tabsModel.getDestDoc(),
@@ -108,10 +134,10 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				'cursors': {},
 				
 				'runEnabled': function(){
-					return runable && ! lock.debug && (!saving || lock.run)
+					return runable && ! lock.debug && (!this.saving || lock.run)
 				},
 				'debugEnabled': function(){
-					return debugable && !lock.run && (!saving || lock.debug)
+					return debugable && !lock.run && (!this.saving || lock.debug)
 				},
 				
 				// Console 
@@ -148,6 +174,8 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		}
 
 		var tRoom = roomList[data.id];
+		
+		expressionList.splice(0, expressionList.length);
 		//reset lock 
 		tRoom.locks.operation = false;
 		tRoom.locks.run = data.running;
@@ -212,7 +240,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		if (room.timer != null){
 			$timeout.cancel(room.timer);
 		}
-		room.timer = $timeout(sendbuffer, room.buffertimeout);
+		room.timer = $timeout(function(){return sendbuffer(room);}, room.buffertimeout);
 	}
 
 	function sendbreak(room, from, to, text){
@@ -228,16 +256,15 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 	function setsaved(room){
 		var tmpTime = new Date().getTime();
 		room.savetimestamp = tmpTime;
-		$timeout(function(){setsavedthen(tmpTime);}, room.savetimeout);
+		$timeout(function(){setsavedthen(room, tmpTime);}, room.savetimeout);
 		room.savetimeout = 500;
 	}
 
 	function setsavedthen(room, timestamp){
 		if(room.savetimestamp == timestamp) {
-			room.saving = 'saved';
+			room.saving = false;
 		}
 	}
-
 	
 	function setsaving(room) {
 		room.saving = true;
