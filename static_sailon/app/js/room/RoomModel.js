@@ -34,6 +34,20 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		return updateObj(data, room, 'users', 'version', 'text', 'bps', 'exprs');
 	}
 
+	function newcursor(content) {
+		return angular.element(
+			'<div class="cursor">' +
+				'<div class="cursor-not-so-inner">' +
+					'<div class="cursor-inner">' +
+						'<div class="cursor-inner-inner" tooltip='+ content +' tooltip-trigger="mouseenter">' +
+						'</div>' +
+					'</div>' +
+				'</div>' +
+			'</div>'
+			)[0];
+	}
+	
+
 	socket.forceOn('set', function (data) {
 		//check if the doc is opening
 		var existed = false, curPath = tabsModel.getDestDoc().path;
@@ -133,6 +147,18 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				'bufferto': -1,
 				'buffertimeout': POPUSH_SETTINGS.SAVE_TIME_OUT
 			}
+			for(var i in data.users) {
+				if(i == userModel.user.name)
+					continue;
+				
+				var cursor = newcursor(i);
+				if(currentDoc.cursors[i] && currentDoc.cursors[i].element)
+				{
+                    var element = currentDoc.cursors[i].element;
+                    element.parentNode.removeChild(element);
+				}
+				currentDoc.cursors[i] = { element:cursor, pos:0 };
+			}
 			currentDoc.q._push = currentDoc.q.push;
 			currentDoc.q.push = function(element) {
 				this._push(element);
@@ -148,6 +174,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			}
 			roomList[data.id] = currentDoc;
 
+			
 			//初始化editor
 			//初始化expression list
 		}
