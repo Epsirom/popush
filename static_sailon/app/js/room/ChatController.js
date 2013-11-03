@@ -1,6 +1,6 @@
 function ChatController($scope, userModel, roomModel, socket, $location, $cookies){
 	$scope.current = roomModel.getCurrentDoc();
-	$scope.show_popover = "false";          //show popover tip or not
+	$scope.show_popover = false;          //show popover tip or not
 
     $scope.$on('$destroy', function() {
         roomModel.leaveRoom($scope.current);
@@ -42,7 +42,7 @@ function ChatController($scope, userModel, roomModel, socket, $location, $cookie
 	if((!Browser.chrome || parseInt(Browser.chrome) < 18) &&
 		(!Browser.opera || parseInt(Browser.opera) < 12)) {
 		$scope.current.voiceOn = true;
-		$scope.show_popover = "mouseenter";
+		$scope.show_popover = true;
 	}
 	window.voiceon = false;
 	window.voiceLock = false;
