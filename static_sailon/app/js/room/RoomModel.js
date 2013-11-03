@@ -192,6 +192,12 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		}
 	}
 
+	function saveevent(cm) {
+		if(room.savetimestamp != 0)
+			setsavedthen(room.savetimestamp);
+		room.savetimestamp = 0;
+	}
+
 	function runToLine(n) {
         if(currentDoc.runningLine >= 0) {
             currentDoc.editor.removeLineClass(currentDoc.runningLine, '*', 'running');
@@ -838,6 +844,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 	return {
 		'getCurrentDoc': function() {return currentDoc;},
 		'leaveRoom': leaveRoom,
-		'registerEditorEvent': registereditorevent
+		'registerEditorEvent': registereditorevent,
+		'saveevent': saveevent,
 	};
 }

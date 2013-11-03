@@ -155,8 +155,7 @@ angular.module('popushDirectives', []).
 	                return { 
 	                    'scrollTop': newValue.h + 'px' 
 	                };
-	            };
-	            
+	            };      
 	        }, true);
 	    
 	        w.bind('scroll', function () {

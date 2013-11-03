@@ -111,7 +111,7 @@
     margin-left: 0 !important;
     display: block;
     float: left;
-    height: 152px;
+    height: 125px;
     overflow: auto;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -124,6 +124,9 @@
     -webkit-border-radius:0;
     -moz-border-radius:0;
     border-radius:0;
+}
+.edt-btn-block{
+    margin-right: 1px;
 }
 .edt-console-title
 {

@@ -43,24 +43,24 @@
 					</div>	
 					<input class="edt-console-input" type="text" ng-model = "consoleInput" ng-enter="consoleInputFn()" focus="true" />
 				</div>
-				<div class="edt-varlist">
+				<div >
 					<div class="well well-top">
 						<div class="btn-group">
-							<button class="btn disabled debug-btn" type="button" title="{{'EDT_STEP' | translate }}">
+							<button class="btn disabled debug-btn edt-btn-block" type="button" title="{{'EDT_STEP' | translate }}">
 								<i class="icon-arrow-down"></i>
 							</button>
-							<button class="btn disabled debug-btn" type="button" title="{{'EDT_NEXT' | translate }}">
+							<button class="btn disabled debug-btn edt-btn-block" type="button" title="{{'EDT_NEXT' | translate }}">
 								<i class="icon-arrow-right"></i>
 							</button>
-							<button class="btn disabled debug-btn" type="button" title="{{'EDT_CONTINUE' | translate }}">
+							<button class="btn disabled debug-btn edt-btn-block" type="button" title="{{'EDT_CONTINUE' | translate }}">
 								<i class="icon-share-alt"></i>
 							</button>
-							<button class="btn disabled debug-btn" type="button" title="{{'EDT_FINISH' | translate }}">
+							<button class="btn disabled debug-btn edt-btn-block" type="button" title="{{'EDT_FINISH' | translate }}">
 								<i class="icon-play"></i>
 							</button>
 						</div>
 					</div>
-					<div id="varlistreal">
+					<div class="edt-varlist" ng-style="bottomscroll()" scroll>
 						<table class="table table-hover" id="varlist-table">
 							<tr ng-repeat="var in vars">
 								<td class="col1">
