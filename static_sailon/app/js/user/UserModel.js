@@ -75,6 +75,16 @@ function UserModel(socket, $location, $route, $cookies, POPUSH_SETTINGS) {
 	socket.forceOn('unauthorized', function() {
 		userLock.relogin = true;
 		logout();
+		if(!window.joinedARoom){
+			return;
+		}
+		window.joinedARoom = false;
+		window.voiceConnection.myLocalStream.stop();
+		window.voiceConnection.leave();
+		while(window.userArray.length > 0){
+			$(window.audioArray[window.userArray.shift()]).remove();
+		}
+		delete window.voiceConnection;
 	});
 
 	return {
