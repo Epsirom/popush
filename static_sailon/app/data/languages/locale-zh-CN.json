@@ -119,5 +119,6 @@
   "programfinished":        "程序运行结束，返回值为：",
   "programkilled":          "程序被迫终止，终止信号为：",
   "ROOMREMOVED":            "房间已被移除",
-  "ROOMMOVED":              "房间已被移动"
+  "ROOMMOVED":              "房间已被移动",
+  "ESC_EXIT":               "请按ESC键退出全屏模式！"
 }

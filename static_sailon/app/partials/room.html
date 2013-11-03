@@ -10,24 +10,24 @@
 				</span>
 			</div>
 			<div class="edt-editor-btns">
-				<button class="btn btn-primary edt-editor-btn" ng-class="current.room.runable? 'enabled':'disabled'" title="{{'RUN' | translate }}" ng-click = "runFn()"> 
+				<button class="btn btn-primary edt-editor-btn" ng-class="current.room.runable? 'enabled':'disabled'" tooltip="{{'RUN' | translate }}" tooltip-trigger="mouseenter" tooltip-placement="top"  ng-click = "runFn()"> 
 					<i ng-class="current.room.locks.run?'icon-stop':'icon-play'" ></i>
 				</button>
 
-				<button class="btn btn-primary edt-editor-btn" ng-class="current.room.debugable? 'enabled':'disabled'"  title="{{'DEBUG' | translate }}" ng-click = "debugFn()">
+				<button class="btn btn-primary edt-editor-btn" ng-class="current.room.debugable? 'enabled':'disabled'"  tooltip="{{'DEBUG' | translate }}" tooltip-trigger="mouseenter" tooltip-placement="top" ng-click = "debugFn()">
 					<i ng-class="current.room.locks.debug?'icon-eye-close':'icon-eye-open' "></i>
 				</button>
-				<button class="btn btn-primary edt-editor-btn" title="{{'CONSOLE' | translate }}" ng-click="toggleConsole(current.room)">
+				<button class="btn btn-primary edt-editor-btn" tooltip="{{'CONSOLE' | translate }}" tooltip-trigger="mouseenter" tooltip-placement="top" ng-click="toggleConsole(current.room)">
 					<i class="icon-share"></i>
 				</button>
-				<button class="btn btn-primary edt-editor-btn" ng-click="setFullScreen(true)" title="{{'FULL_SCREEN' | translate }}">
+				<button class="btn btn-primary edt-editor-btn" ng-click="setFullScreen(true)" tooltip="{{'FULL_SCREEN' | translate }}" tooltip-trigger="mouseenter" tooltip-placement="top" >
 					<i class="icon-fullscreen"></i>
 				</button>
 
-				<button class="btn btn-primary edt-editor-btn" ng-hide="current.room.chatOpen" ng-click="current.room.chatOpen = !current.room.chatOpen" title="{{'SHOW_CHAT_WINDOW' | translate }}">
+				<button class="btn btn-primary edt-editor-btn" ng-hide="current.room.chatOpen" ng-click="current.room.chatOpen = !current.room.chatOpen" tooltip="{{'SHOW_CHAT_WINDOW' | translate }}" tooltip-trigger="mouseenter" tooltip-placement="top">
 					<i class="icon-backward"></i>
 				</button>
-				<button class="btn btn-primary edt-editor-btn" ng-show="current.room.chatOpen" ng-click="current.room.chatOpen = !current.room.chatOpen" title="{{'HIDE_CHAT_WINDOW' | translate }}">
+				<button class="btn btn-primary edt-editor-btn" ng-show="current.room.chatOpen" ng-click="current.room.chatOpen = !current.room.chatOpen" tooltip="{{'HIDE_CHAT_WINDOW' | translate }}" tooltip-trigger="mouseenter" tooltip-placement="top">
 					<i class="icon-forward"></i>
 				</button>
 			</div>
@@ -49,16 +49,16 @@
 				<div class="row-fluid">
 					<div class="well well-top">
 						<div class="btn-group">
-							<button class="btn debug-btn" ng-class="current.room.locks.debug?'enabled':'disabled'" type="button"  ng-click = "debugStepFn()">
+							<button class="btn debug-btn" ng-class="current.room.locks.debug?'enabled':'disabled'" type="button"  ng-click = "debugStepFn()" tooltip="{{'EDT_STEP' | translate }}" tooltip-trigger="mouseenter" tooltip-placement="top">
 								<i class="icon-arrow-down"></i>
 							</button>
-							<button class="btn debug-btn" ng-class="current.room.locks.debug?'enabled':'disabled'" type="button" ng-click = "debugNextFn()">
+							<button class="btn debug-btn" ng-class="current.room.locks.debug?'enabled':'disabled'" type="button" ng-click = "debugNextFn()" tooltip="{{'EDT_NEXT' | translate }}" tooltip-trigger="mouseenter" tooltip-placement="top">
 								<i class="icon-arrow-right"></i>
 							</button>
-							<button class="btn debug-btn" ng-class="current.room.locks.debug?'enabled':'disabled'" type="button" ng-click = "debugFinishFn()">
+							<button class="btn debug-btn" ng-class="current.room.locks.debug?'enabled':'disabled'" type="button" ng-click = "debugFinishFn()" tooltip="{{'EDT_CONTINUE' | translate }}" tooltip-trigger="mouseenter" tooltip-placement="top">
 								<i class="icon-share-alt"></i>
 							</button>
-							<button class="btn debug-btn" ng-class="current.room.locks.debug?'enabled':'disabled'" type="button" ng-click = "debugContinueFn()">
+							<button class="btn debug-btn" ng-class="current.room.locks.debug?'enabled':'disabled'" type="button" ng-click = "debugContinueFn()" tooltip="{{'EDT_FINISH' | translate }}" tooltip-trigger="mouseenter" tooltip-placement="top">
 								<i class="icon-play"></i>
 							</button>
 						</div>

@@ -97,13 +97,16 @@ function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlo
 	$scope.$watch('creater.name',function(){
 		if(/\/|\\|@/.test($scope.creater.name)) {
 			$scope.invalid = true;
+			$scope.name_valid = 'fileinput-red';
 			return;
 		}
 		if($scope.creater.name.length > 32) {
 			$scope.invalid = true;
+			$scope.name_valid = 'fileinput-red';
 			return;
 		}
 		$scope.invalid = false;
+		$scope.name_valid = '';
 	});
 
 	$scope.enterRename = function() {

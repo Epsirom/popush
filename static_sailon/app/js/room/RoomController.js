@@ -1,7 +1,7 @@
 'use strict';
 
 
-function RoomController($scope, userModel, socket, $location, tabsModel, roomGlobal, roomModel) {
+function RoomController($scope, userModel, socket, $location, tabsModel, roomGlobal, roomModel, messageModel) {
     $scope.current = tabsModel.getCurrent();
     $scope.$on('$destroy', function() {
         roomModel.leaveRoom($scope.current.room);
@@ -292,6 +292,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
         var wrap = $scope.editor.getWrapperElement();
         if (full) 
         {
+            messageModel.append('ESC_EXIT');
             wrap.className += " CodeMirror-fullscreen";
             tmpH = wrap.style.height;
             tmpW = wrap.style.width;
@@ -491,15 +492,22 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
 
     window.onresize = function()
     {
-        //var wrap = $scope.editor.getWrapperElement();
-        //var height = wrap.style.height;
-        if(!$scope.show_console)
+        var room = $scope.current.room;
+        var showing = document.getElementsByClassName("CodeMirror-fullscreen")[0];   //fullscreen or not
+        if (!showing)
         {
-            $scope.editor.setSize(" ",roomGlobal.winHeight()-108);
+            if(!room.consoleOpen)
+            {
+                room.editor.setSize(" ",roomGlobal.winHeight()-108);
+            }
+            else
+            {
+                room.editor.setSize(" ",roomGlobal.winHeight()-274);
+            }
         }
         else
         {
-            $scope.editor.setSize(" ",roomGlobal.winHeight()-274);
+            showing.CodeMirror.getWrapperElement().style.height = roomGlobal.winHeight() + "px";
         }
     }
 

@@ -487,10 +487,23 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 	//能改到RoomController.js里面么？
 	function toggleConsole(room){
 
+		/*console.log('console toggle');
+
     	if(room.consoleOpen == false)
     		room.editor.setSize('',560-165);
     	else
-    		room.editor.setSize('',560);
+    		room.editor.setSize('',560);*/
+
+    	var wrap = room.editor.getWrapperElement();
+        var height = wrap.style.height;
+    	if(room.consoleOpen == false)
+    	{
+    		room.editor.setSize('',parseInt(height)-165);
+    	}
+    	else
+    	{
+    		room.editor.setSize('',parseInt(height)+165);
+    	}
 
         room.consoleOpen = ! room.consoleOpen;
     }

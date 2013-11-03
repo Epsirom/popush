@@ -113,5 +113,6 @@
   "EDT_FINISH":             "Step return",
   "NO_VOICE":               "The browser does not support voice. Please use Chrome 18+ or Opera 12+",
   "ROOMREMOVED":            "The room has been removed",
-  "ROOMMOVED":              "The room has been moved"
+  "ROOMMOVED":              "The room has been moved",
+  "ESC_EXIT":               "Please press ESC key to exit full screen mode!"
 }

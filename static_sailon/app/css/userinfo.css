@@ -16,6 +16,9 @@
 .userinfo-center{
 	text-align: center;
 }
+.userinfo-inner .control-group {
+	margin-left: 16%;
+}
 .userinfo-marginleft{
 	margin-left: -30px;
 }
