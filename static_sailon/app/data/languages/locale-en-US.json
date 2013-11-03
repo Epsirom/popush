@@ -49,6 +49,7 @@
   "DELETE_NOW":             "Delete",
   "SHARE":                  "Enter share mode",
   "SHARE_LEAVE":            "Cancel sharement",
+  "SHARE_HELP":             "Share",
   "SHARE_CANCEL":           "Cancel",
   "SAVE":                   "Save",
   "SHARED_USERS":           "Shared users",
@@ -106,5 +107,6 @@
   "EDT_STEP":               "Step into",
   "EDT_NEXT":               "Step over",
   "EDT_CONTINUE":            "Continue",
-  "EDT_FINISH":             "Step return"
+  "EDT_FINISH":             "Step return",
+  "NO_VOICE":               "The browser does not support voice. Please use Chrome 18+ or Opera 12+"
 }

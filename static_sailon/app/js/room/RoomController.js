@@ -2,14 +2,15 @@
 
 
 function RoomController($scope, userModel, socket, $location, tabsModel, roomGlobal, roomModel) {
-    $scope.current = roomModel.getCurrentDoc();
+    $scope.current = tabsModel.getCurrent();
     $scope.$on('$destroy', function() {
-        roomModel.leaveRoom($scope.current);
+        roomModel.leaveRoom($scope.current.room);
     })
 
     socket.onScope($scope, {
+        /*
         'run': function (data){
-            $scope.current.locks.run = true;
+            $scope.current.room.locks.run = true;
 
             //open the console and chat-windowl(need?)
             if (! $scope.show_console)
@@ -27,41 +28,44 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
                 'content': userModel.user.name + ' runs the program',
                 'time': time.toTimeString().substr(0, 8)
             }
-            $scope.current.chat.push(msg);
+            $scope.current.room.chat.push(msg);
 
-            $scope.current.locks.operation = false;
+            $scope.current.room.locks.operation = false;
 
             
         },
-
+    */
         'running': function (data) {
-            if (! $scope.current.locks.debug)
+            if (! $scope.current.room.locks.debug)
                 return;
-            $scope.current.waiting = false;
+            $scope.current.room.waiting = false;
             $scope.runToLine(-1);
             //debugandwait --> 禁用
 
         },
         'waiting': function (data) {
-            if (! $scope.current.locks.debug)
+            if (! $scope.current.room.locks.debug)
                 return;
-            $scope.current.waiting = true;
+            $scope.current.room.waiting = true;
             if (typeof data.line == 'number'){
                 $scope.runToLine(data.line - 1);
             } else {
                 $scope.runToLine(-1);
             }
 
-            /*
-            for(var k in data.exprs) {
-                expressionlist.setValue(k, data.exprs[k]);
+            for (var i = 0; i < $scope.current.expressionList.length; i ++){
+                var expr = $scope.current.expressionList[i].expr;
+                if (expr in data.exprs){
+                    $scope.current.expressionList[i].value = data.exprs[k];
+                } else{
+                    $scope.current.expressionList[i].type = 'err';
+                    $scope.current.expressionList[i].value = 'undefined';
+                }
             }
-            */
-            //绑定调试按钮－－》解除禁用属性
         },
 
         'exit': function (data){
-            $scope.current.locks.operation = false;
+            $scope.current.room.locks.operation = false;
             if(data.err.code !== undefined){
                 var time = new Date();
                 var msg = {
@@ -70,7 +74,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
                     'content': 'program finish with ' + data.err.code,
                     'time': time.toTimeString().substr(0, 8) 
                 }
-                $scope.current.chat.push(msg);
+                $scope.current.room.chat.push(msg);
                 $scope.consoleState = "<finish>";
 
             } else{
@@ -82,42 +86,42 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
                     'time': time.toTimeString().substr(0, 8) 
                 }
 
-                $scope.current.chat.push(msg);
+                $scope.current.room.chat.push(msg);
                 $scope.consoleState = "<killed>";
             }
 
             //editor-run 激活一个小图标 icon-play
-            if ($scope.current.locks.run)
-                $scope.current.locks.run = false;
+            if ($scope.current.room.locks.run)
+                $scope.current.room.locks.run = false;
 
-            if ($scope.current.locks.debug){  
+            if ($scope.current.room.locks.debug){  
 
-                $scope.current.editor.setValue($scope.current.oldText);
+                $scope.current.editor.setValue($scope.current.room.oldText);
                 $scope.removeAllBreakpoints();
-                $scope.initBreakpoints($scope.current.oldText);
+                $scope.initBreakpoints($scope.current.room.oldText);
 
-                var editordoc = $scope.current.editor.getDoc();
+                var editordoc = $scope.current.room.editor.getDoc();
                 var hist = editordoc.getHistory();
                 hist.done.pop();
                 editordoc.setHistory(hist);
 
-                $scope.current.editor.setOption('readOnly', false);   
-                if($scope.current.q.length > 0){
+                $scope.current.room.editor.setOption('readOnly', false);   
+                if($scope.current.room.q.length > 0){
                     socket.emit('change', q[0]);
                 }
 
                 $scope.runToLine(-1);
-                /*??
-                for(var k in expressionlist.elements) {
-                    expressionlist.setValue(expressionlist.elements[k].expression, null);
+                
+                for (var i = 0; i < $scope.current.expressionList.length; i ++){
+                    $scope.current.expressionList[i].type = 'err';
+                    $scope.current.expressionList[i].value = 'undefined';
                 }
-                */
-                $scope.current.locks.debug = false;
+                $scope.current.room.locks.debug = false;
             }
         },
 
         'debug': function (data){
-            $scope.current.locks.debug = true;
+            $scope.current.room.locks.debug = true;
 
             $scope.editor.setOption('readOnly', true);
         
@@ -128,33 +132,61 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
             if (! $scope.chat_show)
                 $scope.toggleChat();
 
-            $scope.current.oldText = $scope.current.editor.getValue();
-            $scope.current.oldBps = $scope.current.bps;
-            $scope.current.editor.setValue(data.text);
+            $scope.current.room.oldText = $scope.current.room.editor.getValue();
+            $scope.current.room.oldBps = $scope.current.room.bps;
+            $scope.current.room.editor.setValue(data.text);
             $scope.removeAllBreakpoints();
             $scope.initBreakpoints(data.bps);
-            var hist = $scope.current.editor.getDoc().getHistory();
+            var hist = $scope.current.room.editor.getDoc().getHistory();
             hist.done.pop();
-            $scope.current.editor.getDoc().setHistory(hist);
-            $scope.current.locks.operation = false;
+            $scope.current.room.editor.getDoc().setHistory(hist);
+            $scope.current.room.locks.operation = false;
 
         },
 
         'stdin': function (data){
-            $scope.current.consoleOutput.push({type:'stdin', content: data.data});
+            $scope.current.room.consoleOutput.push({type:'stdin', content: data.data});
         },
 
         'stdout': function (data) {
-            $scope.current.consoleOutput.push({type:'stdout', content: data.data});
+            $scope.current.room.consoleOutput.push({type:'stdout', content: data.data});
         },
 
         'stderr':function (data) {
-            $scope.current.consoleOutput.push({type:'stderr', content: data.data});
+            $scope.current.room.consoleOutput.push({type:'stderr', content: data.data});
         },
 
+        'add-expr':function (data){
+            console.log('add' + data.expr + '$' + data.val);
+            if (data.expr){
+                var i;
+                for (i = $scope.current.expressionList.length - 1; i >= 0; i --)
+                    if (data.expr == $scope.current.expressionList[i].expr)
+                        break;
+                if (i < 0)
+                    return;
+                if (data.val != null)
+                    $scope.current.expressionList[i].value = data.val;
+                else
+                {   
+                    $scope.current.expressionList[i].value = 'undefined';
+                    $scope.current.expressionList[i].type = 'err';
+                }
+            }
+        },
 
-        
-
+        'rm-expr': function(data){
+            console.log('rm' + data.expr + '#');
+            /*
+             var i;
+            for (i = $scope.current.expressionList.length - 1; i >= 0; i --)
+                if (data.expr == $scope.current.expressionList[i])
+                    break;
+            if (i < 0)
+                return;
+            $scope.current.expressionList.splice(n, 1);  
+            */    
+        }
     });
        
     $scope.changePath = tabsModel.changePath;
@@ -165,41 +197,43 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
         lineNumbers: true,
         indentUnit: 4,
 		indentWithTabs: true,
-        value: $scope.current.data.text,
+        value: $scope.current.room.data.text,
         extraKeys: {
             "Esc": function(cm) {
                 if (roomGlobal.isFullScreen(cm)) $scope.setFullScreen(false);
             },
             "Ctrl-S": function(cm) {
-                roomModel.saveevent
+                roomModel.saveevent($scope.current.room, cm);
             },
         },
         onLoad : function(cm){
 			// Editor part
-		    $scope.current.editor = cm;
+		    $scope.current.room.editor = cm;
             $scope.editor = cm;
-            roomModel.registerEditorEvent($scope.current);
+            roomModel.registerEditorEvent($scope.current.room);
 		    var _doc = cm.getDoc();
 
 		    cm.focus();
+            cm.clearHistory();
+            roomModel.initbreakpoints($scope.current.room, $scope.current.room.data.bps);
 
 		    // Options
 		    CodeMirror.modeURL = "/lib/codemirror/mode/%N/%N.js";
 
         
-                    if (roomGlobal.languagemap[$scope.current.data.type]){
-                        if (roomGlobal.modemap[$scope.current.data.type])
-                            $scope.editor.setOption('mode', roomGlobal.modemap[$scope.current.data.type]);
+                    if (roomGlobal.languagemap[$scope.current.room.data.type]){
+                        if (roomGlobal.modemap[$scope.current.room.data.type])
+                            $scope.editor.setOption('mode', roomGlobal.modemap[$scope.current.room.data.type]);
                         else
-                            $scope.editor.setOption('mode', roomGlobal.languagemap[$scope.current.data.type]);
+                            $scope.editor.setOption('mode', roomGlobal.languagemap[$scope.current.room.data.type]);
 
-                        CodeMirror.autoLoadMode(cm, roomGlobal.languagemap[$scope.current.data.type]);
+                        CodeMirror.autoLoadMode(cm, roomGlobal.languagemap[$scope.current.room.data.type]);
                     } else{
                         $scope.editor.setOption('mode', 'text/plain');
                         CodeMirror.autoLoadMode($scope.editor, '');
                     }
 
-                    if ($scope.current.lock.debug)
+                    if ($scope.current.room.lock.debug)
                         $scope.editor.setOption('readOnly', true);
 
    					//
@@ -217,7 +251,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
     $scope.show_console = false;
 
    
-
+    /*
     $scope.toggleConsole = function()
     {
     	if($scope.show_console == false)
@@ -243,6 +277,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
             $scope.editor_width = 'span12';
         }
     }
+    */
 
     var tmpH, tmpW;
     $scope.setFullScreen = function(full)
@@ -274,17 +309,22 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
     // run 
      $scope.runFn = function (){
 
-        if (! $scope.current.runEnabled() || $scope.current.lock.operation) 
+        if (! $scope.current.room.runEnabled() || $scope.current.room.locks.operation) 
            return;
         
-        $scope.current.lock.operation = true;
+        $scope.current.room.locks.operation = true;
 
-        if ($scope.current.lock.run){
+        if ($scope.current.room.locks.run){
             socket.emit('kill');
         } else {
-            $scope.current.consoleOutput = [];
+            $scope.current.room.consoleOutput = [];
             $scope.consoleState = "<running>";
-            socket.emit('run',$scope.current.data);
+            var data = $scope.current.room.data;
+            socket.emit('run', {
+                'roomid': data.id,
+                'type': data.type,
+                'version': data.version
+            });
         }
 
         $scope.consoleInput = "";
@@ -292,36 +332,50 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
    
     //-------------------------------------------------------------------
     //console
-    $scope.vars = [{'name':'n','showVar':true,'focus':false,'value':'12'},
-                {'name':'m','showVar':true,'focus':false,'value':'12'}];
 
     $scope.rename  = function(n)
     {
-        $scope.vars[n].showVar = false;
-        $scope.vars[n].focus = true;
+        $scope.current.expressionList[n].showVar = false;
+        $scope.current.expressionList[n].focus = true;
+        socket.emit('rm-expr', {
+            expr: $scope.current.expressionList[n].expr
+        });
     }
 
     $scope.submitVar = function(n)
     {
-        $scope.vars[n].showVar = true;
-        $scope.vars[n].focus = false;
-        if($scope.vars[n].name == "")
-        {
-            $scope.vars.splice(n,1);
+        $scope.current.expressionList[n].showVar = true;
+        $scope.current.expressionList[n].focus = false;
+
+        if ($scope.current.expressionList[n].expr == '')
+        {  
+            $scope.current.expressionList.splice(n, 1);      
+        } else{
+            console.log('add ' + $scope.current.expressionList[n].expr + '#');
+            socket.emit('add-expr', {
+                expr: $scope.current.expressionList[n].expr
+            });
         }
     }
 
     $scope.addVar = function(){
-        $scope.vars.push({'name':'','showVar':false,'focus':true,'value':'Dadi'});
+        var emp = {
+            'expr': '',
+            'showVar': false,
+            'focus': true,
+            'value':'',
+            'type': '',
+        }
+        $scope.current.expressionList.push(emp);
     }
 
     $scope.consoleInputFn = function() {
-        if ($scope.current.locks.debug || $scope.current.locks.run){
+        if ($scope.current.room.locks.debug || $scope.current.room.locks.run){
             socket.emit('stdin', {
                 data: $scope.consoleInput + "\n"
             })
         } else{
-            $scope.current.consoleOutput.push({
+            $scope.current.room.consoleOutput.push({
                 type:'stdin', 
                 content: $scope.consoleInput + "\n"
             });
@@ -331,18 +385,18 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
     //-------------------------------------------------------------------
     $scope.debugFn = function(){
 
-        if (! $scope.current.debugEnabled() || $scope.current.lock.operation )
+        if (! $scope.current.room.debugEnabled() || $scope.current.room.lock.operation )
             return;
-        $scope.current.lock.operation = true;
-        if ($scope.current.lock.debug){
+        $scope.current.room.lock.operation = true;
+        if ($scope.current.room.lock.debug){
             socket.emit('kill')
         } else{
-            socket.emit('debug', $scope.current.data);
+            socket.emit('debug', $scope.current.room.data);
         }
     }
 
     $scope.debugStepFn = function() {
-        if ($scope.current.lock.debug && $scope.current.waiting){
+        if ($scope.current.room.lock.debug && $scope.current.room.waiting){
             socket.emit('step', {
 
             });
@@ -350,7 +404,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
     }
 
     $scope.debugNextFn = function() {
-        if ($scope.current.lock.debug && $scope.current.waiting){
+        if ($scope.current.room.lock.debug && $scope.current.room.waiting){
             socket.emit('next', {
 
             })
@@ -358,14 +412,14 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
     }
 
     $scope.debugFinishFn = function() {
-        if ($scope.current.ock.debug && $scope.current.waiting){
+        if ($scope.current.room.lock.debug && $scope.current.room.waiting){
             socket.emit('finish', {
 
             })
         }
     }
     $scope.debugContinueFn = function(){
-        if ($scope.current.lock.debug && $scope.current.waiting){
+        if ($scope.current.room.lock.debug && $scope.current.room.waiting){
             socket.emit('resume', {
 
             })
@@ -376,43 +430,16 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
    // Breakpoints
    $scope.runToLine = function(n) {
         if($scope.runningLine >= 0) {
-            $scope.current.editor.removeLineClass($scope.current.runningLine, '*', 'running');
-            $scope.current.editor.setGutterMarker($scope.current.runningLine, 'runat', null);
+            $scope.current.room.editor.removeLineClass($scope.current.room.runningLine, '*', 'running');
+            $scope.current.room.editor.setGutterMarker($scope.current.room.runningLine, 'runat', null);
         }
         if(n >= 0) {
-            $scope.current.editor.addLineClass(n, '*', 'running');
-            $scope.current.editor.setGutterMarker(n, 'runat', 
+            $scope.current.room.editor.addLineClass(n, '*', 'running');
+            $scope.current.room.editor.setGutterMarker(n, 'runat', 
                 angular.element('<div><img src="images/arrow.png" width="16" height="16" style="min-width:16px;min-width:16px;" /></div>')[0]);
-            $scope.current.editor.scrollIntoView({line:n, ch:0});
+            $scope.current.room.editor.scrollIntoView({line:n, ch:0});
         }
-        $scope.current.runningLine = n;
-    }
-
-    $scope.removeAllBreakpoints = function() {
-        for (var i = 0; i < $scope.current.bps.length; i++){
-            if ($scope.current.bps[i] == "1"){
-                var info = $scope.current.editor.lineInfo(i);
-                if (info.gutterMarkers && info.gutterMarkers["breakpoints"]) {
-                    $scope.current.editor.setGutterMarker(i, 'breakpoints', null);
-                }
-            }
-        }
-        $scope.current.bps.replace("1", "0");
-    }
-
-    $scope.initBreakpoints = function(bpsstr) {
-        $scope.current.bps = bpsstr;
-        for (var i = bpsstr.length; i < $scope.current.editor.lineCount(); i++){
-            $scope.current.bps += "0";
-        }
-        for (var i = 0; i < $scope.current.bps.length; i++){
-            if ($scope.current.bps[i] == "1"){
-                
-                var element = angular.element('<div><img src="images/breakpoint.png" /></div>')[0];
-                $scope.current.editor.setGutterMarker(i, 'breakpoints', element);
-
-            }
-        }
+        $scope.current.room.runningLine = n;
     }
     
     $scope.gutterclick = function(cm, n)
