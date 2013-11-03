@@ -68,7 +68,6 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			}
 
 			var editor, 
-				expressionList = {},
 				lock = {
 				//run & debug lock
 				'run':false, 
@@ -77,6 +76,31 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				'chat':false, 
 				'voice':false
 				};
+			/*
+			var elements = [], //name, value
+				editingelem = null,
+				elemid = 1,
+				expressionList = {
+					'elements': elements,
+					'clear': function(){
+						elements = [];
+					},
+					'addExpression': function(expression){
+						if (! currentDoc.lock.debug || currentDoc.waiting){
+							socket.emit('add-expr', {
+								expr: expression
+							});
+						}
+					},
+
+					'removeExression':function(expression){
+						socket.emit('rm-expr', {
+							expr: expression
+						});
+					}
+				};
+			*/
+			var expressionList = [];
 
 			var currentDoc = {
 				'doc': tabsModel.getDestDoc(),
@@ -150,6 +174,8 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		}
 
 		var tRoom = roomList[data.id];
+		
+		expressionList.splice(0, expressionList.length);
 		//reset lock 
 		tRoom.locks.operation = false;
 		tRoom.locks.run = data.running;
