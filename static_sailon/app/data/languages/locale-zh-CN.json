@@ -117,5 +117,7 @@
   "runtheprogram":          "开始运行程序",
   "debugtheprogram":        "开始调试程序",
   "programfinished":        "程序运行结束，返回值为：",
-  "programkilled":          "程序被迫终止，终止信号为："
+  "programkilled":          "程序被迫终止，终止信号为：",
+  "ROOMREMOVED":            "房间已被移除",
+  "ROOMMOVED":              "房间已被移动"
 }

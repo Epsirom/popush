@@ -221,7 +221,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
         var msg = {
             'name': 'system',
             'type': 'system',
-            'content': userModel.user.name + ' runs the program', //加翻译
+            'content': data.name + ' runs the program', //加翻译
             'time': time.toTimeString().substr(0, 8)
         }
         roomList[data.roomid].chat.push(msg);
@@ -246,7 +246,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
         var msg = {
             'name': 'system',
             'type': 'system',
-            'content': userModel.user.name + ' debugs the program', //加翻译
+            'content': data.name + ' debugs the program', //加翻译
             'time': time.toTimeString().substr(0, 8)
         }
         roomList[data.roomid].chat.push(msg);
@@ -391,7 +391,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			}
 	});
 
-	socket.forceOn('join', function(data) {
+	socket.forceOn('join', function (data) {
 		if(data.err) {
             //message('openeditor', data.err);
         } 
@@ -414,7 +414,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
         }
 	});
 
-	socket.forceOn('leave', function(data) {
+	socket.forceOn('leave', function (data) {
 		var room = roomList[data.roomid];
 		if (!room) {
 			return;
@@ -430,10 +430,57 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
         }
 	});
 	
+	socket.forceOn('deleted', function (data){
+		var path = roomList[data.roomid].doc.path.split('/');
+        path.splice(path.length - 1, 1);
+        path = path.join('/');
+
+        var o = fileTreeModel.select(path);
+		
+		socket.emit('leave',{
+			roomid: data.roomid
+		});
+        
+		//恰好是当前打开的标签页
+        if (tabsModel.current.path == roomList[data.roomid].doc.path)
+	        tabsModel.changeDoc(o);
+	    else
+	    {
+	    	alert('hehe');
+	    	//被打开，但不是标签页－－》关闭
+	    	//如果父亲被打开－－》更新
+	    }
+
+        messageModel.append('ROOMREMOVED');
+
+	});
+
+	socket.forceOn('moved', function (data){
+		var path = roomList[data.roomid].doc.path.split('/');
+        path.splice(path.length - 1, 1);
+        path = path.join('/');
+
+        var o = fileTreeModel.select(path);
+		
+		socket.emit('leave',{
+			roomid: data.roomid
+		});
+        
+		//恰好是当前打开的标签页
+        if (tabsModel.current.path == roomList[data.roomid].doc.path)
+	        tabsModel.changeDoc(o);
+	    else
+	    {
+	    	//被打开，但不是标签页－－》关闭
+	    	//如果父亲被打开－－》更新
+	    }
+
+        messageModel.append('ROOMMOVED');
+
+	});
+
 	//能改到RoomController.js里面么？
 	function toggleConsole(room){
-
-		console.log('console toggle');
 
     	if(room.consoleOpen == false)
     		room.editor.setSize('',560-165);
