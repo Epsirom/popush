@@ -58,7 +58,6 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			}
 
 			var editor, 
-				expressionList = {},
 				saving = false,
 				lock = {
 				//run & debug lock
@@ -68,6 +67,31 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				'chat':false, 
 				'voice':false
 				};
+			/*
+			var elements = [], //name, value
+				editingelem = null,
+				elemid = 1,
+				expressionList = {
+					'elements': elements,
+					'clear': function(){
+						elements = [];
+					},
+					'addExpression': function(expression){
+						if (! currentDoc.lock.debug || currentDoc.waiting){
+							socket.emit('add-expr', {
+								expr: expression
+							});
+						}
+					},
+
+					'removeExression':function(expression){
+						socket.emit('rm-expr', {
+							expr: expression
+						});
+					}
+				};
+			*/
+			var expressionList = [];
 
 			currentDoc = {
 				'doc': tabsModel.getDestDoc(),
@@ -140,6 +164,9 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			//初始化editor
 			//初始化expression list
 		}
+
+		//
+		expressionList = [];
 
 		//reset lock 
 		currentDoc.lock.operation = false;
