@@ -91,7 +91,7 @@
 		</div>
 	</div>
 	<div class="span3 chat-window" ng-show="current.chatOpen" ng-controller = "ChatController">
-		<div class="edt-chat" ng-style="bottomscroll()" scroll>
+		<div class="edt-chat" ng-style="chatSize()" resize ng-style="bottomscroll()" scroll>
 			<div class="edt-chat-inner">
 				<p class="edt-chat-block" ng-repeat="chatmessage in current.chat">
 					<span ng-class="{selfchatname: (chatmessage.type == 'self'), syschatname: (chatmessage.type == 'system'), edtchatname: (chatmessage.type == '')}">
@@ -101,7 +101,7 @@
 				</p>
 			</div>
 		</div>
-		<input ng-model="chatInput" class="edt-input-msg" type="text"  ng-enter="sendChatMessage()" />
+		<input ng-model="chatInput" class="edt-input-msg" type="text"  ng-enter="sendChatMessage()" focus="true" />
 		<div class="edt-chat-btn">
 			<button class="btn" type="button" ng-click="sendChatMessage()">
 				<i class="icon-comment"></i>

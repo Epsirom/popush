@@ -24,8 +24,35 @@
 .file-selected{
 	color: red;
 }
+.user-share-btn{
+	border: none;
+	background: #bdc3c7;
+	color: #ffffff;
+	padding: 9px 12px 10px;
+	line-height: 22px;
+	text-decoration: none;
+	text-shadow: none;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
 .user-share-black{
 	color: black;
+}
+.user-share-black:hover{
+	color: black;
+	background-color: #D6D9DB;
+}
+.user-share-black:visited{
+	color: black;
+	text-decoration: none;
+	text-shadow: none;
+}
+.user-share-back{
+	padding: 8px 15px 8px; 
 }
 .useractive{
 	background-color: lightblue;

@@ -52,7 +52,7 @@
 				<a class='btn-link'>
 					<i class='icon-remove' ng-click="enterCreate(creater.type);" tooltip="{{'CANCEL' | translate}}" tooltip-trigger="mouseenter" tooltip-placement="top"></i>
 				</a>
-				<input class='filelist-input' ng-if="invalid==true" type='text' tooltip="{{ 'INVALID_FILENAME' | translate}}" tooltip-trigger="focus" tooltip-placement="top" ng-model='creater.name' focus="true" ng-enter="createFile()" ng-maxlength="32"/>
+				<input class='filelist-input' type='text' tooltip="{{ invalid | translate}}" tooltip-trigger="focus" tooltip-placement="top" ng-model='creater.name' focus="true" ng-enter="createFile()" ng-maxlength="32"/>
 				<button class='btn-link' translate='CREATE' ng-click="createFile()"></button>
 			</td>
 			<td></td>
@@ -90,7 +90,7 @@
 			</td>
 			<td class="edt-col3" ng-if="(node.members.length > 0) && isMyself(tab.doc.path)" ng-controller="DlgController">
 				{{'SHARED_FILE'|translate}}
-				<a class="btn-link" ng-if="operateMode=='share'" ng-click="shareManage(node.name,'folder',node.members)" tooltip="{{'SHARE_HELP'|translate}}" tooltip-trigger="mouseenter" tooltip-placement="top"><i class="icon-share"></i></a>
+				<a class="btn-link" ng-if="operateMode=='share'" ng-click="shareManage(node.name,'file',node.members)" tooltip="{{'SHARE_HELP'|translate}}" tooltip-trigger="mouseenter" tooltip-placement="top"><i class="icon-share"></i></a>
 			</td>
 			<td class="edt-col3" ng-if="!isMyself(tab.doc.path)">
 				<img class='cr-item' height='32' width='32' ng-src="{{node.owner?node.owner.avatar:tab.doc.owner.avatar}}"/>
@@ -115,7 +115,7 @@
 			<ul class="user-share-list nav-pills nav-stacked">
 				<li ng-click="select(user.name, $index)" ng-repeat="user in userlist" ng-class="{useractive: (selectedUser == user.name)}">
 					<a>
-						<img class="user-share-img" height="32" width="32" ng-src="user.avatar">{{user.name}}
+						{{user.name}}
 					</a>
 				</li>
 			</ul>
@@ -123,11 +123,11 @@
 		<div class="form-inline">
 			<span translate="USERNAME"></span>
 			<input type="text" focus="true" ng-model="username" ng-enter="share(username)" /> 
-			<button class="btn user-share-black" type="button" ng-click="share(username)" translate="ADD"></button>
-			<button class="btn pull-right user-share-black" type="button" ng-click="unshare()" translate="DELETE_NOW"></button>
+			<button class="user-share-btn user-share-black" type="button" ng-click="share(username)" translate="ADD"></button>
+			<button class="user-share-btn pull-right user-share-black" type="button" ng-click="unshare()" translate="DELETE_NOW"></button>
 		</div>
     </div>
-    <div class="modal-footer">
-        <button class="btn user-share-black" ng-click="cancel()" translate="SHARE_CANCEL"></button>
+    <div class="modal-footer user-share-back">
+        <button class="user-share-btn user-share-black " ng-click="cancel()" translate="SHARE_CANCEL"></button>
     </div>
 </script>

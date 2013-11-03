@@ -79,7 +79,7 @@ function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlo
 	$scope.itemMode = [];
 	// item mode can be: 'rename', 'delete'
 	$scope.tmpName = [];
-	$scope.invalid = false;
+	$scope.invalid = '';
 
 	$scope.enterCreate = function(ntype) {
 		if ($scope.operateMode == 'create') {
@@ -96,14 +96,14 @@ function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlo
 
 	$scope.$watch('creater.name',function(){
 		if(/\/|\\|@/.test($scope.creater.name)) {
-			$scope.invalid = true;
+			$scope.invalid = 'INVALID_FILENAME';
 			return;
 		}
 		if($scope.creater.name.length > 32) {
-			$scope.invalid = true;
+			$scope.invalid = 'FILE_SIZE';
 			return;
 		}
-		$scope.invalid = false;
+		$scope.invalid = '';
 	});
 
 	$scope.enterRename = function() {
