@@ -154,7 +154,8 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				if(currentDoc.cursors[i] && currentDoc.cursors[i].element)
 				{
                     var element = currentDoc.cursors[i].element;
-                    element.parentNode.removeChild(element);
+                    if(element)
+                    	element.parentNode.removeChild(element);
 				}
 				currentDoc.cursors[i] = { element:cursor, pos:0 };
 			}
@@ -408,7 +409,8 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
             if(room.cursors[data.name] && room.cursors[data.name].element)
             {
                 var element = room.cursors[data.name].element;
-                element.parentNode.removeChild(element);
+                if(element)
+                	element.parentNode.removeChild(element);
             }
             room.cursors[data.name] = { element:cursor, pos:0 };
         }
@@ -420,12 +422,13 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			return;
 		}
 		if(room.cursors[data.name]) {
-            //console.log($scope.current.cursors[data.name].element);
             if(room.cursors[data.name].element)
             {
                 var element = room.cursors[data.name].element;
-                element.parentNode.removeChild(element);
+                if(element)
+                	element.parentNode.removeChild(element);
             }
+            room.cursors[data.name].element = "";
             delete room.cursors[data.name];
         }
 	});
