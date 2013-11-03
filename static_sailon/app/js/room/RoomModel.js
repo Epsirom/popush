@@ -2,39 +2,49 @@
 
 function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTreeModel, roomGlobal, userModel, $timeout) {
 
-	var docList = [];
-	var currentDoc = {};
+	var roomList = {};
 	
+	var getRoomById = function(roomid) {
+		return roomList[roomid];
+	}
+
 	var leaveRoom = function(room) {
-		var i, len = docList.length;
-		for (i = 0; i < len; ++i) {
-			if (docList[i].doc.path == room.doc.path) {
-				docList.splice(i, 1);
-				break;
+		if (!room) {
+			return;
+		}
+		if (roomList[room.id]) {
+			delete roomList[room.id];
+		}
+		socket.emit('leave', {roomid: room.id});
+	}
+
+	var updateObj = function(src, dest) {
+		if (dest === undefined) {
+			return;
+		}
+		var i, len = arguments.length;
+		for (i = 2; i < len; ++i) {
+			if (src[arguments[i]]) {
+				dest[arguments[i]] = src[arguments[i]];
 			}
 		}
-		socket.emit('leave', {});
+	}
+
+	var updateRoom = function(room, data) {
+		return updateObj(data, room, 'users', 'version', 'text', 'bps', 'exprs');
 	}
 
 	socket.forceOn('set', function (data) {
 		//check if the doc is opening
 		var existed = false, curPath = tabsModel.getDestDoc().path;
-		var i, len = docList.length;
-		for (i = 0; i < len; ++i)
-			if (docList[i].doc.path == curPath)
-			{
-				currentDoc = docList[i];
-				existed = true;
-				currentDoc.data = data;
-				break;
-			}
-
-		if (! existed)
-		{			
+		if (roomList[data.id]) {
+			updateRoom(roomList[data.id], data);
+		} else {			
 			var pathapart = tabsModel.getDestDoc().path.split('/');
 			var filepart = pathapart[pathapart.length - 1].split('.');
 			var ext = filepart[filepart.length - 1];
 			data.type = ext;
+			data.roomid = data.id;
 
 			var runable = function (ext){
 				if (! POPUSH_SETTINGS.ENABLE_RUN)
@@ -58,7 +68,6 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			}
 
 			var editor, 
-				saving = false,
 				lock = {
 				//run & debug lock
 				'run':false, 
@@ -93,7 +102,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			*/
 			var expressionList = [];
 
-			currentDoc = {
+			var currentDoc = {
 				'doc': tabsModel.getDestDoc(),
 				'expressionList': expressionList,
 				'data': data,
@@ -101,7 +110,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				'type': ext,
 				'editor' : editor,
 				'state': 0, //editing = 0, running = 1, debugging = 2
-				'saving': 'done', //if file is saving, then saving  = true
+				'saving': false, //if file is saving, then saving  = true
 				'lock': false,
 				'locks': lock,
 
@@ -125,10 +134,10 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				'cursors': {},
 				
 				'runEnabled': function(){
-					return runable && ! lock.debug && (!saving || lock.run)
+					return runable && ! lock.debug && (!this.saving || lock.run)
 				},
 				'debugEnabled': function(){
-					return debugable && !lock.run && (!saving || lock.debug)
+					return debugable && !lock.run && (!this.saving || lock.debug)
 				},
 				
 				// Console 
@@ -148,35 +157,34 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			currentDoc.q._push = currentDoc.q.push;
 			currentDoc.q.push = function(element) {
 				this._push(element);
-				setsaving();
+				setsaving(currentDoc);
 			};
 			currentDoc.q._shift = currentDoc.q.shift;
 			currentDoc.q.shift = function() {
 				var r = this._shift();
 				if(this.length == 0 && currentDoc.bufferfrom == -1){ // buffertext == "") {
-					setsaved();
+					setsaved(currentDoc);
 				}
 				return r;
 			}
-			docList.push(currentDoc);
-			tabsModel.runCreateRoomCallback();
+			roomList[data.id] = currentDoc;
 
 			//初始化editor
 			//初始化expression list
 		}
 
-		//
-		expressionList = [];
-
+		var tRoom = roomList[data.id];
+		
+		expressionList.splice(0, expressionList.length);
 		//reset lock 
-		currentDoc.lock.operation = false;
-		currentDoc.lock.run = data.running;
+		tRoom.locks.operation = false;
+		tRoom.locks.run = data.running;
 		if (data.debugging){
-			currentDoc.lock.debug = true;
-			currentDoc.oldText = data.text;
-			currentDoc.oldBps = data.bps;
+			tRoom.locks.debug = true;
+			tRoom.oldText = data.text;
+			tRoom.oldBps = data.bps;
 			if (data.state == 'waiting'){
-				currentDoc.waiting = true;
+				tRoom.waiting = true;
 				runToLine(data.line - 1);
 				/*
 				if(data.line !== null)
@@ -186,24 +194,66 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				*/
 
 			}
-		}		
+		}
 		delete data.running;
 		delete data.debugging;
 		delete data.state;
+		tabsModel.runRoomSetCallback(tRoom);
    	});
-	
-	function setsaving(room) {
-		if (!room) {
-			room = currentDoc;
+
+	function sendbuffer(room){
+		var bufferfrom = room.bufferfrom,
+			bufferto = room.bufferto,
+			q = room.q,
+			buffertimeout = room.buffertimeout,
+			buffertext = room.buffertext,
+			doc = room.data;
+		if (bufferfrom != -1) {
+			if (bufferto == -1){
+				var req = {roomid:room.id, version:doc.version, from:bufferfrom, to:bufferfrom, text:buffertext};
+				if(q.length == 0){
+					socket.emit('change', req);
+				}
+				q.push(req);
+				buffertext = "";
+				bufferfrom = -1;
+			}
+			else {
+				var req = {roomid:room.id, version:doc.version, from:bufferfrom, to:bufferto, text:buffertext};
+				if(q.length == 0){
+					socket.emit('change', req);
+				}
+				q.push(req);
+				bufferfrom = -1;
+				bufferto = -1;
+			}
+			buffertimeout = POPUSH_SETTINGS.SAVE_TIME_OUT;
 		}
-		room.saving = 'doing';
-		room.savetimestamp = 0;
+		room.bufferfrom = bufferfrom;
+		room.bufferto = bufferto;
+		room.buffertimeout = buffertimeout;
+		room.buffertext = buffertext;
+	}
+
+	function save(room){
+		setsaving(room);
+		if (room.timer != null){
+			$timeout.cancel(room.timer);
+		}
+		room.timer = $timeout(function(){return sendbuffer(room);}, room.buffertimeout);
+	}
+
+	function sendbreak(room, from, to, text){
+		var doc = room.data,
+			bq = room.bq;
+		var req = {roomid:room.id, version:doc.version, from:from, to:to, text:text};
+		if(bq.length == 0){
+			socket.emit('bps', req);
+		}
+		bq.push(req);
 	}
 
 	function setsaved(room){
-		if (!room) {
-			room = currentDoc;
-		}
 		var tmpTime = new Date().getTime();
 		room.savetimestamp = tmpTime;
 		$timeout(function(){setsavedthen(room, tmpTime);}, room.savetimeout);
@@ -211,32 +261,41 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 	}
 
 	function setsavedthen(room, timestamp){
-		if (!room) {
-			room = currentDoc;
-		}
 		if(room.savetimestamp == timestamp) {
-			room.saving = 'done';
+			room.saving = false;
 		}
 	}
+	
+	function setsaving(room) {
+		room.saving = true;
+		room.savetimestamp = 0;
+	}
 
-	function runToLine(n) {
-        if(currentDoc.runningLine >= 0) {
-            currentDoc.editor.removeLineClass(currentDoc.runningLine, '*', 'running');
-            currentDoc.editor.setGutterMarker(currentDoc.runningLine, 'runat', null);
+	function saveevent(room, cm) {
+		if(room.savetimestamp != 0)
+			setsavedthen(room, room.savetimestamp);
+		room.savetimestamp = 0;
+	}
+
+	function runToLine(room, n) {
+        if(room.runningLine >= 0) {
+            room.editor.removeLineClass(room.runningLine, '*', 'running');
+            room.editor.setGutterMarker(room.runningLine, 'runat', null);
         }
         if(n >= 0) {
-            currentDoc.editor.addLineClass(n, '*', 'running');
-            currentDoc.editor.setGutterMarker(n, 'runat', 
+            room.editor.addLineClass(n, '*', 'running');
+            room.editor.setGutterMarker(n, 'runat', 
                 angular.element('<div><img src="images/arrow.png" width="16" height="16" style="min-width:16px;min-width:16px;" /></div>')[0]);
-            currentDoc.editor.scrollIntoView({line:n, ch:0});
+            room.editor.scrollIntoView({line:n, ch:0});
         }
-        currentDoc.runningLine = n;
+        room.runningLine = n;
     }
 
 	socket.forceOn('ok', function(data){
-		var q = currentDoc.q, 
-			doc = currentDoc.data,
-			bq = currentDoc.bq;
+		var room = roomList[data.roomid];
+		var q = room.q, 
+			doc = room.data,
+			bq = room.bq;
 		var chg = q.shift();
 		if(!chg)
 			return;
@@ -260,20 +319,21 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 	});
 
 	socket.forceOn('bpsok', function(data){
-		var debugLock = currentDoc.locks.debug,
-			bq = currentDoc.bq,
-			bps = currentDoc.bps,
-			old_bps = currentDoc.oldBps,
-			doc = currentDoc.data,
-			q = currentDoc.q;
+		var room = roomList[data.roomid];
+		var debugLock = room.locks.debug,
+			bq = room.bq,
+			bps = room.bps,
+			old_bps = room.oldBps,
+			doc = room.data,
+			q = room.q;
 		var chg = bq.shift();
 		if (!chg)
 			return;
-		currentDoc.bps = bps.substr(0, chg.from) + chg.text + bps.substr(chg.to);
-		bps = currentDoc.bps;
+		room.bps = bps.substr(0, chg.from) + chg.text + bps.substr(chg.to);
+		bps = room.bps;
 		if(debugLock) {
-			currentDoc.oldBps = old_bps.substr(0, chg.from) + chg.text + old_bps.substr(chg.to);
-			old_bps = currentDoc.oldBps;
+			room.oldBps = old_bps.substr(0, chg.from) + chg.text + old_bps.substr(chg.to);
+			old_bps = room.oldBps;
 		}
 		doc.version++;
 		doc.version = doc.version % 65536;
@@ -294,13 +354,14 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 	});
 
 	socket.forceOn('bps', function(data){
-		var doc = currentDoc.data,
-			debugLock = currentDoc.locks.debug,
-			bq = currentDoc.bq,
-			q = currentDoc.q,
-			bps = currentDoc.bps,
-			old_bps = currentDoc.oldBps,
-			editor = currentDoc.editor;
+		var room = roomList[data.roomid];
+		var doc = room.data,
+			debugLock = room.locks.debug,
+			bq = room.bq,
+			q = room.q,
+			bps = room.bps,
+			old_bps = room.oldBps,
+			editor = room.editor;
 		var tfrom = data.from;
 		var tto = data.to;
 		var ttext = data.text;
@@ -368,21 +429,22 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			socket.emit('bps', bq[0]);
 		}
 
-		currentDoc.bps = bps;
-		currentDoc.oldBps = old_bps;
+		room.bps = bps;
+		room.oldBps = old_bps;
 	});
 
 	socket.forceOn('change', function(data){
-		var editor = currentDoc.editor,
-			doc = currentDoc.data,
-			q = currentDoc.q,
-			bq = currentDoc.bq,
-			cursors = currentDoc.cursors,
-			buffertext = currentDoc.buffertext,
-			bufferfrom = currentDoc.bufferfrom,
-			bufferto = currentDoc.bufferto,
-			buffertimeout = currentDoc.buffertimeout;
-		currentDoc.lock = true;
+		var room = roomList[data.roomid];
+		var editor = room.editor,
+			doc = room.data,
+			q = room.q,
+			bq = room.bq,
+			cursors = room.cursors,
+			buffertext = room.buffertext,
+			bufferfrom = room.bufferfrom,
+			bufferto = room.bufferto,
+			buffertimeout = room.buffertimeout;
+		room.lock = true;
 		var tfrom = data.from;
 		var tto = data.to;
 		var ttext = data.text;
@@ -594,10 +656,10 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		cursors[data.name].pos = data.from + data.text.length;
 		editor.addWidget(pos, cursors[data.name].element, false);
 
-		currentDoc.buffertext = buffertext;
-		currentDoc.bufferfrom = bufferfrom;
-		currentDoc.bufferto = bufferto;
-		currentDoc.buffertimeout = buffertimeout;
+		room.buffertext = buffertext;
+		room.bufferfrom = bufferfrom;
+		room.bufferto = bufferto;
+		room.buffertimeout = buffertimeout;
 	});
 
 
@@ -610,71 +672,6 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 	}
 
 	var registereditorevent = function(room) {
-	
-		function sendbuffer(){
-			var bufferfrom = room.bufferfrom,
-				bufferto = room.bufferto,
-				q = room.q,
-				buffertimeout = room.buffertimeout,
-				buffertext = room.buffertext,
-				doc = room.data;
-			if (bufferfrom != -1) {
-				if (bufferto == -1){
-					var req = {version:doc.version, from:bufferfrom, to:bufferfrom, text:buffertext};
-					if(q.length == 0){
-						socket.emit('change', req);
-					}
-					q.push(req);
-					buffertext = "";
-					bufferfrom = -1;
-				}
-				else {
-					var req = {version:doc.version, from:bufferfrom, to:bufferto, text:buffertext};
-					if(q.length == 0){
-						socket.emit('change', req);
-					}
-					q.push(req);
-					bufferfrom = -1;
-					bufferto = -1;
-				}
-				buffertimeout = POPUSH_SETTINGS.SAVE_TIME_OUT;
-			}
-			room.bufferfrom = bufferfrom;
-			room.bufferto = bufferto;
-			room.buffertimeout = buffertimeout;
-			room.buffertext = buffertext;
-		}
-
-		function save(){
-			setsaving(room);
-			if (room.timer != null){
-				$timeout.cancel(room.timer);
-			}
-			room.timer = $timeout(sendbuffer, room.buffertimeout);
-		}
-
-		function sendbreak(from, to, text){
-			var doc = room.data,
-				bq = room.bq;
-			var req = {version:doc.version, from:from, to:to, text:text};
-			if(bq.length == 0){
-				socket.emit('bps', req);
-			}
-			bq.push(req);
-		}
-
-		function setsaved(){
-			var tmpTime = new Date().getTime();
-			room.savetimestamp = tmpTime;
-			$timeout(function(){setsavedthen(tmpTime);}, room.savetimeout);
-			room.savetimeout = 500;
-		}
-
-		function setsavedthen(timestamp){
-			if(room.savetimestamp == timestamp) {
-				room.saving = 'saved';
-			}
-		}
 
 		CodeMirror.on(room.editor.getDoc(), 'change', function(editorDoc, chg){
 			var debugLock = room.locks.debug,
@@ -745,8 +742,8 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			var bto = chg.to.line;
 
 			if (chg.text.length != (bto-bfrom+1)){
-				sendbuffer();
-				var req = {version:doc.version, from:cfrom, to:cto, text:cattext};
+				sendbuffer(room);
+				var req = {roomid: room.id, version:doc.version, from:cfrom, to:cto, text:cattext};
 				if(q.length == 0){
 					socket.emit('change', req);
 				}
@@ -778,7 +775,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				else {
 					buffertext += cattext;
 				}
-				save();
+				save(room);
 				room.bufferfrom = bufferfrom;
 				room.bufferto = bufferto;
 				room.buffertext = buffertext;
@@ -791,7 +788,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				if (buffertext.length == 0){
 					bufferfrom = -1;
 					if(q.length == 0){
-						setsaved();
+						setsaved(room);
 					}
 					room.bufferfrom = bufferfrom;
 					room.bufferto = bufferto;
@@ -799,7 +796,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 					room.buffertimeout = buffertimeout;
 					return;
 				}
-				save();
+				save(room);
 				room.bufferfrom = bufferfrom;
 				room.bufferto = bufferto;
 				room.buffertext = buffertext;
@@ -811,7 +808,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				bufferfrom = cfrom;
 				bufferto = cto;
 				buffertext = "";
-				save();
+				save(room);
 				room.bufferfrom = bufferfrom;
 				room.bufferto = bufferto;
 				room.buffertext = buffertext;
@@ -821,7 +818,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			else if (bufferto != -1 && chg.origin == "+delete" &&
 				cto == bufferfrom){
 				bufferfrom = cfrom;
-				save();
+				save(room);
 				room.bufferfrom = bufferfrom;
 				room.bufferto = bufferto;
 				room.buffertext = buffertext;
@@ -830,7 +827,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			}
 			else if (bufferfrom != -1) {
 				if (bufferto == -1){
-					var req = {version:doc.version, from:bufferfrom, to:bufferfrom, text:buffertext};
+					var req = {roomid:room.id, version:doc.version, from:bufferfrom, to:bufferfrom, text:buffertext};
 					if(q.length == 0){
 						socket.emit('change', req);
 					}
@@ -839,7 +836,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 					bufferfrom = -1;
 				}
 				else {
-					var req = {version:doc.version, from:bufferfrom, to:bufferto, text:buffertext};
+					var req = {roomid:room.id, version:doc.version, from:bufferfrom, to:bufferto, text:buffertext};
 					if(q.length == 0){
 						socket.emit('change', req);
 					}
@@ -849,7 +846,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				}
 			}
 			
-			var req = {version:doc.version, from:cfrom, to:cto, text:cattext};
+			var req = {roomid:room.id, version:doc.version, from:cfrom, to:cto, text:cattext};
 			if(q.length == 0){
 				socket.emit('change', req);
 			}
@@ -863,8 +860,9 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 
 
 	return {
-		'getCurrentDoc': function() {return currentDoc;},
+		'getRoomById': getRoomById,
 		'leaveRoom': leaveRoom,
-		'registerEditorEvent': registereditorevent
+		'registerEditorEvent': registereditorevent,
+		'saveevent': saveevent,
 	};
 }

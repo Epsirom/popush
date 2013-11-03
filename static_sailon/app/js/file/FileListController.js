@@ -50,7 +50,7 @@ function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlo
 
 	$scope.nextPath = function(tab, obj) {
 		if (obj.type == 'doc') {
-			tabsModel.createRoom(obj, tabsModel.enterRoom);
+			tabsModel.enterRoom(obj, tab);
 		} else if (obj.type == 'dir') {
 			//var nextobj = fileTreeModel.select(tab.doc.path + '/' + obj.name);
 			fileTreeModel.updateByObj(obj);
@@ -97,7 +97,6 @@ function FileListController($scope, tabsModel, userModel, fileTreeModel, roomGlo
 	$scope.$watch('creater.name',function(){
 		if(/\/|\\|@/.test($scope.creater.name)) {
 			$scope.invalid = 'INVALID_FILENAME';
-			console.log($scope.invalid);
 			return;
 		}
 		if($scope.creater.name.length > 32) {

@@ -1,7 +1,7 @@
 <div class="row-fluid" ng-controller="RoomController">
-	<div ng-class="editor_width">
+	<div ng-class="editor_width" >
 		<div class="row-fluid edt-editor-toolbar">
-			<div class="edt-filepath"> <i class="room-status" ng-class="current.saving" tooltip="{{(current.saving=='done')?'room-saved':((current.saving=='doing')?'room-saving':'room-failed')|translate}}" tooltip-trigger="mouseenter" tooltip-placement="top"></i>
+			<div class="edt-filepath"> <i class="room-status" ng-class="{'doing': current.room.saving, 'done': !current.room.saving}" tooltip="{{(current.room.saving?'room-saving':'room-saved')|translate}}" tooltip-trigger="mouseenter" tooltip-placement="top"></i>
 				<span ng-repeat="p in tab.paths track by $index">
 					/
 					<a class="btn-link" ng-click="changePath(tab, $index);">{{ p }}</a>
@@ -33,19 +33,17 @@
 		<div class="row-fluid" ng-show="show_console">
 			<div class="edt-under-editor">
 				<div class="span8 edt-console">
-					<div class="edt-console-title well well-top">
-						控制台
+					<div class="edt-console-title well well-top" translate="CONSOLE">
 						<span ng-bind="consoleState"></span>
 					</div>
-					<div class="edt-console-inner">
+					<div class="edt-console-inner" ng-style="bottomscroll()" scroll>
 						<span ng-repeat="x in current.consoleOutput">
-							{{x.content}}
-							<br /> 
+							<p ng-class="{consolestderr: (x.type == 'stderr'), consolestdin: (x.type == 'stdin'), consolestdout: (x.type == 'stdout') }" >{{x.content}}</p>
 						</span>
-					</div>
-					<input class="edt-console-input" type="text" ng-model = "consoleInput" ng-enter="consoleInputFn()" />
+					</div>	
+					<input class="edt-console-input" type="text" ng-model = "consoleInput" ng-enter="consoleInputFn()" focus="true" />
 				</div>
-				<div class="edt-varlist">
+				<div >
 					<div class="well well-top">
 						<div class="btn-group">
 							<button class="btn disabled debug-btn" type="button"  ng-click = "debugStepFn()">
@@ -62,7 +60,7 @@
 							</button>
 						</div>
 					</div>
-					<div id="varlistreal">
+					<div class="edt-varlist" ng-style="bottomscroll()" scroll>
 						<table class="table table-hover" id="varlist-table">
 							<!--<tr ng-repeat="var in vars">-->
 							<tr ng-repeat="var in current.expressionList">	
@@ -90,10 +88,10 @@
 		</div>
 	</div>
 	<div class="span3 chat-window" ng-show="chat_show" ng-controller = "ChatController">
-		<div class="edt-chat">
+		<div class="edt-chat" ng-style="bottomscroll()" scroll>
 			<div class="edt-chat-inner">
 				<p ng-repeat="chatmessage in current.chat">
-					<span class="edt-chat-name">
+					<span ng-class="{selfchatname: (chatmessage.type == 'self'), syschatname: (chatmessage.type == 'system'), edtchatname: (chatmessage.type == '')}">
 						{{chatmessage.name}}&nbsp;&nbsp;{{chatmessage.time}}
 					</span><br />
 					{{chatmessage.content}}
@@ -105,7 +103,8 @@
 			<button class="btn" type="button" ng-click="sendChatMessage()">
 				<i class="icon-comment"></i>
 			</button>
-			<button class="btn active" type="button" id="voice-on"><i class="icon-volume-up"></i></button>
+			<button class="btn" ng-class="btn_active" type="button" ng-if="show_popover==false"ng-click="enterVoiceRoom()" ><i class="icon-volume-up"></i></button>
+			<button class="btn" ng-class="btn_active" type="button" ng-if="show_popover==true" popover="{{'NO_VOICE' | translate }}" popover-placement="left" popover-trigger="mouseenter"><i class="icon-volume-up"></i></button>
 		</div>
 	</div>
 </div>
