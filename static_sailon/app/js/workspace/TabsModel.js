@@ -13,7 +13,7 @@ function TabsModel(userModel, fileTreeModel, socket) {
 
 	var updateMembers = function() {
 		currentMembers.splice(0, currentMembers.length);
-		if ((!current) || ((current.type != 'doc') && (current.type != 'dir'))) {
+		if ((!current) || ((current.type != 'room') && (current.type != 'dir'))) {
 			currentMembers.push(userModel.user);
 			return;
 		} else {
@@ -65,6 +65,9 @@ function TabsModel(userModel, fileTreeModel, socket) {
 			return;
 		}
 		var i, len;
+		if (tab.doc) {
+			tab.doc.viewMode = 'off';
+		}
 		for (i = 0, len = tabs.length; i < len; ++i) {
 			if (tabs[i].title == tab.title) {
 				return tabs.splice(i, 1);
