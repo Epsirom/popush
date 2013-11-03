@@ -3,8 +3,7 @@
 function TabsModel(userModel, fileTreeModel, socket) {
 
 	// Data
-	var tabs = [
-			{'type': 'room', 'title': 'Dadi.cpp', 'path':["bin","das","Dadi.cpp"]}];
+	var tabs = [];
 	var current = null;
 	var currentMembers = [];
 	var destDoc = null;
@@ -105,12 +104,6 @@ function TabsModel(userModel, fileTreeModel, socket) {
 	var setCurrent = function(index) {
 		if (current && current.doc && (current.doc.viewMode == 'active')) {
 			current.doc.viewMode = 'back';
-		}
-		if (current && (current.type == 'room') && (current.doc.path != tabs[index].doc.path) && (tabs[index].type == 'room')) {
-			//socket.emit('leave', {});
-			socket.emit('join', {
-				'path': tabs[index].doc.path
-			});
 		}
 		current = tabs[index];
 		current.active = true;

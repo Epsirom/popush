@@ -62,6 +62,7 @@ function _broadcast(id, msg, data){
 			log('>> [' + id + ']', msg);
 		}
 	}
+	data.roomid = id;
 	io.sockets.in(id).emit(msg, data);
 }
 
@@ -283,7 +284,7 @@ io.sockets.on('connection', function(socket){
 			socket.emit('delete', {err:err});
 			if(!err && rooms[data.path]){
 				var room = rooms[data.path];
-				socket.broadcast.to(room.id).emit('deleted');
+				socket.broadcast.to(room.id).emit('deleted', {roomid:room.id});
 				for(var u in room.users){
 					users[u].leave(room.id);
 					delete users[u].session.room;
@@ -311,7 +312,7 @@ io.sockets.on('connection', function(socket){
 				delete rooms[data.path];
 				room.path = data.newPath;
 				rooms[room.path] = room;
-				socket.broadcast.to(room.id).emit('moved', {newPath:data.newPath, time:new Date().getTime()});
+				socket.broadcast.to(room.id).emit('moved', {roomid:room.id, newPath:data.newPath, time:new Date().getTime()});
 			}
 		});
 	});
@@ -330,7 +331,7 @@ io.sockets.on('connection', function(socket){
 				userDAO.getUserByName(data.name, function(err, user){
 					if(!err){
 						var room = rooms[data.path];
-						socket.broadcast.to(room.id).emit('shared', {name:user.name, avatar:user.avatar, time:new Date().getTime()});
+						socket.broadcast.to(room.id).emit('shared', {roomid: room.id, name:user.name, avatar:user.avatar, time:new Date().getTime()});
 					}
 				});
 			}
@@ -358,7 +359,7 @@ io.sockets.on('connection', function(socket){
 					}
 				}
 				if(room){
-					socket.broadcast.to(room.id).emit('unshared', {name:data.name, time:new Date().getTime()});
+					socket.broadcast.to(room.id).emit('unshared', {roomid: room.id, name:data.name, time:new Date().getTime()});
 					if(room.users[data.name]){
 						users[data.name].leave(room.id);
 						delete users[data.name].session.room;
@@ -445,7 +446,7 @@ io.sockets.on('connection', function(socket){
 			if(!room){
 				room = rooms[data.path] = {id:revision.doc, path:data.path, count:0, users:{}, version:0, buffer:new DocBuffer(revision.content), bps:'', exprs:{}};	
 			}else{
-				socket.broadcast.to(room.id).emit('join', {name:user.name, time:new Date().getTime()});
+				socket.broadcast.to(room.id).emit('join', {roomid:room.id, name:user.name, time:new Date().getTime()});
 			}
 			room.users[user.name] = true;
 			room.count++;
@@ -490,7 +491,7 @@ io.sockets.on('connection', function(socket){
 			room.version = (room.version + 1) % 65536;
 			room.buffer.update(data.from, data.to, data.text, function(err){
 				if(!err){
-					socket.emit('ok');
+					socket.emit('ok', {roomid: data.roomid});
 					data.name = user.name;
 					socket.broadcast.to(room.id).emit('change', data);
 				}
@@ -513,7 +514,7 @@ io.sockets.on('connection', function(socket){
 				room.bps += '0';
 			}
 			room.bps = room.bps.substr(0, data.from) + data.text + room.bps.substr(data.to);
-			socket.emit('bpsok');
+			socket.emit('bpsok', {roomid: data.roomid});
 			data.name = user.name;
 			socket.broadcast.to(room.id).emit('bps', data);
 			if(room.dbger && room.dbger.state == 'waiting'){
@@ -634,7 +635,7 @@ io.sockets.on('connection', function(socket){
 			if(t){
 				t.input(data.data, function(err){
 					if(err){
-						return socket.emit('stdin', {err:err});
+						return socket.emit('stdin', {roomid:room.id, err:err});
 					}
 					_broadcast(room.id, 'stdin', data);
 				});

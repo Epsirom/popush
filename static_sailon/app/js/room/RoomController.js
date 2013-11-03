@@ -171,7 +171,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
                 if (roomGlobal.isFullScreen(cm)) $scope.setFullScreen(false);
             },
             "Ctrl-S": function(cm) {
-                roomModel.saveevent
+                roomModel.saveevent($scope.current, cm);
             },
         },
         onLoad : function(cm){
