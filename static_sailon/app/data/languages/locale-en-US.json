@@ -114,5 +114,8 @@
   "NO_VOICE":               "The browser does not support voice. Please use Chrome 18+ or Opera 12+",
   "ROOMREMOVED":            "The room has been removed",
   "ROOMMOVED":              "The room has been moved",
-  "ESC_EXIT":               "Please press ESC key to exit full screen mode!"
+  "ESC_EXIT":               "Please press ESC key to exit full screen mode!",
+  "ChangeAvatarSucceed":    "Avatar changed successfully!",
+  "ClickToChange":          "Click to change avatar.",
+  "ChangeAvatarFail":       "Failed to change avatar!"
 }

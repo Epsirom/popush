@@ -120,5 +120,8 @@
   "programkilled":          "程序被迫终止，终止信号为：",
   "ROOMREMOVED":            "房间已被移除",
   "ROOMMOVED":              "房间已被移动",
-  "ESC_EXIT":               "请按ESC键退出全屏模式！"
+  "ESC_EXIT":               "请按ESC键退出全屏模式！",
+  "ChangeAvatarSucceed":    "头像修改成功！",
+  "ClickToChange":          "点击上传头像",
+  "ChangeAvatarFail":       "修改头像失败！"
 }
