@@ -154,7 +154,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				if(currentDoc.cursors[i] && currentDoc.cursors[i].element)
 				{
                     var element = currentDoc.cursors[i].element;
-                    if(element)
+                    if(element && element.parentNode)
                     	element.parentNode.removeChild(element);
 				}
 				currentDoc.cursors[i] = { element:cursor, pos:0 };
@@ -404,12 +404,21 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
             //update online user list
 
             //send system message to chat box
+            var time = new Date();
+			var msg = {
+	            'name': 'system',
+	            'type': 'system',
+	            'content': data.name + ' enters the room', //加翻译
+	            'time': time.toTimeString().substr(0, 8)
+	        }
+	        roomList[data.roomid].chat.push(msg);
+
             //create cursor
             var cursor = newcursor(userModel.user.name);
             if(room.cursors[data.name] && room.cursors[data.name].element)
             {
                 var element = room.cursors[data.name].element;
-                if(element)
+                if(element && element.parentNode)
                 	element.parentNode.removeChild(element);
             }
             room.cursors[data.name] = { element:cursor, pos:0 };
@@ -421,11 +430,23 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		if (!room) {
 			return;
 		}
+
+		//send system message to chat box
+            var time = new Date();
+			var msg = {
+	            'name': 'system',
+	            'type': 'system',
+	            'content': data.name + ' leaves the room', //加翻译
+	            'time': time.toTimeString().substr(0, 8)
+	        }
+	        roomList[data.roomid].chat.push(msg);
+
+
 		if(room.cursors[data.name]) {
             if(room.cursors[data.name].element)
             {
                 var element = room.cursors[data.name].element;
-                if(element)
+                if(element && element.parentNode)
                 	element.parentNode.removeChild(element);
             }
             room.cursors[data.name].element = "";
