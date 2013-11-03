@@ -9,11 +9,13 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 	}
 
 	var leaveRoom = function(room) {
-		if (!roomList[room.id]) {
+		if (!room) {
 			return;
 		}
-		delete roomList[room.id];
-		socket.emit('leave', {});
+		if (roomList[room.id]) {
+			delete roomList[room.id];
+		}
+		socket.emit('leave', {roomid: room.id});
 	}
 
 	var updateObj = function(src, dest) {
@@ -108,10 +110,10 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				'cursors': {},
 				
 				'runEnabled': function(){
-					return runable && ! lock.debug && (!saving || lock.run)
+					return runable && ! lock.debug && (!this.saving || lock.run)
 				},
 				'debugEnabled': function(){
-					return debugable && !lock.run && (!saving || lock.debug)
+					return debugable && !lock.run && (!this.saving || lock.debug)
 				},
 				
 				// Console 
@@ -212,7 +214,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		if (room.timer != null){
 			$timeout.cancel(room.timer);
 		}
-		room.timer = $timeout(sendbuffer, room.buffertimeout);
+		room.timer = $timeout(function(){return sendbuffer(room);}, room.buffertimeout);
 	}
 
 	function sendbreak(room, from, to, text){
@@ -228,16 +230,15 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 	function setsaved(room){
 		var tmpTime = new Date().getTime();
 		room.savetimestamp = tmpTime;
-		$timeout(function(){setsavedthen(tmpTime);}, room.savetimeout);
+		$timeout(function(){setsavedthen(room, tmpTime);}, room.savetimeout);
 		room.savetimeout = 500;
 	}
 
 	function setsavedthen(room, timestamp){
 		if(room.savetimestamp == timestamp) {
-			room.saving = 'saved';
+			room.saving = false;
 		}
 	}
-
 	
 	function setsaving(room) {
 		room.saving = true;
