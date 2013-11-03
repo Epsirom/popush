@@ -21,10 +21,6 @@ function DlgController($scope, $modal) {
         }
       }
     });
-
-    modalInstance.result.then(function (selectedItem) {
-      $scope.selected = selectedItem;
-    });
   };
 };
 
@@ -45,8 +41,7 @@ function ShareController ($scope, $modalInstance, filename, filetype, userlist, 
         messageModel.append('shareErr:' + data.err);
       } else{
         $scope.userlist.push({
-          'name': $scope.username,
-          'avatar': data.avatar
+          'name': $scope.username
         }); 
         messageModel.append('ADDCOLSUCCESS');
       }
@@ -60,6 +55,10 @@ function ShareController ($scope, $modalInstance, filename, filetype, userlist, 
         console.log($scope.selectedId);
         messageModel.append('DELETECOLSUCCESS');
       }
+    },
+    'shared':function(data){
+      alert(data.name);
+      messageModel.append('ADDCOLSUCCESS');
     }    
   });
 

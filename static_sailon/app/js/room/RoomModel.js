@@ -1,6 +1,6 @@
 'use strict';
 
-function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTreeModel, roomGlobal, userModel, $timeout) {
+function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTreeModel, roomGlobal, userModel, $timeout, messageModel) {
 
 	var roomList = {};
 	
@@ -109,8 +109,8 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 
 				'timer': null,
 
-				'runable': runable,
-				'debugable': debugable,
+				'runable': runable(ext),
+				'debugable': debugable(ext),
 
 				'q':[],
 				'bq': [],
@@ -154,7 +154,8 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				if(currentDoc.cursors[i] && currentDoc.cursors[i].element)
 				{
                     var element = currentDoc.cursors[i].element;
-                    element.parentNode.removeChild(element);
+                    if(element && element.parentNode)
+                    	element.parentNode.removeChild(element);
 				}
 				currentDoc.cursors[i] = { element:cursor, pos:0 };
 			}
@@ -221,7 +222,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
         var msg = {
             'name': 'system',
             'type': 'system',
-            'content': userModel.user.name + ' runs the program', //加翻译
+            'content': data.name + ' runs the program', //加翻译
             'time': time.toTimeString().substr(0, 8)
         }
         roomList[data.roomid].chat.push(msg);
@@ -246,7 +247,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
         var msg = {
             'name': 'system',
             'type': 'system',
-            'content': userModel.user.name + ' debugs the program', //加翻译
+            'content': data.name + ' debugs the program', //加翻译
             'time': time.toTimeString().substr(0, 8)
         }
         roomList[data.roomid].chat.push(msg);
@@ -391,7 +392,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			}
 	});
 
-	socket.forceOn('join', function(data) {
+	socket.forceOn('join', function (data) {
 		if(data.err) {
             //message('openeditor', data.err);
         } 
@@ -403,42 +404,130 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
             //update online user list
 
             //send system message to chat box
+            var time = new Date();
+			var msg = {
+	            'name': 'system',
+	            'type': 'system',
+	            'content': data.name + ' enters the room', //加翻译
+	            'time': time.toTimeString().substr(0, 8)
+	        }
+	        roomList[data.roomid].chat.push(msg);
+
             //create cursor
             var cursor = newcursor(userModel.user.name);
             if(room.cursors[data.name] && room.cursors[data.name].element)
             {
                 var element = room.cursors[data.name].element;
-                element.parentNode.removeChild(element);
+                if(element && element.parentNode)
+                	element.parentNode.removeChild(element);
             }
             room.cursors[data.name] = { element:cursor, pos:0 };
         }
 	});
 
-	socket.forceOn('leave', function(data) {
+	socket.forceOn('leave', function (data) {
 		var room = roomList[data.roomid];
 		if (!room) {
 			return;
 		}
+
+		//send system message to chat box
+            var time = new Date();
+			var msg = {
+	            'name': 'system',
+	            'type': 'system',
+	            'content': data.name + ' leaves the room', //加翻译
+	            'time': time.toTimeString().substr(0, 8)
+	        }
+	        roomList[data.roomid].chat.push(msg);
+
+
 		if(room.cursors[data.name]) {
-            //console.log($scope.current.cursors[data.name].element);
             if(room.cursors[data.name].element)
             {
                 var element = room.cursors[data.name].element;
-                element.parentNode.removeChild(element);
+                if(element && element.parentNode)
+                	element.parentNode.removeChild(element);
             }
+            room.cursors[data.name].element = "";
             delete room.cursors[data.name];
         }
 	});
 	
+	socket.forceOn('deleted', function (data){
+		/*var path = roomList[data.roomid].doc.path.split('/');
+        path.splice(path.length - 1, 1);
+        path = path.join('/');
+
+        var o = fileTreeModel.select(path);
+		
+		socket.emit('leave',{
+			roomid: data.roomid
+		});
+        
+		//恰好是当前打开的标签页
+        if (tabsModel.current.path == roomList[data.roomid].doc.path)
+	        tabsModel.changeDoc(o);
+	    else
+	    {
+	    	alert('hehe');
+	    	//被打开，但不是标签页－－》关闭
+	    	//如果父亲被打开－－》更新
+	    }*/
+	    var path = roomList[data.roomid].doc.path.split('/');
+        path.splice(path.length - 1, 1);
+        path = path.join('/');
+        tabsModel.changeTabPath(roomList[data.roomid].doc.path, path);
+
+        messageModel.append('ROOMREMOVED');
+
+	});
+
+	socket.forceOn('moved', function (data){
+		var path = roomList[data.roomid].doc.path.split('/');
+        path.splice(path.length - 1, 1);
+        path = path.join('/');
+
+        //var o = fileTreeModel.select(path);
+		
+		//socket.emit('leave',{
+		//	roomid: data.roomid
+		//});
+        
+        tabsModel.changeTabPath(roomList[data.roomid].doc.path, path);
+		//恰好是当前打开的标签页
+        /*if (tabsModel.current.path == roomList[data.roomid].doc.path)
+	        tabsModel.changeDoc(o);
+	    else
+	    {
+	    	//被打开，但不是标签页－－》关闭
+	    	//如果父亲被打开－－》更新
+	    }*/
+
+        messageModel.append('ROOMMOVED');
+
+	});
+
 	//能改到RoomController.js里面么？
 	function toggleConsole(room){
 
-		console.log('console toggle');
+		/*console.log('console toggle');
 
     	if(room.consoleOpen == false)
     		room.editor.setSize('',560-165);
     	else
-    		room.editor.setSize('',560);
+    		room.editor.setSize('',560);*/
+
+    	var wrap = room.editor.getWrapperElement();
+        var height = wrap.style.height;
+    	if(room.consoleOpen == false)
+    	{
+    		room.editor.setSize('',parseInt(height)-165);
+    	}
+    	else
+    	{
+    		room.editor.setSize('',parseInt(height)+165);
+    	}
 
         room.consoleOpen = ! room.consoleOpen;
     }

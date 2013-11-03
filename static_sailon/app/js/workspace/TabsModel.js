@@ -9,6 +9,10 @@ function TabsModel(userModel, fileTreeModel, socket) {
 	var destDoc = null;
 	var roomSetCallback = null;
 
+	userModel.logoutCallbacks.push(function() {
+		clearTabs();
+	});
+
 	// Tab Services
 
 	var updateMembers = function() {
@@ -27,9 +31,10 @@ function TabsModel(userModel, fileTreeModel, socket) {
 			} else if (current.type == 'room') {
 				var obj = fileTreeModel.select(paths.slice(0, 3).join('/'));
 				if (paths[1] != userModel.user.name) {
-					currentMembers.push(obj.nodes[0].owner);
+					currentMembers.push(obj.owner);
+				} else {
+					currentMembers.push(userModel.user);
 				}
-				currentMembers.push(userModel.user);
 				len = obj.members ? obj.members.length : 0;
 				for (i = 0; i < len; ++i) {
 					currentMembers.push(obj.members[i]);
@@ -133,6 +138,21 @@ function TabsModel(userModel, fileTreeModel, socket) {
 		}
 	}
 
+	var changeTabDoc = function(tab, newDoc) {
+		if ((tab.type == 'dir') || (tab.type == 'room')) {
+			tab.doc.viewMode = 'off';
+			tab.doc = newDoc;
+			tab.type = 'dir';
+			tab.title = newDoc.path;
+			var paths = newDoc.path.split('/');
+			paths.splice(0, 1);
+			tab.paths = paths;
+			tab.doc.viewMode = 'active';
+			fileTreeModel.updateByObj(newDoc);
+			updateMembers();
+		}
+	}
+
 	var getPath = function() {
 		return current.doc.path;
 	}
@@ -159,6 +179,15 @@ function TabsModel(userModel, fileTreeModel, socket) {
 		changeDoc(obj);
 	}
 
+	var changeTabPath = function(oldPath, newPath) {
+		var i, len = tabs.length;
+		for (i = 0; i < len; ++i) {
+			if (tabs[i].title == oldPath) {
+				return changeTabDoc(tabs[i], fileTreeModel.select(newPath));
+			}
+		}
+	}
+
 	return {
 		'tabs': tabs,
 		'current': current,
@@ -175,6 +204,7 @@ function TabsModel(userModel, fileTreeModel, socket) {
 		'getDestDoc': function() {return destDoc;},
 		'setDestDoc': function(doc) {destDoc = doc;},
 		'changePath': changePath,
-		'runRoomSetCallback': function(room) {return roomSetCallback(room);}
+		'runRoomSetCallback': function(room) {return roomSetCallback(room);},
+		'changeTabPath': changeTabPath
 	};
 }

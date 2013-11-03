@@ -99,6 +99,15 @@ angular.module('popushDirectives', []).
 	                    'height': tmp + 'px',
 	                }
 	            };
+
+	            scope.chatSize = function(){
+	            	var tmp = newValue.h - 168;
+	            	if(tmp < 360)
+	            		tmp = 360;
+	                return{
+	                    'height': tmp + 'px',
+	                }
+	            };
 	            
 	        }, true);
 	    

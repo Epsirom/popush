@@ -71,8 +71,8 @@ angular.module('roomModule', ['userModule', 'socketModule', 'workspaceModule',
 		'runableext': ['c', 'cpp', 'js', 'py', 'pl', 'rb', 'lua', 'java'],
 		'debugableext': ['c', 'cpp']
 	}).
-	factory('roomModel', ['socket', '$location', '$route', 'POPUSH_SETTINGS', 'tabsModel', 'fileTreeModel', 'roomGlobal', 'userModel', '$timeout', RoomModel]).
-	controller('RoomController', ['$scope','userModel', 'socket', '$location', 'tabsModel', 'roomGlobal', 'roomModel', RoomController]).
+	factory('roomModel', ['socket', '$location', '$route', 'POPUSH_SETTINGS', 'tabsModel', 'fileTreeModel', 'roomGlobal', 'userModel', '$timeout', 'messageModel', RoomModel]).
+	controller('RoomController', ['$scope','userModel', 'socket', '$location', 'tabsModel', 'roomGlobal', 'roomModel','messageModel', RoomController]).
 	controller('RunController', ['$scope', 'roomModel', 'socket', '$location', '$cookies', RunController]).
 	controller('ChatController', ['$scope', 'userModel', 'roomModel', 'socket', '$location', '$cookies', 'tabsModel', ChatController]).
 	controller('ConsoleController', ['$scope', 'roomModel', 'socket', '$location', '$cookies', ConsoleController]);
