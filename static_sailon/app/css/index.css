@@ -10,3 +10,7 @@ ul{
 .index{
 	height:100%;
 }
+.loading-hint {
+	padding-top: 20px;
+	text-align: center;
+}

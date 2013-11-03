@@ -16,7 +16,7 @@
     top:0;
     left:0;
     width:100%;
-    z-index:9999;
+    z-index:999;
     background:#fff;
 }
 .breakpoints {width:16px;}
@@ -94,7 +94,7 @@
 }
 .edt-under-editor
 {
-    height:150px;
+    height:152px;
     margin-top:10px;
     border:1px solid #ccc;
     -webkit-border-radius:4px;
@@ -111,7 +111,7 @@
     margin-left: 0 !important;
     display: block;
     float: left;
-    height: 152px;
+    height: 122px;
     overflow: auto;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -135,7 +135,7 @@
 }
 .edt-console-inner
 {
-    height:83px !important;
+    height:82px !important;
     overflow:auto;
     padding:4px 8px !important;
 }
@@ -227,16 +227,38 @@
     color: #a00;
     font-size: 12px;
 }
-p:hover{
+.edt-chat-block:hover{
     background-color: beige;
 }
-
 .system
 {
     color: red;
 }
-
-.green-border
-{
-    border:1px solid green;;
+.cursor {
+    position:absolute;
+    margin:0;
+    z-index:9;
+}
+.cursor-not-so-inner {
+    position:relative;
+    left:-200px;
+    width:400px;
+    height:0;
+}
+.cursor-inner:hover .cursor-inner-inner {
+    background:#aaa;
+}
+.cursor-inner {
+    position:relative;
+    padding:5px;
+    top:-23px;
+    left:194px;
+    width:2px;
+}
+.cursor-inner-inner {
+    position:relative;
+    height:18px;
+    width:2px;
+    background:#f00;
+    z-index: 999;
 }
