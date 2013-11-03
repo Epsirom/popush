@@ -46,7 +46,7 @@
 					</div>	
 					<input class="edt-console-input" type="text" ng-model = "consoleInput" ng-enter="consoleInputFn()" focus="true" />
 				</div>
-				<div >
+				<div class="row-fluid">
 					<div class="well well-top">
 						<div class="btn-group">
 							<button class="btn debug-btn" ng-class="current.room.locks.debug?'enabled':'disabled'" type="button"  ng-click = "debugStepFn()">
@@ -93,7 +93,7 @@
 	<div class="span3 chat-window" ng-show="current.chatOpen" ng-controller = "ChatController">
 		<div class="edt-chat" ng-style="bottomscroll()" scroll>
 			<div class="edt-chat-inner">
-				<p ng-repeat="chatmessage in current.chat">
+				<p class="edt-chat-block" ng-repeat="chatmessage in current.chat">
 					<span ng-class="{selfchatname: (chatmessage.type == 'self'), syschatname: (chatmessage.type == 'system'), edtchatname: (chatmessage.type == '')}">
 						{{chatmessage.name}}&nbsp;&nbsp;{{chatmessage.time}}
 					</span><br />
@@ -111,3 +111,4 @@
 		</div>
 	</div>
 </div>
+

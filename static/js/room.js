@@ -946,6 +946,7 @@ socket.on('set', function(data){
 		memberlistdoc.setonline(i, true);
 		if(i == currentUser.name)
 			continue;
+		
 		var cursor = newcursor(i);
 		if(cursors[i] && cursors[i].element)
 			$(cursors[i].element).remove();

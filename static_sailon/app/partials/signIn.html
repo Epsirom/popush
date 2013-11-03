@@ -11,7 +11,10 @@
     </select>
   </div>
   <div class="container-fluid" ng-controller="SwitchController"> 
-   <div ng-switch on="choice">
+    <div class="loading-hint" ng-style="indexSize()" ng-if="!lock.connected" resize>
+      <img src="../img/init.gif"/>{{loadingStatus|translate}}
+    </div>
+   <div ng-switch on="choice" ng-if="lock.connected">
     <div ng-switch-when="SIGN_IN" ng-style="indexSize()" resize>
       <div class="row-fluid" ng-controller="SignInController">
         <div class="span4 offset4">

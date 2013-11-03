@@ -184,16 +184,17 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
             if (i < 0)
                 return;
             $scope.current.expressionList.splice(n, 1);  
-                
-        }
-    });
-       */
+    });*/
+
+
+
+
     $scope.changePath = tabsModel.changePath;
 
 	$scope.editorOptions = {
         lineWrapping : true,
         lineNumbers: true,
-        indentUnit: 4,
+        indntUnit: 4,
 		indentWithTabs: true,
         value: $scope.current.room.data.text,
         extraKeys: {
@@ -208,9 +209,9 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
 			// Editor part
 		    $scope.current.room.editor = cm;
             $scope.editor = cm;
+            cm.setSize('',roomGlobal.winHeight()-108);
             roomModel.registerEditorEvent($scope.current.room);
 		    var _doc = cm.getDoc();
-
 		    cm.focus();
             cm.clearHistory();
             roomModel.initbreakpoints($scope.current.room, $scope.current.room.data.bps);
@@ -240,6 +241,8 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
 				    cm.on("gutterClick", function(cm, n) {
                         $scope.gutterclick(cm, n);
                     });
+
+                    roomModel.runtoline($scope.current.room, $scope.current.room.data.line - 1);
 				},
 		gutters: ["runat", "CodeMirror-linenumbers", "breakpoints"],
     };
@@ -252,14 +255,18 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
    
     /*
     $scope.toggleConsole = function()
-    {
+    {   
+        var wrap = $scope.editor.getWrapperElement();
+        var height = wrap.style.height;
     	if($scope.show_console == false)
     	{
-    		$scope.editor.setSize('',560-165);
+    		$scope.editor.setSize('',parseInt(height)-165);
+            console.log(parseInt(height)-165);
     	}
     	else
     	{
-    		$scope.editor.setSize('',560);
+    		$scope.editor.setSize('',parseInt(height)+165);
+            console.log(parseInt(height)+165);
     	}
         $scope.show_console = !$scope.show_console;
     }
@@ -458,6 +465,17 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
     */
     $scope.gutterclick = function(cm, n)
     {
+        var room = $scope.current.room;
+        if (!room.debugable) {
+            return;
+        }
+        if (room.locks.debug && !room.waiting) {
+            return;
+        }
+        if (!roomModel.removebreakpointat(room, cm, n)) {
+            roomModel.addbreakpointat(room, cm, n);
+        }
+        /*
         var info = cm.lineInfo(n);
         if (info.gutterMarkers && info.gutterMarkers["breakpoints"]) 
         {
@@ -467,6 +485,21 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
         {
             var element = angular.element('<div><img src="img/breakpoint.png" /></div>')[0];
             cm.setGutterMarker(n, 'breakpoints', element);
+        }
+        */
+    }
+
+    window.onresize = function()
+    {
+        //var wrap = $scope.editor.getWrapperElement();
+        //var height = wrap.style.height;
+        if(!$scope.show_console)
+        {
+            $scope.editor.setSize(" ",roomGlobal.winHeight()-108);
+        }
+        else
+        {
+            $scope.editor.setSize(" ",roomGlobal.winHeight()-274);
         }
     }
 

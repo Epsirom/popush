@@ -29,10 +29,23 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			}
 		}
 	}
+	function newcursor(content) {
+		return angular.element(
+			'<div class="cursor">' +
+				'<div class="cursor-not-so-inner">' +
+					'<div class="cursor-inner">' +
+						'<div class="cursor-inner-inner" tooltip='+ content +' tooltip-trigger="mouseenter">' +
+						'</div>' +
+					'</div>' +
+				'</div>' +
+			'</div>'
+			)[0];
+	}
 
 	var updateRoom = function(room, data) {
 		return updateObj(data, room, 'users', 'version', 'text', 'bps', 'exprs');
 	}
+	
 
 	socket.forceOn('set', function (data) {
 		//check if the doc is opening
@@ -133,6 +146,19 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				'bufferto': -1,
 				'buffertimeout': POPUSH_SETTINGS.SAVE_TIME_OUT
 			}
+			for(var i in data.users) {
+				if(i == userModel.user.name)
+					continue;
+				
+				var cursor = newcursor(i);
+				if(currentDoc.cursors[i] && currentDoc.cursors[i].element)
+				{
+                    var element = currentDoc.cursors[i].element;
+                    element.parentNode.removeChild(element);
+				}
+				currentDoc.cursors[i] = { element:cursor, pos:0 };
+			}
+			
 			currentDoc.q._push = currentDoc.q.push;
 			currentDoc.q.push = function(element) {
 				this._push(element);
@@ -148,6 +174,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			}
 			roomList[data.id] = currentDoc;
 
+			
 			//初始化editor
 			//初始化expression list
 		}
@@ -164,7 +191,6 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			tRoom.oldBps = data.bps;
 			if (data.state == 'waiting'){
 				tRoom.waiting = true;
-				runtoline(tRoom, data.line - 1);
 				/*
 				if(data.line !== null)
 					$('#console-title').setlocale('console|waiting');
@@ -257,7 +283,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		for (var i = 0; i < roomList[data.roomid].expressionList.length; i ++){
 			var expr = roomList[data.roomid].expressionList[i].expr;
 			if (expr in data.exprs){
-				roomList[data.roomid].expressionList[i].value = data.exprs[k];
+				roomList[data.roomid].expressionList[i].value = data.exprs[expr];
 			} else{
 				roomList[data.roomid].expressionList[i].type = 'err';
 				roomList[data.roomid].expressionList[i].value = 'undefined';
@@ -300,7 +326,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 
                 roomList[data.roomid].editor.setValue(roomList[data.roomid].oldText);
                 removeallbreakpoints(roomList[data.roomid], roomList[data.roomid].data.id);
-                initbreakpoints(roomList[data.roomid], roomList[data.roomid].oldText);
+                initbreakpoints(roomList[data.roomid], roomList[data.roomid].oldBps);
 
                 var editordoc = roomList[data.roomid].editor.getDoc();
                 var hist = editordoc.getHistory();
@@ -365,6 +391,45 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			}
 	});
 
+	socket.forceOn('join', function(data) {
+		if(data.err) {
+            //message('openeditor', data.err);
+        } 
+        else {
+        	var room = roomList[data.roomid];
+        	if (!room) {
+        		return;
+        	}
+            //update online user list
+
+            //send system message to chat box
+            //create cursor
+            var cursor = newcursor(userModel.user.name);
+            if(room.cursors[data.name] && room.cursors[data.name].element)
+            {
+                var element = room.cursors[data.name].element;
+                element.parentNode.removeChild(element);
+            }
+            room.cursors[data.name] = { element:cursor, pos:0 };
+        }
+	});
+
+	socket.forceOn('leave', function(data) {
+		var room = roomList[data.roomid];
+		if (!room) {
+			return;
+		}
+		if(room.cursors[data.name]) {
+            //console.log($scope.current.cursors[data.name].element);
+            if(room.cursors[data.name].element)
+            {
+                var element = room.cursors[data.name].element;
+                element.parentNode.removeChild(element);
+            }
+            delete room.cursors[data.name];
+        }
+	});
+	
 	//能改到RoomController.js里面么？
 	function toggleConsole(room){
 
@@ -464,7 +529,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			sendbreak(room, n, n+1, "1");
 		}
 
-		var element = angular.element('<div><img src="images/breakpoint.png" /></div>')[0];
+		var element = angular.element('<div><img src="../img/breakpoint.png" /></div>')[0];
 		cm.setGutterMarker(n, 'breakpoints', element);
 	}
 
@@ -494,7 +559,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		}
 		if(n >= 0) {
 			room.editor.addLineClass(n, '*', 'running');
-			var e = anugular.element('<div><img src="images/arrow.png" width="16" height="16" style="min-width:16px;min-width:16px;" /></div>')[0];
+			var e = angular.element('<div><img src="../img/arrow.png" width="16" height="16" style="min-width:16px;min-width:16px;" /></div>')[0];
 			room.editor.setGutterMarker(n, 'runat', e);
 			room.editor.scrollIntoView({line:n, ch:0});
 		}
@@ -673,7 +738,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		}
 		if (data.to == data.from + 1){
 			if (data.text == "1"){
-				var element = angular.element('<div><img src="images/breakpoint.png" /></div>')[0];
+				var element = angular.element('<div><img src="../img/breakpoint.png" /></div>')[0];
 				editor.setGutterMarker(data.from, 'breakpoints', element);
 			}
 			else if (data.text == "0"){
@@ -1116,6 +1181,10 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		'registerEditorEvent': registereditorevent,
 		'saveevent': saveevent,
 		'initbreakpoints': initbreakpoints,
-		'toggleConsole': toggleConsole
+		'removebreakpointat': removebreakpointat,
+		'addbreakpointat': addbreakpointat,
+		'runtoline': runtoline,
+		'toggleConsole': toggleConsole,
+		'newcursor': newcursor
 	};
 }

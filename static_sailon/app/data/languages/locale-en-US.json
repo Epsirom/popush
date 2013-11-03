@@ -1,6 +1,8 @@
 {
   "POPUSH_TITLE":        "Popush",
   "POPUSH_SUBTITLE":     "Another co-coding platform",
+  "LOADING_NOW":         "Loading...",
+  "LOADING_TOO_LONG":    "Maybe the network is bad, you had better refresh this page:)",
   "SIGN_IN":             "Sign In",
   "USERNAME":            "Username",
   "PASSWORD":            "Password",
@@ -15,6 +17,7 @@
   "FORWARD_DIR": 		 "Enter the subdirectory",
   "MYPOPUSH": 			 "My POPUSH",
   "FILE": 				 "File",
+  "FOLDER":              "Folder",
   "OLD_PASSWORD":        "Old password",
   "NEW_PASSWORD":        "New password",
   "AVATAR":              "Avatar",
