@@ -8,6 +8,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
     })
 
     socket.onScope($scope, {
+        /*
         'run': function (data){
             $scope.current.room.locks.run = true;
 
@@ -33,7 +34,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
 
             
         },
-
+    */
         'running': function (data) {
             if (! $scope.current.room.locks.debug)
                 return;
@@ -115,7 +116,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
                     $scope.current.expressionList[i].type = 'err';
                     $scope.current.expressionList[i].value = 'undefined';
                 }
-                */
+            
                 $scope.current.room.locks.debug = false;
             }
         },
@@ -251,7 +252,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
     $scope.show_console = false;
 
    
-
+    /*
     $scope.toggleConsole = function()
     {
     	if($scope.show_console == false)
@@ -277,6 +278,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
             $scope.editor_width = 'span12';
         }
     }
+    */
 
     var tmpH, tmpW;
     $scope.setFullScreen = function(full)
@@ -308,12 +310,14 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
     // run 
      $scope.runFn = function (){
 
-        if (! $scope.current.room.runEnabled() || $scope.current.room.lock.operation) 
+        console.log('run');
+
+        if (! $scope.current.room.runEnabled() || $scope.current.room.locks.operation) 
            return;
         
-        $scope.current.room.lock.operation = true;
+        $scope.current.room.locks.operation = true;
 
-        if ($scope.current.room.lock.run){
+        if ($scope.current.room.locks.run){
             socket.emit('kill');
         } else {
             $scope.current.room.consoleOutput = [];
