@@ -13,7 +13,7 @@ function TabsModel(userModel, fileTreeModel, socket) {
 
 	var updateMembers = function() {
 		currentMembers.splice(0, currentMembers.length);
-		if ((!current) || ((current.type != 'doc') && (current.type != 'dir'))) {
+		if ((!current) || ((current.type != 'room') && (current.type != 'dir'))) {
 			currentMembers.push(userModel.user);
 			return;
 		} else {
@@ -24,6 +24,17 @@ function TabsModel(userModel, fileTreeModel, socket) {
 					currentMembers.push(current.doc.nodes[0].owner);
 				}
 				currentMembers.push(userModel.user);
+			} else if (current.type == 'room') {
+				var obj = fileTreeModel.select(paths.slice(0, 3).join('/'));
+				if (paths[1] != userModel.user.name) {
+					currentMembers.push(obj.nodes[0].owner);
+				}
+				currentMembers.push(userModel.user);
+				len = obj.members ? obj.members.length : 0;
+				for (i = 0; i < len; ++i) {
+					currentMembers.push(obj.members[i]);
+				}
+				return;
 			} else if (current.doc.owner) {
 				currentMembers.push(current.doc.owner);
 			}
@@ -65,6 +76,9 @@ function TabsModel(userModel, fileTreeModel, socket) {
 			return;
 		}
 		var i, len;
+		if (tab.doc) {
+			tab.doc.viewMode = 'off';
+		}
 		for (i = 0, len = tabs.length; i < len; ++i) {
 			if (tabs[i].title == tab.title) {
 				return tabs.splice(i, 1);
@@ -87,7 +101,7 @@ function TabsModel(userModel, fileTreeModel, socket) {
 			closeTab(tabToClose);
 			tabs.push(tab);
 			setCurrent(len - ((tabToClose == undefined) ? 0 : 1));
-		}
+		} 
 		socket.emit('join', {
 			'path': doc.path
 		});
