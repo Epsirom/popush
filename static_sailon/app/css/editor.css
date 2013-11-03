@@ -227,15 +227,38 @@
     color: #a00;
     font-size: 12px;
 }
-p:hover{
+.edt-chat-block:hover{
     background-color: beige;
 }
 .system
 {
     color: red;
 }
-.cursor {position:absolute;margin:0;z-index:9;}
-.cursor-not-so-inner {position:relative;left:-200px;width:400px;height:0;}
-.cursor-inner:hover .cursor-inner-inner {background:#aaa;}
-.cursor-inner {position:relative;padding:5px;top:-23px;left:194px;width:2px;}
-.cursor-inner-inner {position:relative;height:18px;width:2px;background:#f00;}
+.cursor {
+    position:absolute;
+    margin:0;
+    z-index:9;
+}
+.cursor-not-so-inner {
+    position:relative;
+    left:-200px;
+    width:400px;
+    height:0;
+}
+.cursor-inner:hover .cursor-inner-inner {
+    background:#aaa;
+}
+.cursor-inner {
+    position:relative;
+    padding:5px;
+    top:-23px;
+    left:194px;
+    width:2px;
+}
+.cursor-inner-inner {
+    position:relative;
+    height:18px;
+    width:2px;
+    background:#f00;
+    z-index: 999;
+}

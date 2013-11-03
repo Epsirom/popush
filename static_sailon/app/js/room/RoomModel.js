@@ -29,11 +29,6 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			}
 		}
 	}
-
-	var updateRoom = function(room, data) {
-		return updateObj(data, room, 'users', 'version', 'text', 'bps', 'exprs');
-	}
-
 	function newcursor(content) {
 		return angular.element(
 			'<div class="cursor">' +
@@ -45,6 +40,10 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				'</div>' +
 			'</div>'
 			)[0];
+	}
+
+	var updateRoom = function(room, data) {
+		return updateObj(data, room, 'users', 'version', 'text', 'bps', 'exprs');
 	}
 	
 
@@ -159,6 +158,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				}
 				currentDoc.cursors[i] = { element:cursor, pos:0 };
 			}
+			
 			currentDoc.q._push = currentDoc.q.push;
 			currentDoc.q.push = function(element) {
 				this._push(element);
@@ -1085,6 +1085,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		'leaveRoom': leaveRoom,
 		'registerEditorEvent': registereditorevent,
 		'saveevent': saveevent,
-		'initbreakpoints': initbreakpoints
+		'initbreakpoints': initbreakpoints,
+		'newcursor': newcursor
 	};
 }

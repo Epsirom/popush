@@ -93,7 +93,7 @@
 	<div class="span3 chat-window" ng-show="current.room.chatOpen" ng-controller = "ChatController">
 		<div class="edt-chat" ng-style="bottomscroll()" scroll>
 			<div class="edt-chat-inner">
-				<p ng-repeat="chatmessage in current.chat">
+				<p class="edt-chat-block" ng-repeat="chatmessage in current.chat">
 					<span ng-class="{selfchatname: (chatmessage.type == 'self'), syschatname: (chatmessage.type == 'system'), edtchatname: (chatmessage.type == '')}">
 						{{chatmessage.name}}&nbsp;&nbsp;{{chatmessage.time}}
 					</span><br />

@@ -15,6 +15,7 @@
   "FORWARD_DIR":            "进入下级目录",
   "MYPOPUSH":               "我的POPUSH",
   "FILE":                   "文件",
+  "FOLDER":              "文件夹",
   "OLD_PASSWORD":           "旧密码",
   "NEW_PASSWORD":        	"新密码",
   "AVATAR":                 "头像",
