@@ -94,7 +94,7 @@
 }
 .edt-under-editor
 {
-    height:150px;
+    height:152px;
     margin-top:10px;
     border:1px solid #ccc;
     -webkit-border-radius:4px;
@@ -111,7 +111,7 @@
     margin-left: 0 !important;
     display: block;
     float: left;
-    height: 152px;
+    height: 122px;
     overflow: auto;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -135,7 +135,7 @@
 }
 .edt-console-inner
 {
-    height:83px !important;
+    height:82px !important;
     overflow:auto;
     padding:4px 8px !important;
 }

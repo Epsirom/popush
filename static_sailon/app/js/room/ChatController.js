@@ -29,7 +29,9 @@ function ChatController($scope, userModel, roomModel, socket, $location, $cookie
 	}
 
 
+	
 	//voice
+
 	var Browser = {};
 	var ua = navigator.userAgent.toLowerCase();
 	var s;

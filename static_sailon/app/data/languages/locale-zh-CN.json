@@ -107,5 +107,5 @@
   "EDT_NEXT":               "逐过程",
   "EDT_CONTINUE":           "继续",
   "EDT_FINISH":             "跳出过程",
-  "NO_VOICE":               "该浏览器不支持语音，请使用<br />Chrome 18+或Opera 12+"
+  "NO_VOICE":               "该浏览器不支持语音，请使用Chrome 18+或Opera 12+"
 }

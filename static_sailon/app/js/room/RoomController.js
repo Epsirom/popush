@@ -115,7 +115,6 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
                     $scope.current.expressionList[i].type = 'err';
                     $scope.current.expressionList[i].value = 'undefined';
                 }
-                */
                 $scope.current.room.locks.debug = false;
             }
         },
@@ -212,9 +211,9 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
 			// Editor part
 		    $scope.current.room.editor = cm;
             $scope.editor = cm;
+            cm.setSize('',roomGlobal.winHeight()-108);
             roomModel.registerEditorEvent($scope.current.room);
 		    var _doc = cm.getDoc();
-
 		    cm.focus();
 
 		    // Options
@@ -253,14 +252,18 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
    
 
     $scope.toggleConsole = function()
-    {
+    {   
+        var wrap = $scope.editor.getWrapperElement();
+        var height = wrap.style.height;
     	if($scope.show_console == false)
     	{
-    		$scope.editor.setSize('',560-165);
+    		$scope.editor.setSize('',parseInt(height)-165);
+            console.log(parseInt(height)-165);
     	}
     	else
     	{
-    		$scope.editor.setSize('',560);
+    		$scope.editor.setSize('',parseInt(height)+165);
+            console.log(parseInt(height)+165);
     	}
         $scope.show_console = !$scope.show_console;
     }
@@ -358,8 +361,8 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
             'showVar': false,
             'focus': true,
             'value':'',
-            'type': '',
-        }
+            'type': ''
+        };
         $scope.current.expressionList.push(emp);
     }
 
@@ -474,6 +477,20 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
         {
             var element = angular.element('<div><img src="img/breakpoint.png" /></div>')[0];
             cm.setGutterMarker(n, 'breakpoints', element);
+        }
+    }
+
+    window.onresize = function()
+    {
+        //var wrap = $scope.editor.getWrapperElement();
+        //var height = wrap.style.height;
+        if(!$scope.show_console)
+        {
+            $scope.editor.setSize(" ",roomGlobal.winHeight()-108);
+        }
+        else
+        {
+            $scope.editor.setSize(" ",roomGlobal.winHeight()-274);
         }
     }
 
