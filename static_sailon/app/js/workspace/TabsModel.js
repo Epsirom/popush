@@ -24,6 +24,17 @@ function TabsModel(userModel, fileTreeModel, socket) {
 					currentMembers.push(current.doc.nodes[0].owner);
 				}
 				currentMembers.push(userModel.user);
+			} else if (current.type == 'room') {
+				var obj = fileTreeModel.select(paths.slice(0, 3).join('/'));
+				if (paths[1] != userModel.user.name) {
+					currentMembers.push(obj.nodes[0].owner);
+				}
+				currentMembers.push(userModel.user);
+				len = obj.members ? obj.members.length : 0;
+				for (i = 0; i < len; ++i) {
+					currentMembers.push(obj.members[i]);
+				}
+				return;
 			} else if (current.doc.owner) {
 				currentMembers.push(current.doc.owner);
 			}

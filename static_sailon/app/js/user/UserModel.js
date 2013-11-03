@@ -44,9 +44,9 @@ function UserModel(socket, $location, $route, $cookies, POPUSH_SETTINGS) {
 
 	// User Data
 
-	var connected = false,
-		language = loadLang(),
+	var language = loadLang(),
 		userLock = {
+			'connected': false,
 			'signIn': false, 
 			'signed': false, 
 			'relogin': false
@@ -63,7 +63,7 @@ function UserModel(socket, $location, $route, $cookies, POPUSH_SETTINGS) {
 		if(data.version != POPUSH_SETTINGS.VERSION) {
 			$route.reload();
 		}
-		connected = true;
+		userLock.connected = true;
 		if($cookies['sid']){
 			userLock.signIn = true;
 			socket.emit('relogin', {sid:$cookies['sid']});
@@ -88,7 +88,6 @@ function UserModel(socket, $location, $route, $cookies, POPUSH_SETTINGS) {
 	});
 
 	return {
-		isConnected: function() {return connected;},
 		getLanguage: function() {return language;},
 		setLanguage: setLang,
 		lock: userLock,

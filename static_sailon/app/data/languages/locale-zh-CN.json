@@ -1,6 +1,8 @@
 {
   "POPUSH_TITLE" : 			"Popush",
   "POPUSH_SUBTITLE" : 		"只是另外一个协作编程平台",
+  "LOADING_NOW":          "正在努力加载中...",
+  "LOADING_TOO_LONG":     "此次载入时间过长，可能网络环境不太好，您可以刷新一下:)",
   "SIGN_IN" : 				"登录",
   "USERNAME" : 				"用户名",
   "PASSWORD" : 				"密码",
