@@ -67,7 +67,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
                 var msg = {
                     'name': 'system',
                     'type': 'system',
-                    'content': 'programfinish ' + data.err.code,
+                    'content': 'program finish with ' + data.err.code,
                     'time': time.toTimeString().substr(0, 8) 
                 }
                 $scope.current.chat.push(msg);
@@ -78,7 +78,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
                 var msg = {
                     'name': 'system',
                     'type': 'system',
-                    'content': 'programkilledby '+ data.err.signal,
+                    'content': 'program killed by '+ data.err.signal,
                     'time': time.toTimeString().substr(0, 8) 
                 }
 
@@ -165,8 +165,15 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
         lineNumbers: true,
         indentUnit: 4,
 		indentWithTabs: true,
-		//value: "function test()\n{\n\tvar Huarong = 'Dadi', Yanglei = 'Nanshen';\n}",
         value: $scope.current.data.text,
+        extraKeys: {
+            "Esc": function(cm) {
+                if (roomGlobal.isFullScreen(cm)) $scope.setFullScreen(false);
+            },
+            "Ctrl-S": function(cm) {
+                roomModel.saveevent
+            },
+        },
         onLoad : function(cm){
 			// Editor part
 		    $scope.current.editor = cm;
@@ -202,12 +209,6 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
                         $scope.gutterclick(cm, n);
                     });
 				},
-        extraKeys: {
-            "Esc": function(cm) {
-                if (roomGlobal.isFullScreen(cm)) $scope.setFullScreen(false);
-                //resize();
-            }
-        },
 		gutters: ["runat", "CodeMirror-linenumbers", "breakpoints"],
     };
 
@@ -242,22 +243,27 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
             $scope.editor_width = 'span12';
         }
     }
-    
-    var temp;
+
+    var tmpH, tmpW;
     $scope.setFullScreen = function(full)
     {
         var wrap = $scope.editor.getWrapperElement();
         if (full) 
         {
             wrap.className += " CodeMirror-fullscreen";
-            temp = wrap.style.height;
+            tmpH = wrap.style.height;
+            tmpW = wrap.style.width;
             wrap.style.height = roomGlobal.winHeight() + "px";
+            wrap.style.width = roomGlobal.winWidth() + "px";
+            wrap.style.margin = "0px 0px 0px -240px";
             document.documentElement.style.overflow = "hidden";
         }
         else
         {
             wrap.className = wrap.className.replace(" CodeMirror-fullscreen", "");
-            wrap.style.height = temp;
+            wrap.style.height = tmpH;
+            wrap.style.width = tmpW;
+            wrap.style.margin = "0px";
             document.documentElement.style.overflow = "";
         }
         $scope.editor.refresh();

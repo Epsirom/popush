@@ -20,6 +20,7 @@
 		</button>
 	</div>
 </div>
+<div class="tb-file-list" ng-style="filelistSize()" resize>
 <table class="table table-hover">
 	<tbody>
 		<tr>
@@ -44,14 +45,14 @@
 				<a class='btn-link'>
 					<i class='icon-remove' ng-click="enterCreate(creater.type);" tooltip="{{'CANCEL' | translate}}" tooltip-trigger="mouseenter" tooltip-placement="top"></i>
 				</a>
-				<input class='filelist-input' type='text' tooltip="{{ invalid | translate}}" tooltip-trigger="focus" tooltip-placement="top" ng-model='creater.name' focus="true" ng-enter="createFile()"/>
+				<input class='filelist-input' type='text' tooltip="{{ invalid | translate}}" tooltip-trigger="focus" tooltip-placement="top" ng-model='creater.name' focus="true" ng-enter="createFile()" ng-maxlength="32"/>
 				<button class='btn-link' translate='CREATE' ng-click="createFile()"></button>
 			</td>
 			<td ng-if="creater.type == 'dir'">
 				<a class='btn-link'>
 					<i class='icon-remove' ng-click="enterCreate(creater.type);" tooltip="{{'CANCEL' | translate}}" tooltip-trigger="mouseenter" tooltip-placement="top"></i>
 				</a>
-				<input class='filelist-input' type='text' tooltip="{{ invalid | translate}}" tooltip-trigger="focus" tooltip-placement="top" ng-model='creater.name' focus="true" ng-enter="createFile()"/>
+				<input class='filelist-input' type='text' tooltip="{{ invalid | translate}}" tooltip-trigger="focus" tooltip-placement="top" ng-model='creater.name' focus="true" ng-enter="createFile()" ng-maxlength="32"/>
 				<button class='btn-link' translate='CREATE' ng-click="createFile()"></button>
 			</td>
 			<td></td>
@@ -99,6 +100,7 @@
 		</tr>
 	</tbody>
 </table>
+</div>
 
 
 <!--share.html-->
