@@ -116,7 +116,6 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
                     $scope.current.expressionList[i].type = 'err';
                     $scope.current.expressionList[i].value = 'undefined';
                 }
-            
                 $scope.current.room.locks.debug = false;
             }
         },
@@ -188,8 +187,6 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
             $scope.current.expressionList.splice(n, 1);  
             */    
         }
-        
-
     });
        
     $scope.changePath = tabsModel.changePath;
@@ -217,6 +214,8 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
 		    var _doc = cm.getDoc();
 
 		    cm.focus();
+            cm.clearHistory();
+            roomModel.initbreakpoints($scope.current.room, $scope.current.room.data.bps);
 
 		    // Options
 		    CodeMirror.modeURL = "/lib/codemirror/mode/%N/%N.js";
@@ -310,8 +309,6 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
     // run 
      $scope.runFn = function (){
 
-        console.log('run');
-
         if (! $scope.current.room.runEnabled() || $scope.current.room.locks.operation) 
            return;
         
@@ -322,7 +319,12 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
         } else {
             $scope.current.room.consoleOutput = [];
             $scope.consoleState = "<running>";
-            socket.emit('run',$scope.current.room.data);
+            var data = $scope.current.room.data;
+            socket.emit('run', {
+                'roomid': data.id,
+                'type': data.type,
+                'version': data.version
+            });
         }
 
         $scope.consoleInput = "";
@@ -438,33 +440,6 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
             $scope.current.room.editor.scrollIntoView({line:n, ch:0});
         }
         $scope.current.room.runningLine = n;
-    }
-
-    $scope.removeAllBreakpoints = function() {
-        for (var i = 0; i < $scope.current.room.bps.length; i++){
-            if ($scope.current.room.bps[i] == "1"){
-                var info = $scope.current.room.editor.lineInfo(i);
-                if (info.gutterMarkers && info.gutterMarkers["breakpoints"]) {
-                    $scope.current.room.editor.setGutterMarker(i, 'breakpoints', null);
-                }
-            }
-        }
-        $scope.current.room.bps.replace("1", "0");
-    }
-
-    $scope.initBreakpoints = function(bpsstr) {
-        $scope.current.room.bps = bpsstr;
-        for (var i = bpsstr.length; i < $scope.current.room.editor.lineCount(); i++){
-            $scope.current.room.bps += "0";
-        }
-        for (var i = 0; i < $scope.current.room.bps.length; i++){
-            if ($scope.current.room.bps[i] == "1"){
-                
-                var element = angular.element('<div><img src="images/breakpoint.png" /></div>')[0];
-                $scope.current.room.editor.setGutterMarker(i, 'breakpoints', element);
-
-            }
-        }
     }
     
     $scope.gutterclick = function(cm, n)

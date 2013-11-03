@@ -87,7 +87,7 @@ function TabsModel(userModel, fileTreeModel, socket) {
 			closeTab(tabToClose);
 			tabs.push(tab);
 			setCurrent(len - ((tabToClose == undefined) ? 0 : 1));
-		}
+		} 
 		socket.emit('join', {
 			'path': doc.path
 		});

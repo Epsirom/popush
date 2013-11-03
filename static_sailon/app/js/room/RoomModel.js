@@ -392,6 +392,84 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		bq.push(req);
 	}
 
+	function addbreakpointat(room, cm, n){
+		var addlen = n - room.bps.length;
+		if (addlen > 0){
+			var addtext = "";
+			for (var i = room.bps.length; i < n-1; i++){
+				addtext += "0";
+			}
+			addtext += "1";
+			//bps += addtext;
+			sendbreak(room, room.bps.length, room.bps.length, addtext);
+		}
+		else{
+			//bps = bps.substr(0, n) + "1" + bps.substr(n+1);
+			sendbreak(room, n, n+1, "1");
+		}
+
+		var element = angular.element('<div><img src="images/breakpoint.png" /></div>')[0];
+		cm.setGutterMarker(n, 'breakpoints', element);
+	}
+
+	function removebreakpointat(cm, n){
+		var info = cm.lineInfo(n);
+		if (info.gutterMarkers && info.gutterMarkers["breakpoints"]) {
+			cm.setGutterMarker(n, 'breakpoints', null);
+			//bps = bps.substr(0, n) + "0" + bps.substr(n+1);
+			sendbreak(n, n+1, "0");
+			return true;
+		}
+		return false;
+	}
+
+	function havebreakat (cm, n) {
+		var info = cm.lineInfo(n);
+		if (info && info.gutterMarkers && info.gutterMarkers["breakpoints"]) {
+			return "1";
+		}
+		return "0";
+	}
+
+	function runtoline(room, n) {
+		if(runningline >= 0) {
+			room.editor.removeLineClass(runningline, '*', 'running');
+			room.editor.setGutterMarker(runningline, 'runat', null);
+		}
+		if(n >= 0) {
+			room.editor.addLineClass(n, '*', 'running');
+			room.editor.setGutterMarker(n, 'runat', $('<div><img src="images/arrow.png" width="16" height="16" style="min-width:16px;min-width:16px;" /></div>').get(0));
+			room.editor.scrollIntoView({line:n, ch:0});
+		}
+		runningline = n;
+	}
+
+	function removeallbreakpoints(room) {
+		for (var i = 0; i < room.bps.length; i++){
+			if (room.bps[i] == "1"){
+				var info = room.editor.lineInfo(i);
+				if (info.gutterMarkers && info.gutterMarkers["breakpoints"]) {
+					room.editor.setGutterMarker(i, 'breakpoints', null);
+				}
+			}
+		}
+		room.bps.replace("1", "0");
+	}
+
+	function initbreakpoints(room, bpsstr) {
+		room.bps = bpsstr;
+		for (var i = bpsstr.length; i < room.editor.lineCount(); i++){
+			room.bps += "0";
+		}
+		for (var i = 0; i < room.bps.length; i++){
+			if (room.bps[i] == "1"){
+				var element = angular.element('<div><img src="img/breakpoint.png" /></div>')[0];
+				room.editor.setGutterMarker(i, 'breakpoints', element);
+			}
+		}
+	}
+
+
 	function setsaved(room){
 		var tmpTime = new Date().getTime();
 		room.savetimestamp = tmpTime;
@@ -415,20 +493,6 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			setsavedthen(room, room.savetimestamp);
 		room.savetimestamp = 0;
 	}
-
-	function runToLine(room, n) {
-        if(room.runningLine >= 0) {
-            room.editor.removeLineClass(room.runningLine, '*', 'running');
-            room.editor.setGutterMarker(room.runningLine, 'runat', null);
-        }
-        if(n >= 0) {
-            room.editor.addLineClass(n, '*', 'running');
-            room.editor.setGutterMarker(n, 'runat', 
-                angular.element('<div><img src="images/arrow.png" width="16" height="16" style="min-width:16px;min-width:16px;" /></div>')[0]);
-            room.editor.scrollIntoView({line:n, ch:0});
-        }
-        room.runningLine = n;
-    }
 
 	socket.forceOn('ok', function(data){
 		var room = roomList[data.roomid];
@@ -801,15 +865,6 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		room.buffertimeout = buffertimeout;
 	});
 
-
-	function havebreakat (cm, n) {
-		var info = cm.lineInfo(n);
-		if (info && info.gutterMarkers && info.gutterMarkers["breakpoints"]) {
-			return "1";
-		}
-		return "0";
-	}
-
 	var registereditorevent = function(room) {
 
 		CodeMirror.on(room.editor.getDoc(), 'change', function(editorDoc, chg){
@@ -899,7 +954,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 					btext += "0";
 				}
 				btext[btext.length-1] = bps[bto];*/
-				sendbreak(bfrom, bto+1, btext);
+				sendbreak(room, bfrom, bto+1, btext);
 				return;
 			}
 			if (chg.text.length > 1){
@@ -1003,5 +1058,6 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		'leaveRoom': leaveRoom,
 		'registerEditorEvent': registereditorevent,
 		'saveevent': saveevent,
+		'initbreakpoints': initbreakpoints
 	};
 }
