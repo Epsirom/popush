@@ -17,13 +17,13 @@
 				<button class="btn btn-primary edt-editor-btn" ng-class="current.room.debugable? 'enabled':'disabled'"  title="{{'DEBUG' | translate }}" ng-click = "debugFn()">
 					<i ng-class="current.room.locks.debug?'icon-eye-close':'icon-eye-open' "></i>
 				</button>
-				<button class="btn btn-primary edt-editor-btn" title="{{'CONSOLE' | translate }}" ng-click="current.room.toggleConsole(current.room.id)">
+				<button class="btn btn-primary edt-editor-btn" title="{{'CONSOLE' | translate }}" ng-click="toggleConsole(current.room)">
 					<i class="icon-share"></i>
 				</button>
 				<button class="btn btn-primary edt-editor-btn" ng-click="setFullScreen(true)" title="{{'FULL_SCREEN' | translate }}">
 					<i class="icon-fullscreen"></i>
 				</button>
-				<!--<button class="btn btn-primary edt-editor-btn" ng-hide="current.room.chatOpen" ng-click="toggleChat()" title="{{'SHOW_CHAT_WINDOW' | translate }}">-->
+
 				<button class="btn btn-primary edt-editor-btn" ng-hide="current.room.chatOpen" ng-click="current.room.chatOpen = !current.room.chatOpen" title="{{'SHOW_CHAT_WINDOW' | translate }}">
 					<i class="icon-backward"></i>
 				</button>
@@ -49,16 +49,16 @@
 				<div >
 					<div class="well well-top">
 						<div class="btn-group">
-							<button class="btn disabled debug-btn" type="button"  ng-click = "debugStepFn()">
+							<button class="btn debug-btn" ng-class="current.room.locks.debug?'enabled':'disabled'" type="button"  ng-click = "debugStepFn()">
 								<i class="icon-arrow-down"></i>
 							</button>
-							<button class="btn disabled debug-btn" type="button" ng-click = "debugNextFn()">
+							<button class="btn debug-btn" ng-class="current.room.locks.debug?'enabled':'disabled'" type="button" ng-click = "debugNextFn()">
 								<i class="icon-arrow-right"></i>
 							</button>
-							<button class="btn disabled debug-btn" type="button" ng-click = "debugFinishFn()">
+							<button class="btn debug-btn" ng-class="current.room.locks.debug?'enabled':'disabled'" type="button" ng-click = "debugFinishFn()">
 								<i class="icon-share-alt"></i>
 							</button>
-							<button class="btn disabled debug-btn" type="button" ng-click = "debugContinueFn()">
+							<button class="btn debug-btn" ng-class="current.room.locks.debug?'enabled':'disabled'" type="button" ng-click = "debugContinueFn()">
 								<i class="icon-play"></i>
 							</button>
 						</div>

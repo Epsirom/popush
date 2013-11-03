@@ -189,8 +189,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
     });
        */
     $scope.changePath = tabsModel.changePath;
-//	$scope.currentTab = {'path': ["bin","das","Dadi.cpp"]};
-    //$scope.currentTab = $scope.current.doc.path;
+
 	$scope.editorOptions = {
         lineWrapping : true,
         lineNumbers: true,
@@ -278,7 +277,8 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
         }
     }
     */
-
+    $scope.toggleConsole = roomModel.toggleConsole;
+    
     var tmpH, tmpW;
     $scope.setFullScreen = function(full)
     {
