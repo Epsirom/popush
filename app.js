@@ -55,6 +55,10 @@ log('server start');
 var io = require('socket.io').listen(require('./package.json').port, {log:false});
 
 function _broadcast(id, msg, data){
+	if (!data) {
+		data = {};
+	}
+	data.roomid = id;
 	if(DEBUG){
 		if(data){
 			log('>> [' + id + ']', msg, data);
@@ -62,7 +66,6 @@ function _broadcast(id, msg, data){
 			log('>> [' + id + ']', msg);
 		}
 	}
-	data.roomid = id;
 	io.sockets.in(id).emit(msg, data);
 }
 
@@ -111,7 +114,7 @@ io.sockets.on('connection', function(socket){
 	log('[' + ip + ']', 'connect "socket begin"');
 
 	function check(data){
-		if(data === undefined){
+		if((data === undefined) || (data === null)){
 			return false;
 		}
 		for(var i = 1; i < arguments.length; i++){
