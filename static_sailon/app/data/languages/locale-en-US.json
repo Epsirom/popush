@@ -17,6 +17,7 @@
   "FORWARD_DIR": 		 "Enter the subdirectory",
   "MYPOPUSH": 			 "My POPUSH",
   "FILE": 				 "File",
+  "FOLDER":              "Folder",
   "OLD_PASSWORD":        "Old password",
   "NEW_PASSWORD":        "New password",
   "AVATAR":              "Avatar",

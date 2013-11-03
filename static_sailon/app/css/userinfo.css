@@ -103,3 +103,7 @@
 .userinfo-infoblock{
 	margin-left: 15px !important;
 }
+.userinfo-passbtn{
+	color: #000;
+	background-color: #fff;
+}
