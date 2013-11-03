@@ -1,40 +1,43 @@
 <div class="row-fluid" ng-controller="RoomController">
-	<div ng-class="editor_width" >
+	<!--<div ng-class="editor_width" >-->
+	<div ng-class="current.room.chatOpen?span9:span12" >
 		<div class="row-fluid edt-editor-toolbar">
-			<div class="edt-filepath"> <i class="room-status" ng-class="{'doing': current.room.saving, 'done': !current.room.saving}" tooltip="{{(current.room.saving?'room-saving':'room-saved')|translate}}" tooltip-trigger="mouseenter" tooltip-placement="top"></i>
+			<div class="edt-filepath"> 
+				<i class="room-status" ng-class="{'doing': current.room.saving, 'done': !current.room.saving}" tooltip="{{(current.room.saving?'room-saving':'room-saved')|translate}}" tooltip-trigger="mouseenter" tooltip-placement="top"></i>
 				<span ng-repeat="p in tab.paths track by $index">
 					/
 					<a class="btn-link" ng-click="changePath(tab, $index);">{{ p }}</a>
 				</span>
 			</div>
 			<div class="edt-editor-btns">
-				<button class="btn btn-primary edt-editor-btn" ng-class="current.runable?enabled:disabled" title="{{'RUN' | translate }}" ng-click = "runFn()"> 
-					<i ng-class="current.lock.run?'icon-stop':'icon-play'" ></i>
+				<button class="btn btn-primary edt-editor-btn" ng-class="current.room.runable? 'enabled':'disabled'" title="{{'RUN' | translate }}" ng-click = "runFn()"> 
+					<i ng-class="current.room.locks.run?'icon-stop':'icon-play'" ></i>
 				</button>
 
-				<button class="btn btn-primary edt-editor-btn" title="{{'DEBUG' | translate }}" ng-click = "debugFn()">
-					<i class="icon-eye-open"></i>
+				<button class="btn btn-primary edt-editor-btn" ng-class="current.room.debugable? 'enabled':'disabled'"  title="{{'DEBUG' | translate }}" ng-click = "debugFn()">
+					<i ng-class="current.room.locks.debug?'icon-eye-close':'icon-eye-open' "></i>
 				</button>
-				<button class="btn btn-primary edt-editor-btn" title="{{'CONSOLE' | translate }}" 			ng-click="toggleConsole()">
+				<button class="btn btn-primary edt-editor-btn" title="{{'CONSOLE' | translate }}" ng-click="current.room.toggleConsole(current.room.id)">
 					<i class="icon-share"></i>
 				</button>
 				<button class="btn btn-primary edt-editor-btn" ng-click="setFullScreen(true)" title="{{'FULL_SCREEN' | translate }}">
 					<i class="icon-fullscreen"></i>
 				</button>
-				<button class="btn btn-primary edt-editor-btn" ng-hide="chat_show" ng-click="toggleChat()" title="{{'SHOW_CHAT_WINDOW' | translate }}">
+				<!--<button class="btn btn-primary edt-editor-btn" ng-hide="current.room.chatOpen" ng-click="toggleChat()" title="{{'SHOW_CHAT_WINDOW' | translate }}">-->
+				<button class="btn btn-primary edt-editor-btn" ng-hide="current.room.chatOpen" ng-click="current.room.chatOpen = !current.room.chatOpen" title="{{'SHOW_CHAT_WINDOW' | translate }}">
 					<i class="icon-backward"></i>
 				</button>
-				<button class="btn btn-primary edt-editor-btn" ng-show="chat_show" ng-click="toggleChat()" title="{{'HIDE_CHAT_WINDOW' | translate }}">
+				<button class="btn btn-primary edt-editor-btn" ng-show="current.room.chatOpen" ng-click="toggleChat()" title="{{'HIDE_CHAT_WINDOW' | translate }}">
 					<i class="icon-forward"></i>
 				</button>
 			</div>
 		</div>
 		<textarea ui-codemirror="editorOptions" ng-model="model" ui-refresh="true"></textarea>
-		<div class="row-fluid" ng-show="show_console">
+		<div class="row-fluid" ng-show="current.room.consoleOpen">
 			<div class="edt-under-editor">
 				<div class="span8 edt-console">
 					<div class="edt-console-title well well-top" translate="CONSOLE">
-						<span ng-bind="consoleState"></span>
+						<span ng-bind="current.room.consoleState"></span>
 					</div>
 					<div class="edt-console-inner" ng-style="bottomscroll()" scroll>
 						<span ng-repeat="x in current.consoleOutput">
@@ -87,7 +90,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="span3 chat-window" ng-show="chat_show" ng-controller = "ChatController">
+	<div class="span3 chat-window" ng-show="current.room.chatOpen" ng-controller = "ChatController">
 		<div class="edt-chat" ng-style="bottomscroll()" scroll>
 			<div class="edt-chat-inner">
 				<p ng-repeat="chatmessage in current.chat">

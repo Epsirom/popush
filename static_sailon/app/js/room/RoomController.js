@@ -8,6 +8,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
     })
 
     socket.onScope($scope, {
+        /*
         'run': function (data){
             $scope.current.room.locks.run = true;
 
@@ -33,7 +34,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
 
             
         },
-
+    */
         'running': function (data) {
             if (! $scope.current.room.locks.debug)
                 return;
@@ -250,7 +251,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
     $scope.show_console = false;
 
    
-
+    /*
     $scope.toggleConsole = function()
     {
     	if($scope.show_console == false)
@@ -276,6 +277,7 @@ function RoomController($scope, userModel, socket, $location, tabsModel, roomGlo
             $scope.editor_width = 'span12';
         }
     }
+    */
 
     var tmpH, tmpW;
     $scope.setFullScreen = function(full)
