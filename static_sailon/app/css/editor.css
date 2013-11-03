@@ -142,7 +142,7 @@
     height: 20px !important;
     text-indent: 4px !important;
     margin-bottom: 0px !important;
-    border-radius: 4px !important;
+    border-radius: 0px !important;
     width:99.5%;
 }
 .edt-console-inner .stdin {
@@ -222,4 +222,9 @@
 .system
 {
     color: red;
+}
+
+.green-border
+{
+    border:1px solid green;;
 }

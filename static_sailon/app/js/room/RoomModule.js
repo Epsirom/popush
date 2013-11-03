@@ -72,5 +72,5 @@ angular.module('roomModule', ['userModule', 'socketModule', 'workspaceModule',
 	controller('RoomController', ['$scope','userModel', 'socket', '$location', 'tabsModel', 'roomGlobal', 'roomModel', RoomController]).
 	controller('RunController', ['$scope', 'roomModel', 'socket', '$location', '$cookies', RunController]).
 	controller('ChatController', ['$scope','userModel', 'roomModel', 'socket', '$location', '$cookies', ChatController]).
-	controller('ConsoleController', ['$scope', 'roomModel', 'socket', '$location', '$cookies', ConsoleController]).
-	controller('VoiceController', ['$scope', 'roomModel', 'socket', '$location', '$cookies', VoiceController]);
+	controller('ConsoleController', ['$scope', 'roomModel', 'socket', '$location', '$cookies', ConsoleController]);
+	

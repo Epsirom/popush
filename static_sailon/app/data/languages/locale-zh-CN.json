@@ -102,5 +102,6 @@
   "ADDCOLSUCCESS":          "成功添加协作者",
   "DELETECOLSUCCESS":       "成功删除协作者",
   "ADDCOLFAIL":             "添加协作者失败",
-  "DELETECOLFAIL":          "删除协作者失败"
+  "DELETECOLFAIL":          "删除协作者失败",
+  "NO_VOICE":               "该浏览器不支持语音，请使用<br />Chrome 18+或Opera 12+"
 }
