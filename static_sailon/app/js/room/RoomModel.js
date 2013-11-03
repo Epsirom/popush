@@ -76,30 +76,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				'chat':false, 
 				'voice':false
 				};
-			/*
-			var elements = [], //name, value
-				editingelem = null,
-				elemid = 1,
-				expressionList = {
-					'elements': elements,
-					'clear': function(){
-						elements = [];
-					},
-					'addExpression': function(expression){
-						if (! currentDoc.lock.debug || currentDoc.waiting){
-							socket.emit('add-expr', {
-								expr: expression
-							});
-						}
-					},
 
-					'removeExression':function(expression){
-						socket.emit('rm-expr', {
-							expr: expression
-						});
-					}
-				};
-			*/
 			var expressionList = [];
 
 			var currentDoc = {
@@ -143,8 +120,10 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 				// Console 
 				'consoleOpen': false, //open = true, close = false
 				'consoleOutput': [], //type: , content:
+				'consoleState': "",
 
 				// chat
+				'chatOpen': false,
 				'chat': [], //name, type, time, content
 
 				// voice 
@@ -179,7 +158,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		//reset lock 
 		tRoom.locks.operation = false;
 		tRoom.locks.run = data.running;
-		if (data.debugging){
+		if (data.debugging){			
 			tRoom.locks.debug = true;
 			tRoom.oldText = data.text;
 			tRoom.oldBps = data.bps;
@@ -200,6 +179,166 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		delete data.state;
 		tabsModel.runRoomSetCallback(tRoom);
    	});
+
+	socket.forceOn('run', function (data){
+		roomList[data.id].locks.run = true;
+
+		 //open the console and chat-windowl
+        if (! roomList[data.id].consoleOpen)
+            toggleConsole(roomList[data.id]);
+
+     	//chat系统消息 日期
+        //某某 运行程序
+        var time = new Date();
+        var msg = {
+            'name': 'system',
+            'type': 'system',
+            'content': userModel.user.name + ' runs the program', //加翻译
+            'time': time.toTimeString().substr(0, 8)
+        }
+        roomList[data.id].chat.push(msg);
+
+        roomList[data.id].locks.operation = false;
+	});
+
+	socket.forceOn('running', function (data){
+		if (! roomList[data.id].locks.debug)
+			return;
+		roomList[data.id].waiting = false;
+		runtoline(-1);
+	});
+
+	socket.forceOn('waiting', function (data){
+		if (! roomList[data.id].locks.debug)
+			return;
+		roomList[data.id].waiting = true;
+		if (typeof data.line == 'number'){
+			runtoline(data.line - 1);
+		} else {
+			runtoline(-1);
+		}
+
+		for (var i = 0; i < roomList[data.id].expressionList.length; i ++){
+			var expr = roomList[data.id].expressionList[i].expr;
+			if (expr in data.exprs){
+				roomList[data.id].expressionList[i].value = data.exprs[k];
+			} else{
+				roomList[data.id].expressionList[i].type = 'err';
+				roomList[data.id].expressionList[i].value = 'undefined';
+			}
+		}
+	});
+
+	socket.forceOn('exit', function (data){
+		 roomList[data.id].room.locks.operation = false;
+            if(data.err.code !== undefined){
+                var time = new Date();
+                var msg = {
+                    'name': 'system',
+                    'type': 'system',
+                    'content': 'program finish with ' + data.err.code,
+                    'time': time.toTimeString().substr(0, 8) 
+                }
+               roomList[data.id].chat.push(msg);
+               roomList[data.id].consoleState = "<finish>";
+
+            } else{
+                var time = new Date();
+                var msg = {
+                    'name': 'system',
+                    'type': 'system',
+                    'content': 'program killed by '+ data.err.signal,
+                    'time': time.toTimeString().substr(0, 8) 
+                }
+
+                roomList[data.id].chat.push(msg);
+                roomList[data.id].consoleState = "<killed>";
+            }
+
+            if (roomList[data.id].locks.run)
+                roomList[data.id].locks.run = false;
+
+            if (roomList[data.id].locks.debug){  
+
+                roomList[data.id].editor.setValue(roomList[data.id].oldText);
+                removeallbreakpoints();
+                initbreakpoints(roomList[data.id].oldText);
+
+                var editordoc = roomList[data.id].editor.getDoc();
+                var hist = editordoc.getHistory();
+                hist.done.pop();
+                editordoc.setHistory(hist);
+
+                roomList[data.id].editor.setOption('readOnly', false);   
+                if(roomList[data.id].q.length > 0){
+                    socket.emit('change', q[0]);
+                }
+
+                runtoline(-1);
+                
+                for (var i = 0; i < roomList[data.id].expressionList.length; i ++){
+                    roomList[data.id].expressionList[i].type = 'err';
+                    roomList[data.id].expressionList[i].value = 'undefined';
+                }
+            
+                roomList[data.id].locks.debug = false;
+            }
+	});
+	
+	socket.forceOn('stdin', function (data){
+		roomList[data.id].consoleOutput.push({
+			type:'stdin', 
+			content: data.data
+		});
+
+	});
+
+	socket.forceOn('stdout', function (data){
+		roomList[data.id].consoleOutput.push({
+			type:'stdout', 
+			content: data.data
+		});
+
+	});
+
+	socket.forceOn('stderr', function (data){
+		roomList[data.id].consoleOutput.push({
+			type:'stderr', 
+			content: data.data
+		});
+	});
+
+	socket.forceOn('add-expr', function (data){
+		if (data.expr == null)
+			return;
+		
+		var i;
+		for (i = roomList[data.id].expressionList.length - 1; i >= 0; i --)
+			if (data.expr == roomList[data.id].expressionList[i].expr)
+				break;
+			if (i < 0)
+				return;
+			if (data.val != null)
+				roomList[data.id].expressionList[i].value = data.val;
+			else
+			{   
+				roomList[data.id].expressionList[i].value = 'undefined';
+				roomList[data.id].expressionList[i].type = 'err';
+			}
+	});
+
+	//能改到RoomController.js里面么？
+	function toggleConsole(room){
+
+    	if(room.consoleOpen == false)
+    		room.editor.setSize('',560-165);
+    	else
+    		room.editor.setSize('',560);
+
+        room.consoleOpen = ! room.consoleOpen;
+    }
+
+
 
 	function sendbuffer(room){
 		var bufferfrom = room.bufferfrom,
@@ -253,6 +392,84 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		bq.push(req);
 	}
 
+	function addbreakpointat(room, cm, n){
+		var addlen = n - room.bps.length;
+		if (addlen > 0){
+			var addtext = "";
+			for (var i = room.bps.length; i < n-1; i++){
+				addtext += "0";
+			}
+			addtext += "1";
+			//bps += addtext;
+			sendbreak(room, room.bps.length, room.bps.length, addtext);
+		}
+		else{
+			//bps = bps.substr(0, n) + "1" + bps.substr(n+1);
+			sendbreak(room, n, n+1, "1");
+		}
+
+		var element = angular.element('<div><img src="images/breakpoint.png" /></div>')[0];
+		cm.setGutterMarker(n, 'breakpoints', element);
+	}
+
+	function removebreakpointat(cm, n){
+		var info = cm.lineInfo(n);
+		if (info.gutterMarkers && info.gutterMarkers["breakpoints"]) {
+			cm.setGutterMarker(n, 'breakpoints', null);
+			//bps = bps.substr(0, n) + "0" + bps.substr(n+1);
+			sendbreak(n, n+1, "0");
+			return true;
+		}
+		return false;
+	}
+
+	function havebreakat (cm, n) {
+		var info = cm.lineInfo(n);
+		if (info && info.gutterMarkers && info.gutterMarkers["breakpoints"]) {
+			return "1";
+		}
+		return "0";
+	}
+
+	function runtoline(room, n) {
+		if(runningline >= 0) {
+			room.editor.removeLineClass(runningline, '*', 'running');
+			room.editor.setGutterMarker(runningline, 'runat', null);
+		}
+		if(n >= 0) {
+			room.editor.addLineClass(n, '*', 'running');
+			room.editor.setGutterMarker(n, 'runat', $('<div><img src="images/arrow.png" width="16" height="16" style="min-width:16px;min-width:16px;" /></div>').get(0));
+			room.editor.scrollIntoView({line:n, ch:0});
+		}
+		runningline = n;
+	}
+
+	function removeallbreakpoints(room) {
+		for (var i = 0; i < room.bps.length; i++){
+			if (room.bps[i] == "1"){
+				var info = room.editor.lineInfo(i);
+				if (info.gutterMarkers && info.gutterMarkers["breakpoints"]) {
+					room.editor.setGutterMarker(i, 'breakpoints', null);
+				}
+			}
+		}
+		room.bps.replace("1", "0");
+	}
+
+	function initbreakpoints(room, bpsstr) {
+		room.bps = bpsstr;
+		for (var i = bpsstr.length; i < room.editor.lineCount(); i++){
+			room.bps += "0";
+		}
+		for (var i = 0; i < room.bps.length; i++){
+			if (room.bps[i] == "1"){
+				var element = angular.element('<div><img src="img/breakpoint.png" /></div>')[0];
+				room.editor.setGutterMarker(i, 'breakpoints', element);
+			}
+		}
+	}
+
+
 	function setsaved(room){
 		var tmpTime = new Date().getTime();
 		room.savetimestamp = tmpTime;
@@ -276,20 +493,6 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 			setsavedthen(room, room.savetimestamp);
 		room.savetimestamp = 0;
 	}
-
-	function runToLine(room, n) {
-        if(room.runningLine >= 0) {
-            room.editor.removeLineClass(room.runningLine, '*', 'running');
-            room.editor.setGutterMarker(room.runningLine, 'runat', null);
-        }
-        if(n >= 0) {
-            room.editor.addLineClass(n, '*', 'running');
-            room.editor.setGutterMarker(n, 'runat', 
-                angular.element('<div><img src="images/arrow.png" width="16" height="16" style="min-width:16px;min-width:16px;" /></div>')[0]);
-            room.editor.scrollIntoView({line:n, ch:0});
-        }
-        room.runningLine = n;
-    }
 
 	socket.forceOn('ok', function(data){
 		var room = roomList[data.roomid];
@@ -662,15 +865,6 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		room.buffertimeout = buffertimeout;
 	});
 
-
-	function havebreakat (cm, n) {
-		var info = cm.lineInfo(n);
-		if (info && info.gutterMarkers && info.gutterMarkers["breakpoints"]) {
-			return "1";
-		}
-		return "0";
-	}
-
 	var registereditorevent = function(room) {
 
 		CodeMirror.on(room.editor.getDoc(), 'change', function(editorDoc, chg){
@@ -760,7 +954,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 					btext += "0";
 				}
 				btext[btext.length-1] = bps[bto];*/
-				sendbreak(bfrom, bto+1, btext);
+				sendbreak(room, bfrom, bto+1, btext);
 				return;
 			}
 			if (chg.text.length > 1){
@@ -864,5 +1058,6 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 		'leaveRoom': leaveRoom,
 		'registerEditorEvent': registereditorevent,
 		'saveevent': saveevent,
+		'initbreakpoints': initbreakpoints
 	};
 }
