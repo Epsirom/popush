@@ -1,6 +1,6 @@
 'use strict';
 
-function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTreeModel, roomGlobal, userModel, $timeout) {
+function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTreeModel, roomGlobal, userModel, $timeout, messageModel) {
 
 	var roomList = {};
 	
@@ -431,7 +431,7 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 	});
 	
 	socket.forceOn('deleted', function (data){
-		var path = roomList[data.roomid].doc.path.split('/');
+		/*var path = roomList[data.roomid].doc.path.split('/');
         path.splice(path.length - 1, 1);
         path = path.join('/');
 
@@ -449,7 +449,11 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
 	    	alert('hehe');
 	    	//被打开，但不是标签页－－》关闭
 	    	//如果父亲被打开－－》更新
-	    }
+	    }*/
+	    var path = roomList[data.roomid].doc.path.split('/');
+        path.splice(path.length - 1, 1);
+        path = path.join('/');
+        tabsModel.changeTabPath(roomList[data.roomid].doc.path, path);
 
         messageModel.append('ROOMREMOVED');
 
@@ -460,20 +464,21 @@ function RoomModel(socket, $location, $route, POPUSH_SETTINGS, tabsModel, fileTr
         path.splice(path.length - 1, 1);
         path = path.join('/');
 
-        var o = fileTreeModel.select(path);
+        //var o = fileTreeModel.select(path);
 		
-		socket.emit('leave',{
-			roomid: data.roomid
-		});
+		//socket.emit('leave',{
+		//	roomid: data.roomid
+		//});
         
+        tabsModel.changeTabPath(roomList[data.roomid].doc.path, path);
 		//恰好是当前打开的标签页
-        if (tabsModel.current.path == roomList[data.roomid].doc.path)
+        /*if (tabsModel.current.path == roomList[data.roomid].doc.path)
 	        tabsModel.changeDoc(o);
 	    else
 	    {
 	    	//被打开，但不是标签页－－》关闭
 	    	//如果父亲被打开－－》更新
-	    }
+	    }*/
 
         messageModel.append('ROOMMOVED');
 

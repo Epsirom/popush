@@ -207,12 +207,18 @@ function FileTreeModel(userModel, socket) {
 		if (doc instanceof Array) {
 			clearTouch({'nodes': selfRoot});
 			clearTouch({'nodes': sharedRoot});
+			for (i = 0, len = sharedRoot.length; i < len; ++i) {
+				clearTouch(sharedRoot[i]);
+			}
 			len = doc.length;
 			for (i = 0; i < len; ++i) {
 				touchFile(doc[i]);
 			}
 			removeUntouched({'nodes': selfRoot});
 			removeUntouched({'nodes': sharedRoot});
+			for (i = 0, len = sharedRoot.length; i < len; ++i) {
+				removeUntouched(sharedRoot[i]);
+			}
 			len = sharedRoot.length;
 			if (rootStatus.self !== 'off') {
 				rootStatus.self = 'on';
@@ -274,10 +280,15 @@ function FileTreeModel(userModel, socket) {
 	});
 
 	var updateByObj = function(obj) {
-		obj.status = 'loading';
-		socket.emit('doc', {
-			'path': obj.path
-		});
+		var paths = obj.path.split('/');
+		if (paths.length <= 2) {
+			updateRoot();
+		} else {
+			obj.status = 'loading';
+			socket.emit('doc', {
+				'path': obj.path
+			});
+		}
 	}
 
 	var updateByPath = function(path) {
