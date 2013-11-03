@@ -102,6 +102,10 @@
   "ADDCOLSUCCESS":          "Add colloborators successfully",
   "DELETECOLSUCCESS":       "Delete colloborators successfully",
   "ADDCOLFAIL":             "Failed to delete colloborators",
-  "DELETECOLAIL":           "Failed to add colloborators",
+  "DELETECOLAIL":           "Failed to add colloborators" ,
+  "EDT_STEP":               "Step into",
+  "EDT_NEXT":               "Step over",
+  "EDT_CONTINUE":            "Continue",
+  "EDT_FINISH":             "Step return",
   "NO_VOICE":               "The browser does not support voice. Please use Chrome 18+ or Opera 12+"
 }

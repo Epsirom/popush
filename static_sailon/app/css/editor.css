@@ -125,6 +125,9 @@
     -moz-border-radius:0;
     border-radius:0;
 }
+.edt-btn-block{
+    margin-right: 1px;
+}
 .edt-console-title
 {
     border-bottom:1px solid #ddd;
@@ -210,15 +213,24 @@
 {
     float:right;
 }
-.edt-chat-name
+.edtchatname
 {
     color: #00a;
     font-size: 12px;
 }
-.self
+.selfchatname
 {
-    color: green;
+    color: #0a0;
+    font-size: 12px;
 }
+.syschatname{
+    color: #a00;
+    font-size: 12px;
+}
+p:hover{
+    background-color: beige;
+}
+
 .system
 {
     color: red;

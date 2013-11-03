@@ -3,8 +3,7 @@
 function TabsModel(userModel, fileTreeModel, socket) {
 
 	// Data
-	var tabs = [
-			{'type': 'room', 'title': 'Dadi.cpp', 'path':["bin","das","Dadi.cpp"]}];
+	var tabs = [];
 	var current = null;
 	var currentMembers = [];
 	var destDoc = null;
@@ -91,9 +90,7 @@ function TabsModel(userModel, fileTreeModel, socket) {
 		}
 		if (current.type == 'dir') {
 			current.doc.viewMode = 'off';
-			current.doc.saving = 'fail';
 			current.doc = newDoc;
-			newDoc.saving = 'done';
 			current.type = 'room';
 			current.title = newDoc.path;
 			var paths = newDoc.path.split('/');

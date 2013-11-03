@@ -34,6 +34,9 @@ angular.module('roomModule', ['userModule', 'socketModule', 'workspaceModule',
 		'winHeight': function() {
 			return window.innerHeight || (document.documentElement || document.body).clientHeight;
 		},
+		'winWidth': function() {
+			return window.innerWidth || (document.documentElement || document.body).clientWidth;
+		},
 		'isFullScreen': function(cm) {
 			return /\bCodeMirror-fullscreen\b/.test(cm.getWrapperElement().className);
 		},

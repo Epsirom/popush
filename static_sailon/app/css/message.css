@@ -9,7 +9,7 @@
 	list-style:none;
 	display:none;
 	overflow-y:auto;
-	z-index:100;
+	z-index:9999;
 }
 .message-list.active{
 	display:block;
