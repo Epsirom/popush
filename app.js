@@ -140,9 +140,9 @@ io.sockets.on('connection', function(socket){
 			return;
 		}
 		var name = new Date().getTime() + '.png';
-		var path = 'static/faces/' + name;
+		var path = 'static/app/faces/' + name;
 		var url = 'faces/' + name;
-		fs.link('static/images/character.png', path, function(err){
+		fs.link('static/app/images/character.png', path, function(err){
 			if(err){
 				socket.emit('register', {err:'inner error'});
 			}
@@ -244,7 +244,7 @@ io.sockets.on('connection', function(socket){
 			default:
 				return socket.emit('avatar', {err:'not supported'});
 		}
-		var path = 'static/faces/' + name;
+		var path = 'static/app/faces/' + name;
 		var url = 'faces/' + name;
 		fs.writeFile(path, new Buffer(data.avatar, 'base64'), function(err){
 			if(err){
@@ -255,7 +255,7 @@ io.sockets.on('connection', function(socket){
 					fs.unlink(path);
 					return socket.emit('avatar', {err:err});
 				}
-				fs.unlink('static/faces/' + user.avatar.split('/').pop(), function(){});
+				fs.unlink('static/app/faces/' + user.avatar.split('/').pop(), function(){});
 				user.avatar = url;
 				return socket.emit('avatar', {url:url});
 			});

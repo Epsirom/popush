@@ -2,13 +2,13 @@
 
 LIB_DIR = lib
 BIN_DIR = bin
-STATIC_DIR = static
+STATIC_DIR = static/app
 APPARMOR_DIR = /etc/apparmor.d
-NGINX_CONF = /usr/local/nginx/nginx.conf
+NGINX_CONF = /usr/local/nginx/conf/nginx.conf
 NGINX = /etc/init.d/nginx
 POPUSH = /etc/init.d/popush
 TMP_DIR = tmp
-FACE_DIR = static/faces
+FACE_DIR = static/app/faces
 TARGET = $(TMP_DIR) $(FACE_DIR)
 
 all: npm $(TARGET)
@@ -30,8 +30,7 @@ npm:
 	@npm install
 
 static:
-	@echo ">  make static"
-	@cd $(STATIC_DIR) && make static 1>/dev/null 
+	@echo "> make static...done!"
 
 conf:
 	@echo ">  configure"
