@@ -10,7 +10,7 @@
   "LOG_OUT":             "log out",
   "CONFIRM_PASSWORD":    "Confirm Password",
   "AUTHOR":              "powered by sailon team",
-  "pleaseinput" :        "Please input your username",
+  "pleaseinput" :        "Please input your username and password",
   "BACKROOTDIR": 	     "Back to root directory",
   "ROOTDIR":             "Root Directory",
   "BACKWORD_DIR":        "Back to parent directory",
