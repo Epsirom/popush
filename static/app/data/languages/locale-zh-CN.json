@@ -10,7 +10,7 @@
   "CONFIRM_PASSWORD" : 		"确认密码",
   "LOG_OUT":                "登出", 	
   "AUTHOR" : 				"Sailon开发小组敬上",
-  "pleaseinput" : 			"请输入用户名",
+  "pleaseinput" : 			"请输入用户名和密码",
   "BACKROOTDIR": 			"返回根目录",
   "ROOTDIR":                "根目录",
   "BACKWORD_DIR":           "返回上级目录",

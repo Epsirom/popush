@@ -27,11 +27,11 @@ JDK           | 7.0   |
 
 ## 获取源码
 
-	git clone https://github.com/Epsirom/popush2.git
+	git clone https://github.com/Epsirom/popush.git
 
 ## 创建主目录
 
-	sudo cp -r popush2 /popush
+	sudo cp -r popush /popush
 	
 ## 设置主目录权限
 	
